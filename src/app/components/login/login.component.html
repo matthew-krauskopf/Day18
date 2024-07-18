@@ -1,0 +1,49 @@
+<div class="grey-bg flex align-center justify-center h-full">
+  <mat-card class="card-width">
+    <form [formGroup]="loginForm" (ngSubmit)="performLogin()">
+      <mat-card-header class="flex justify-center align-center">
+        <span class="bold font-xl">Login</span>
+      </mat-card-header>
+      <mat-card-content class="margin-top-10">
+        <div>
+          <mat-form-field class="w-full">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+            <mat-error
+              *ngIf="loginForm.controls['username'].errors as userError"
+            >
+              <span *ngIf="userError['required']">Username is required</span>
+              <span *ngIf="userError['pattern']">
+                Username must be 5+ letters or numbers
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="w-full">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" />
+            <mat-error
+              *ngIf="loginForm.controls['password'].errors as userError"
+            >
+              <span *ngIf="userError['required']">Password is required</span>
+              <span *ngIf="userError['pattern']">
+                Password must be 5+ letters or numbers
+              </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-footer class="flex justify-center margin-y-5 pad-x-7">
+        <button
+          [disabled]="!loginForm.valid"
+          type="submit"
+          mat-flat-button
+          class="w-full"
+        >
+          Submit
+        </button>
+      </mat-card-footer>
+    </form>
+  </mat-card>
+</div>

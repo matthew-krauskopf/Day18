@@ -1,1 +1,164 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-spread {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.font-s {
+  font-size: 14px;
+}
+
+.font-l {
+  font-size: large;
+}
+
+.font-xl {
+  font-size: x-large;
+}
+
+.font-xxl {
+  font-size: xx-large;
+}
+
+.font-white {
+  color: white;
+}
+
+.font-gray {
+  color: gray;
+}   
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.grey-bg {
+  background-color: grey;
+}
+
+.scroll {
+  overflow-y: auto;
+}
+
+.scroll-x {
+  overflow-x: auto;
+}
+
+.dark-bg {
+  background-color: rgb(32, 32, 32);
+}
+
+.white-bg {
+  background-color: white;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+@mixin generate-spacing ($upper-limit) {
+  @for $i from 1 to $upper-limit {
+      .pad-left-#{$i} {
+          padding-left: $i*2px;
+      }
+
+      .pad-right-#{$i} {
+          padding-right: $i*2px;
+      }
+
+      .pad-x-#{$i} {
+          padding-left: $i*2px;
+          padding-right: $i*2px;
+      }
+
+      .pad-y-#{$i} {
+          padding-top: $i*2px;
+          padding-bottom: $i*2px;
+      }
+
+      .pad-bot-#{$i} {
+          padding-bottom: $i*2px;
+      }
+
+      .pad-top-#{$i} {
+          padding-top: $i*2px;
+      }
+
+      .margin-bot-#{$i} {
+          margin-bottom: $i*2px;
+      }
+
+      .margin-top-#{$i} {
+          margin-top: $i*2px;
+      }
+
+      .margin-x-#{$i} {
+          margin-left: $i*2px;
+          margin-right: $i*2px;
+      }
+
+      .margin-y-#{$i} {
+          margin-bottom: $i*2px;
+          margin-top: $i*2px;
+      }
+
+      .margin-left-#{$i} {
+          margin-left: $i*2px;
+      }
+
+      .margin-right-#{$i} {
+          margin-right: $i*2px;
+      }
+  }
+}
+
+@include generate-spacing(21);
