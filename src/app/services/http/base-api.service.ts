@@ -12,14 +12,17 @@ export abstract class BaseAPIService {
 
   baseUrl: string = 'https://json-server-vercel-ebon.vercel.app';
 
-  handleError<T>(result?: T) {
+  private handleError<T>(result?: T) {
     return (error: any): Observable<T> => {
       console.log('Fetch failed: ', error);
       return of(result as T);
     };
   }
 
-  performGet(endpoint: string[], ...params: string[]): Observable<[]> {
+  protected performGet(
+    endpoint: string[],
+    ...params: string[]
+  ): Observable<[]> {
     return this.http
       .get<[]>(
         this.baseUrl +

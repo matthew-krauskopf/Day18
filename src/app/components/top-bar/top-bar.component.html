@@ -1,1 +1,11 @@
-<p>top-bar works!</p>
+<div class="dark-bg flex align-center justify-spread pad-y-5">
+  <div class="pad-left-10">
+    <img (click)="goHome()" class="pointer pic-r" src="assets/twitter.png" />
+  </div>
+  <span class="font-white bold font-xl">Twatter</span>
+  <div class="margin-right-10 flex align-center">
+    <button mat-button (click)="authFacade.logout()">
+      <span class="font-white">Sign Out</span>
+    </button>
+  </div>
+</div>

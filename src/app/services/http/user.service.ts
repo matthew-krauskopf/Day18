@@ -7,9 +7,13 @@ import { BaseAPIService } from './base-api.service';
   providedIn: 'root',
 })
 export class UserService extends BaseAPIService {
-  endpoint = 'messages';
+  endpoint = '/users';
 
-  loadMessages(): Observable<User[]> {
+  loadUser(user: string): Observable<User[]> {
+    return this.performGet([this.endpoint], 'username={}'.replace('{}', user));
+  }
+
+  loadUsers(): Observable<User[]> {
     return this.performGet([this.endpoint]);
   }
 }

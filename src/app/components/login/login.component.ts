@@ -16,6 +16,8 @@ import { NgIf } from '@angular/common';
 import { Permission } from '../../models/permission';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StoreService } from '../../services/store.service';
+import { AuthFacade } from '../../services/auth.facade';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +34,7 @@ import { StoreService } from '../../services/store.service';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  authService: AuthService = inject(AuthService);
+  authFacade: AuthFacade = inject(AuthFacade);
   storeService: StoreService = inject(StoreService);
   router: Router = inject(Router);
   snackbar: MatSnackBar = inject(MatSnackBar);
@@ -51,27 +53,24 @@ export class LoginComponent {
   });
 
   constructor() {
-    this.authService
-      .watchLoginState()
-      .pipe(takeUntilDestroyed())
-      .subscribe((permission) => {
-        if (permission !== Permission.NONE) {
-          this.router.navigate(['home']);
-        }
-      });
+    this.authFacade.user$.pipe(takeUntilDestroyed()).subscribe((user) => {
+      if (user && user.permission !== Permission.NONE) {
+        this.router.navigate(['home']);
+      }
+    });
   }
 
   performLogin() {
-    if (
-      !this.authService.performLogin(
-        this.loginForm.value.username,
-        this.loginForm.value.password
-      )
-    ) {
-      this.loginForm.markAsTouched();
-      this.snackbar.open('Invalid Login Credentials', 'Close', {
-        duration: 2000,
-      });
-    }
+    //if (
+    this.authFacade.performLogin(
+      this.loginForm.value.username,
+      this.loginForm.value.password
+    );
+    //) {
+    //  this.loginForm.markAsTouched();
+    //  this.snackbar.open('Invalid Login Credentials', 'Close', {
+    //    duration: 2000,
+    //  });
+    //}
   }
 }
