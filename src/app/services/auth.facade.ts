@@ -8,13 +8,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthFacade implements OnInit {
+export class AuthFacade {
   store: StoreService = inject(StoreService);
   userService: UserService = inject(UserService);
 
   user$;
-
-  ngOnInit(): void {}
 
   constructor() {
     this.user$ = this.store.watchUser().pipe(takeUntilDestroyed());

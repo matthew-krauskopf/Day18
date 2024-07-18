@@ -7,7 +7,7 @@ import { Message } from '../../models/message';
   providedIn: 'root',
 })
 export class MessageService extends BaseAPIService {
-  endpoint = 'messages';
+  endpoint = '/messages';
 
   loadMessages(): Observable<Message[]> {
     return this.performGet([this.endpoint]);

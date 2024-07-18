@@ -5,6 +5,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './components/login/login.component';
+import { ThreadComponent } from './components/thread/thread.component';
 
 export const routes: Routes = [
   {
@@ -22,12 +23,16 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: 'messages',
+        component: MessagesComponent,
+      },
+      {
         path: 'profile/:id',
         component: ProfileComponent,
       },
       {
-        path: 'message/:id',
-        component: MessagesComponent,
+        path: 'thread/:id',
+        component: ThreadComponent,
       },
     ],
   },
