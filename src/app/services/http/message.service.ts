@@ -9,6 +9,10 @@ import { Message } from '../../models/message';
 export class MessageService extends BaseAPIService {
   endpoint = '/messages';
 
+  loadMessage(uuid: string): Observable<Message[]> {
+    return this.performGet([this.endpoint], 'uuid={}'.replace('{}', uuid));
+  }
+
   loadMessages(): Observable<Message[]> {
     return this.performGet([this.endpoint]);
   }

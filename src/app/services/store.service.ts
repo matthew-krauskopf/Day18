@@ -9,7 +9,9 @@ import { Message } from '../models/message';
 })
 export class StoreService {
   private user: ReplaySubject<User | null> = new ReplaySubject(1);
-  users: ReplaySubject<User[] | null> = new ReplaySubject(1);
+  private users: ReplaySubject<User[] | null> = new ReplaySubject(1);
+
+  private message: ReplaySubject<Message | null> = new ReplaySubject(1);
   private messages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
 
   constructor() {}
@@ -22,6 +24,10 @@ export class StoreService {
     return this.users.asObservable();
   }
 
+  watchMessage() {
+    return this.message.asObservable();
+  }
+
   watchMessages() {
     return this.messages.asObservable();
   }
@@ -32,6 +38,10 @@ export class StoreService {
 
   pushUsers(users: User[] | null) {
     this.users.next(users);
+  }
+
+  pushMessage(message: Message | null) {
+    this.message.next(message);
   }
 
   pushMessages(messages: Message[] | null) {

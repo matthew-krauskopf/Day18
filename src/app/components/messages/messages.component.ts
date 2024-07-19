@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { UserFacade } from '../../services/user.facade';
 import { User } from '../../models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-messages',
@@ -20,6 +21,7 @@ export class MessagesComponent implements OnInit {
   messages$: Observable<Message[] | null>;
   usersFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
+  router: Router = inject(Router);
 
   constructor() {
     this.user$ = this.usersFacade.watchUser();
@@ -28,5 +30,9 @@ export class MessagesComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageFacade.loadMessages();
+  }
+
+  openThread(message: Message) {
+    this.router.navigate(['home', 'thread', message.uuid]);
   }
 }

@@ -1,1 +1,32 @@
-<p>thread works!</p>
+<div *ngIf="message$ | async as message">
+  <div class="pad-x-5 border-b">
+    <div class="flex align-center">
+      <button (click)="goBack()" class="margin-y-3" mat-mini-fab>
+        <mat-icon class="font-white">arrow_back</mat-icon>
+      </button>
+      <span class="pad-x-10 font-xl font-white bold font-ui">Thread</span>
+    </div>
+    <div class="flex align-center margin-x-5">
+      <img class="profile-pic" src="{{ message.pic }}" />
+      <span class="margin-x-5 font-white bold font-ui">{{
+        message.username
+      }}</span>
+    </div>
+    <div class="margin-y-12">
+      <span class="font-white font-ui">{{ message.text }}</span>
+    </div>
+  </div>
+  @for (comment of message.comments; track comment) {
+  <div class="flex flex-row pad-x-5 pad-y-7 border-b">
+    <div class="flex margin-x-5">
+      <img class="profile-pic" src="{{ comment.pic }}" />
+    </div>
+    <div class="flex flex-col">
+      <span class="font-white bold font-ui">
+        {{ comment.username }}
+      </span>
+      <span class="font-white font-ui">{{ comment.text }}</span>
+    </div>
+  </div>
+  }
+</div>

@@ -12,13 +12,16 @@ import { Message } from '../models/message';
 export class MessageFacade {
   users$;
   rawMessages$;
+  message$;
   messages$;
+
   messageService: MessageService = inject(MessageService);
   store: StoreService = inject(StoreService);
   userFacade: UserFacade = inject(UserFacade);
 
   constructor() {
     this.users$ = this.userFacade.watchUsers();
+    this.message$ = this.store.watchMessage();
     this.messages$ = this.store.watchMessages();
     this.rawMessages$ = this.messageService.loadMessages();
   }
@@ -49,7 +52,49 @@ export class MessageFacade {
       });
   }
 
+  unloadMessage() {
+    this.store.pushMessage(null);
+  }
+
+  loadMessage(uuid: string) {
+    this.userFacade.loadUsers();
+    const rawMessage$ = this.messageService.loadMessage(uuid);
+
+    combineLatest(this.users$, rawMessage$)
+      .pipe(
+        map(([users, messages]) => {
+          if (messages.length > 0) {
+            // Loaded message successfully
+            const message = messages[0];
+            if (users) {
+              return this.linkUserInfo(message, users);
+            }
+          }
+          return null;
+        })
+      )
+      .subscribe((message) => {
+        this.store.pushMessage(message);
+      });
+  }
+
+  watchMessage() {
+    return this.message$;
+  }
+
   watchMessages() {
     return this.messages$;
+  }
+
+  linkUserInfo(message: Message, users: User[]): Message {
+    const user: User = users.filter((u) => u.id == message.author)[0];
+    return {
+      ...message,
+      comments: message.comments
+        ? message.comments.map((c) => this.linkUserInfo(c, users))
+        : [],
+      username: user.username ?? '',
+      pic: user.pic ?? '',
+    };
   }
 }

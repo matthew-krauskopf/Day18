@@ -1,3 +1,11 @@
 .message-pane {
   max-height: calc(100vh - 75px);
 }
+
+.border-l {
+  border-left: 1px solid grey;
+}
+
+.border-r {
+  border-right: 1px solid grey;
+}

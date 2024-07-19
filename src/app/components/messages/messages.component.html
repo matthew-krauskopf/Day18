@@ -10,7 +10,7 @@
           message.username != null ? message.username : message.author
         }}</span>
       </div>
-      <div class="margin-y-5">
+      <div class="margin-y-5 pointer" (click)="openThread(message)">
         <span class="font-white">{{ message.text }}</span>
       </div>
       <div class="">
