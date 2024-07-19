@@ -16,19 +16,17 @@ import { User } from '../../models/user';
   styleUrl: './messages.component.scss',
 })
 export class MessagesComponent implements OnInit {
+  user$: Observable<User | null>;
   messages$: Observable<Message[] | null>;
   usersFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
 
   constructor() {
+    this.user$ = this.usersFacade.watchUser();
     this.messages$ = this.messageFacade.watchMessages();
   }
 
   ngOnInit(): void {
     this.messageFacade.loadMessages();
-  }
-
-  getUser(userId: number, users: User[]) {
-    return users.filter((u) => u.id == userId);
   }
 }

@@ -27,6 +27,6 @@ export class TopBarComponent {
   }
 
   goHome() {
-    this.router.navigate(['home']);
+    this.router.navigate(['home', 'messages']);
   }
 }
