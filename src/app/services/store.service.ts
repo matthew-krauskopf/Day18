@@ -34,7 +34,7 @@ export class StoreService {
     this.users.next(users);
   }
 
-  pushMessages(messages: Message[]) {
+  pushMessages(messages: Message[] | null) {
     this.messages.next(messages);
   }
 
