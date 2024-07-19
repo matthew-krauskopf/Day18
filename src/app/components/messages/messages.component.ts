@@ -3,11 +3,13 @@ import { MessageFacade } from '../../services/message.facade';
 import { Observable } from 'rxjs';
 import { Message } from '../../models/message';
 import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatInputModule, MatFormFieldModule],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
 })

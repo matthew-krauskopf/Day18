@@ -158,6 +158,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
       .margin-right-#{$i} {
           margin-right: $i*2px;
       }
+
+      .flex-#{$i} {
+        flex: $i;
+      }
   }
 }
 
