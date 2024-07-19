@@ -1,6 +1,12 @@
 <div class="dark-bg h-full">
   <app-top-bar></app-top-bar>
-  <div>
-    <router-outlet></router-outlet>
+  <div class="flex flex-row">
+    <div class="flex-1">
+      <app-left-panel [user$]="user$"></app-left-panel>
+    </div>
+    <div class="message-pane flex-3 scroll">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="flex-1"></div>
   </div>
 </div>

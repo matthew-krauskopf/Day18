@@ -1,41 +1,25 @@
-<div class="h-full flex flex-row">
-  <div class="flex-1 left-pane h-full">
-    <div
-      class="pane-height flex justify-center align-end"
-      *ngIf="user$ | async as user"
-    >
-      <div class="flex flex-wrap justify-center align-center pad-bot-10">
-        <img class="profile-pic" src="{{ user.pic }}" />
-        <span class="margin-left-5 font-white font-ui bold">{{
-          user.username
+<div class="message-pane flex-3 scroll">
+  @for (message of messages$ | async; track message) {
+  <div class="flex flex-row border">
+    <div class="flex justify-center margin-x-6 margin-y-5">
+      <img class="profile-pic" src="{{ message.pic }}" />
+    </div>
+    <div class="pad-right-11 w-full">
+      <div class="margin-top-5">
+        <span class="bold font-white font-ui">{{
+          message.username != null ? message.username : message.author
         }}</span>
       </div>
-    </div>
-  </div>
-  <div class="message-pane flex-3 scroll">
-    @for (message of messages$ | async; track message) {
-    <div class="flex flex-row border">
-      <div class="flex justify-center margin-x-6 margin-y-5">
-        <img class="profile-pic" src="{{ message.pic }}" />
+      <div class="margin-y-5">
+        <span class="font-white">{{ message.text }}</span>
       </div>
-      <div class="pad-right-11 w-full">
-        <div class="margin-top-5">
-          <span class="bold font-white font-ui">{{
-            message.username != null ? message.username : message.author
-          }}</span>
-        </div>
-        <div class="margin-y-5">
-          <span class="font-white">{{ message.text }}</span>
-        </div>
-        <div class="">
-          <mat-form-field appearance="fill" class="text-field w-full">
-            <mat-label>Comment</mat-label>
-            <textarea class="text-field" matInput></textarea>
-          </mat-form-field>
-        </div>
+      <div class="">
+        <mat-form-field appearance="fill" class="text-field w-full">
+          <mat-label>Comment</mat-label>
+          <textarea class="text-field" matInput></textarea>
+        </mat-form-field>
       </div>
     </div>
-    }
   </div>
-  <div class="flex-1 right-pane h-full"></div>
+  }
 </div>
