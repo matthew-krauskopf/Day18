@@ -4,11 +4,13 @@
     @for (message of messages$ | async; track message) {
     <div class="flex flex-row border">
       <div class="flex justify-center flex-1 margin-x-3 margin-y-5">
-        <span>Pic</span>
+        <img class="profile-pic" src="{{ message.pic }}" />
       </div>
       <div class="flex-9 pad-right-11">
         <div class="margin-top-5">
-          <span class="bold font-white">{{ message.author }}</span>
+          <span class="bold font-white font-ui">{{
+            message.username != null ? message.username : message.author
+          }}</span>
         </div>
         <div class="margin-y-5">
           <span class="font-white">{{ message.text }}</span>

@@ -1,10 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MessageFacade } from '../../services/message.facade';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Message } from '../../models/message';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { UserFacade } from '../../services/user.facade';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-messages',
@@ -15,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class MessagesComponent implements OnInit {
   messages$: Observable<Message[] | null>;
+  usersFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
 
   constructor() {
@@ -23,5 +26,9 @@ export class MessagesComponent implements OnInit {
 
   ngOnInit(): void {
     this.messageFacade.loadMessages();
+  }
+
+  getUser(userId: number, users: User[]) {
+    return users.filter((u) => u.id == userId);
   }
 }

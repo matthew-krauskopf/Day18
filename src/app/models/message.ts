@@ -3,4 +3,7 @@ export interface Message {
   uuid: string;
   text: string;
   comments: Message[];
+
+  username: string;
+  pic: string;
 }

@@ -9,7 +9,7 @@ import { Message } from '../models/message';
 })
 export class StoreService {
   private user: ReplaySubject<User | null> = new ReplaySubject(1);
-  private users = new BehaviorSubject([]);
+  users: ReplaySubject<User[] | null> = new ReplaySubject(1);
   private messages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
 
   constructor() {}
@@ -18,12 +18,20 @@ export class StoreService {
     return this.user.asObservable();
   }
 
+  watchUsers() {
+    return this.users.asObservable();
+  }
+
   watchMessages() {
     return this.messages.asObservable();
   }
 
   pushUser(user: User | null) {
     this.user.next(user);
+  }
+
+  pushUsers(users: User[] | null) {
+    this.users.next(users);
   }
 
   pushMessages(messages: Message[]) {

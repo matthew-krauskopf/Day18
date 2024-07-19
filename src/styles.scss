@@ -81,6 +81,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-style: italic;
 }
 
+.font-ui {
+  font-family: system-ui;
+}
+
 .grey-bg {
   background-color: grey;
 }
@@ -94,7 +98,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .dark-bg {
-  background-color: rgb(32, 32, 32);
+  background-color: rgb(0,0,0);
 }
 
 .white-bg {
