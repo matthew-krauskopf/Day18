@@ -14,6 +14,12 @@ import { Permission } from '../../models/permission';
 import { MatDialog } from '@angular/material/dialog';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-messages',
@@ -24,6 +30,7 @@ import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
@@ -36,19 +43,22 @@ export class MessagesComponent implements OnInit {
   router: Router = inject(Router);
   dialog: MatDialog = inject(MatDialog);
 
+  newMessageForm = new FormGroup({
+    message: new FormControl('', Validators.maxLength(280)),
+  });
+
   constructor() {
     this.user$ = this.usersFacade.watchUser();
     this.messages$ = this.messageFacade.watchMessages().pipe(
       map((messages) => {
         return messages?.sort((a, b) => {
-          return a.tmstp - b.tmstp;
+          return b.tmstp - a.tmstp;
         });
       })
     );
   }
 
   ngOnInit(): void {
-    console.log('Called');
     this.messageFacade.loadMessages();
   }
 
@@ -63,6 +73,20 @@ export class MessagesComponent implements OnInit {
   userIsAdmin(user: User | null) {
     console.log(user);
     return user && user.permission === Permission.ADMIN;
+  }
+
+  addMessage(user: User) {
+    this.messages$.pipe(take(1)).subscribe((messages) => {
+      if (messages) {
+        this.messageFacade.addMessage(
+          messages,
+          this.newMessageForm.value.message ?? '',
+          user
+        );
+      }
+      console.log('here!');
+      this.newMessageForm.reset();
+    });
   }
 
   editMessage(message: Message) {

@@ -28,6 +28,23 @@ export class MessageFacade {
     this.rawMessages$ = this.messageService.loadMessages();
   }
 
+  addMessage(messages: Message[], messageText: string, user: User) {
+    const newMessage: Message = this.enableButtons(user, {
+      author: user.id,
+      uuid: crypto.randomUUID(),
+      text: messageText,
+      comments: [],
+      username: user.username,
+      pic: user.pic,
+      deletable: false,
+      editable: false,
+      tmstp: Date.now(),
+    });
+    const newMsgArr: Message[] = messages.slice();
+    newMsgArr.push(newMessage);
+    this.store.pushMessages(newMsgArr);
+  }
+
   deleteMessage(messages: Message[], message: Message) {
     this.store.pushMessages(messages.filter((m) => m.uuid != message.uuid));
   }

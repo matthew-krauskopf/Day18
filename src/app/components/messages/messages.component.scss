@@ -15,3 +15,13 @@
 .mat-mdc-mini-fab {
   background-color: black;
 }
+
+.mat-mdc-unelevated-button[disabled], .mat-mdc-unelevated-button.mat-mdc-button-disabled {
+  background-color: #1707f78f;
+  color: #ffffff88;
+}
+
+.mat-mdc-unelevated-button:not(:disabled) {
+  background-color: #1707f7;
+  color: #fff;
+}
