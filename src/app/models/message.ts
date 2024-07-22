@@ -6,4 +6,7 @@ export interface Message {
 
   username: string;
   pic: string;
+  deletable: boolean;
+  editable: boolean;
+  tmstp: number;
 }

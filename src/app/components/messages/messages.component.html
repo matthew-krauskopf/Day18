@@ -4,16 +4,31 @@
     <div class="flex justify-center margin-x-6 margin-y-5">
       <img class="profile-pic" src="{{ message.pic }}" />
     </div>
-    <div class="pad-right-11 w-full">
-      <div class="margin-top-5">
-        <span class="bold font-white font-ui">{{
-          message.username != null ? message.username : message.author
-        }}</span>
+    <div class="flex flex-col w-full">
+      <div class="flex justify-spread margin-top-5">
+        <div class="">
+          <div class="">
+            <span class="bold font-white font-ui">{{
+              message.username != null ? message.username : message.author
+            }}</span>
+          </div>
+          <div class="margin-y-5 pointer" (click)="openThread(message)">
+            <span class="font-white">{{ message.text }}</span>
+          </div>
+        </div>
+        <div class="pad-right-5">
+          @if (message.editable) {
+          <button (click)="editMessage(message)" mat-mini-fab>
+            <mat-icon>edit</mat-icon>
+          </button>
+          } @if(message.deletable) {
+          <button (click)="deleteMessage(message)" mat-mini-fab>
+            <mat-icon>delete</mat-icon>
+          </button>
+          }
+        </div>
       </div>
-      <div class="margin-y-5 pointer" (click)="openThread(message)">
-        <span class="font-white">{{ message.text }}</span>
-      </div>
-      <div class="">
+      <div class="pad-right-11">
         <mat-form-field appearance="fill" class="text-field w-full">
           <mat-label>Comment</mat-label>
           <textarea class="text-field" matInput></textarea>

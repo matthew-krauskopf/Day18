@@ -10,6 +10,7 @@ import { Message } from '../models/message';
   providedIn: 'root',
 })
 export class MessageFacade {
+  user$;
   users$;
   rawMessages$;
   message$;
@@ -20,27 +21,36 @@ export class MessageFacade {
   userFacade: UserFacade = inject(UserFacade);
 
   constructor() {
+    this.user$ = this.userFacade.watchUser();
     this.users$ = this.userFacade.watchUsers();
     this.message$ = this.store.watchMessage();
     this.messages$ = this.store.watchMessages();
     this.rawMessages$ = this.messageService.loadMessages();
   }
 
+  deleteMessage(messages: Message[], message: Message) {
+    this.store.pushMessages(messages.filter((m) => m.uuid != message.uuid));
+  }
+
+  editMessage(messages: Message[], message: Message) {
+    const newMessages = messages.filter((m) => m.uuid != message.uuid);
+    newMessages.push(message);
+    this.store.pushMessages(newMessages);
+  }
+
   loadMessages() {
     this.userFacade.loadUsers();
-    combineLatest(this.users$, this.rawMessages$)
+    combineLatest(this.user$, this.users$, this.rawMessages$)
       .pipe(
-        map(([users, messages]) => {
+        map(([user, users, messages]) => {
           const fullMessages: Message[] = [];
           messages?.forEach((m) => {
             if (users) {
-              const user: User = users.filter((u) => u.id == m.author)[0];
-              if (user) {
-                fullMessages.push({
-                  ...m,
-                  username: user.username,
-                  pic: user.pic,
-                });
+              const author: User = users.filter((u) => u.id == m.author)[0];
+              if (author) {
+                fullMessages.push(
+                  this.enableButtons(user, this.linkUserInfo(m, users))
+                );
               }
             }
           });
@@ -60,14 +70,17 @@ export class MessageFacade {
     this.userFacade.loadUsers();
     const rawMessage$ = this.messageService.loadMessage(uuid);
 
-    combineLatest(this.users$, rawMessage$)
+    combineLatest(this.user$, this.users$, rawMessage$)
       .pipe(
-        map(([users, messages]) => {
+        map(([user, users, messages]) => {
           if (messages.length > 0) {
             // Loaded message successfully
             const message = messages[0];
             if (users) {
-              return this.linkUserInfo(message, users);
+              return this.enableButtons(
+                user,
+                this.linkUserInfo(message, users)
+              );
             }
           }
           return null;
@@ -84,6 +97,18 @@ export class MessageFacade {
 
   watchMessages() {
     return this.messages$;
+  }
+
+  enableButtons(user: User | null, message: Message): Message {
+    return {
+      ...message,
+      editable: user && user.id === message.author ? true : false,
+      deletable:
+        user &&
+        (user.id === message.author || user!.permission.toString() == 'ADMIN')
+          ? true
+          : false,
+    };
   }
 
   linkUserInfo(message: Message, users: User[]): Message {

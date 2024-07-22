@@ -1,0 +1,29 @@
+<div class="message-dialog dialog-bg">
+  <mat-dialog-content>
+    <form [formGroup]="messageForm">
+      <mat-form-field class="w-full">
+        <mat-label>Message</mat-label>
+        <textarea
+          formControlName="text"
+          class="w-full text-field"
+          matInput
+        ></textarea>
+        <mat-error *ngIf="messageForm.controls['text'].errors as error">
+          <span *ngIf="error['required']">Message is required</span>
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="flex">
+    <button class="flex-1" mat-button (click)="onNoClick()">Cancel</button>
+    <button
+      class="flex-1"
+      mat-flat-button
+      [mat-dialog-close]="messageForm"
+      cdkFocusInitial
+      [disabled]="!messageForm.valid"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>
