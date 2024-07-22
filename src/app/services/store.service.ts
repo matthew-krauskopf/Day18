@@ -14,6 +14,8 @@ export class StoreService {
   private message: ReplaySubject<Message | null> = new ReplaySubject(1);
   private messages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
 
+  private loginSuccess: ReplaySubject<boolean | null> = new ReplaySubject(1);
+
   constructor() {}
 
   watchUser() {
@@ -32,6 +34,10 @@ export class StoreService {
     return this.messages.asObservable();
   }
 
+  watchLoginSuccess() {
+    return this.loginSuccess.asObservable();
+  }
+
   pushUser(user: User | null) {
     this.user.next(user);
   }
@@ -46,6 +52,10 @@ export class StoreService {
 
   pushMessages(messages: Message[] | null) {
     this.messages.next(messages);
+  }
+
+  pushLoginSuccess(loginSuccess: boolean | null) {
+    this.loginSuccess.next(loginSuccess);
   }
 
   storeItem(type: StoreType, val: string) {
