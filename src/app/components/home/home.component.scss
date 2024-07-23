@@ -1,16 +1,16 @@
 .message-pane {
   max-height: calc(100vh - 75px);
-  max-width: 83vw;
-}
-
-.border-l {
-  border-left: 1px solid grey;
-}
-
-.border-r {
+  min-width: 450px;
+  max-width: 600px;
   border-right: 1px solid grey;
+  border-left: 1px solid grey;
 }
 
 .width {
   overflow-x: hidden
+}
+
+.right-pane {
+  min-width: 0px;
+  max-width: 200px;
 }
