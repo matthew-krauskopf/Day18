@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { User } from '../models/user';
-import { StoreType } from '../models/storeType';
+import { ReplaySubject } from 'rxjs';
 import { Message } from '../models/message';
+import { StoreType } from '../models/storeType';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',

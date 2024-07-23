@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
+import { combineLatest, map, take } from 'rxjs';
+import { Message } from '../models/message';
+import { User } from '../models/user';
 import { MessageService } from './http/message.service';
 import { StoreService } from './store.service';
-import { combineLatest, map, take } from 'rxjs';
 import { UserFacade } from './user.facade';
-import { User } from '../models/user';
-import { Message } from '../models/message';
 
 @Injectable({
   providedIn: 'root',

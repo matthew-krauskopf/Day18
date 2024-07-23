@@ -1,8 +1,8 @@
-import { inject, Injectable, OnInit } from '@angular/core';
-import { StoreService } from './store.service';
-import { UserService } from './http/user.service';
+import { inject, Injectable } from '@angular/core';
 import { StoreType } from '../models/storeType';
 import { User } from '../models/user';
+import { UserService } from './http/user.service';
+import { StoreService } from './store.service';
 
 @Injectable({
   providedIn: 'root',

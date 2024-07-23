@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -7,13 +8,12 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
-import { StoreService } from '../../services/store.service';
 import { AuthFacade } from '../../services/auth.facade';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-login',

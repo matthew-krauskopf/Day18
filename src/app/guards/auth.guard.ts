@@ -1,26 +1,24 @@
-import { Injectable } from '@angular/core';
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/http/auth.service';
-import { of, switchMap } from 'rxjs';
-import { Permission } from '../models/permission';
-import { AuthFacade } from '../services/auth.facade';
+import { map } from 'rxjs';
 import { User } from '../models/user';
+import { AuthFacade } from '../services/auth.facade';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   authFacade: AuthFacade = inject(AuthFacade);
+  router: Router = inject(Router);
 
   canActivate() {
     return this.authFacade.user$.pipe(
-      switchMap((user: User | null) => {
+      map((user: User | null) => {
         if (user) {
-          return of(true);
+          return true;
         } else {
-          inject(Router).navigate(['/login']);
-          return of(false);
+          this.router.navigate(['/login']);
+          return false;
         }
       })
     );

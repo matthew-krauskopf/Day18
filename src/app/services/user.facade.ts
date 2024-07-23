@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { StoreService } from './store.service';
-import { UserService } from './http/user.service';
-import { User } from '../models/user';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { map, Observable } from 'rxjs';
+import { User } from '../models/user';
+import { UserService } from './http/user.service';
+import { StoreService } from './store.service';
 
 @Injectable({
   providedIn: 'root',

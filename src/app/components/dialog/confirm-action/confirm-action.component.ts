@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+import { MatButtonModule } from '@angular/material/button';
 import {
-  MatDialogRef,
-  MatDialogTitle,
-  MatDialogContent,
   MatDialogActions,
   MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
-import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-confirm-action',

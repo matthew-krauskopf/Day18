@@ -1,9 +1,9 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { TopBarComponent } from '../top-bar/top-bar.component';
 import { RouterOutlet } from '@angular/router';
-import { LeftPanelComponent } from '../left-panel/left-panel.component';
-import { UserFacade } from '../../services/user.facade';
 import { MessageFacade } from '../../services/message.facade';
+import { UserFacade } from '../../services/user.facade';
+import { LeftPanelComponent } from '../left-panel/left-panel.component';
+import { TopBarComponent } from '../top-bar/top-bar.component';
 
 @Component({
   selector: 'app-home',

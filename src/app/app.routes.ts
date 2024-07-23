@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { LoginComponent } from './components/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AuthGuard } from './guards/auth.guard';
-import { LoginComponent } from './components/login/login.component';
 import { ThreadComponent } from './components/thread/thread.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -23,13 +22,18 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
+        path: '',
+        redirectTo: 'messages',
+        pathMatch: 'full',
+      },
+      {
         path: 'messages',
         component: MessagesComponent,
       },
-      {
-        path: 'profile/:id',
-        component: ProfileComponent,
-      },
+      //{
+      //  path: 'profile/:id',
+      //  component: ProfileComponent,
+      //},
       {
         path: 'thread/:id',
         component: ThreadComponent,

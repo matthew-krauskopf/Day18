@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { Permission } from '../../models/permission';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthFacade } from '../../services/auth.facade';
 
 @Component({
@@ -27,6 +26,6 @@ export class TopBarComponent {
   }
 
   goHome() {
-    this.router.navigate(['home', 'messages']);
+    this.router.navigate(['home']);
   }
 }
