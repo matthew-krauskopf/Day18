@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 import { RouterOutlet } from '@angular/router';
 import { LeftPanelComponent } from '../left-panel/left-panel.component';
@@ -12,7 +12,7 @@ import { MessageFacade } from '../../services/message.facade';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   userFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   user$;
@@ -24,5 +24,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.messageFacade.loadMessages();
     this.messageFacade.openMessage(null);
+  }
+
+  ngOnDestroy() {
+    this.messageFacade.unloadMessages();
   }
 }

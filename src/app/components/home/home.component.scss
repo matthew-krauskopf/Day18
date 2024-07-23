@@ -1,5 +1,6 @@
 .message-pane {
   max-height: calc(100vh - 75px);
+  max-width: 83vw;
 }
 
 .border-l {
@@ -8,4 +9,8 @@
 
 .border-r {
   border-right: 1px solid grey;
+}
+
+.width {
+  overflow-x: hidden
 }

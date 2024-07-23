@@ -1,4 +1,4 @@
-<div class="message-pane flex-3 scroll">
+<div class="message-pane flex-3">
   <div *ngIf="user$ | async as user" class="flex flex-row border margin-y-5">
     <div class="flex justify-center margin-x-6">
       <img class="profile-pic" src="{{ user.pic }}" />
@@ -30,39 +30,47 @@
     </div>
   </div>
   @for (message of messages$ | async; track message) {
-  <div class="flex flex-row border">
+  <div class="flex flex-row border pointer" (click)="openThread(message)">
     <div class="flex justify-center margin-x-6 margin-y-5">
       <img class="profile-pic" src="{{ message.pic }}" />
     </div>
     <div class="flex flex-col w-full">
-      <div class="flex justify-spread margin-top-5">
+      <div class="flex justify-spread margin-top-5 pad-left-1">
         <div class="">
           <div class="">
             <span class="bold font-white font-ui">{{
               message.username != null ? message.username : message.author
             }}</span>
           </div>
-          <div class="margin-y-5 pointer" (click)="openThread(message)">
-            <span class="font-white">{{ message.text }}</span>
+          <div class="margin-y-3">
+            <span class="font-white font-ui">{{ message.text }}</span>
           </div>
         </div>
         <div class="pad-right-5">
           @if (message.editable) {
-          <button (click)="editMessage(message)" mat-mini-fab>
-            <mat-icon>edit</mat-icon>
+          <button (click)="editMessage($event, message)" mat-mini-fab>
+            <mat-icon class="font-gray">edit</mat-icon>
           </button>
           } @if(message.deletable) {
-          <button (click)="deleteMessage(message)" mat-mini-fab>
-            <mat-icon>delete</mat-icon>
+          <button (click)="deleteMessage($event, message)" mat-mini-fab>
+            <mat-icon class="font-gray">delete</mat-icon>
           </button>
           }
         </div>
       </div>
-      <div class="pad-right-11">
-        <mat-form-field appearance="fill" class="text-field w-full">
-          <mat-label>Comment</mat-label>
-          <textarea class="text-field" matInput></textarea>
-        </mat-form-field>
+      <div class="pad-right-5 flex justify-spread">
+        <button mat-mini-fab (click)="addComment($event)">
+          <mat-icon class="font-gray">comment</mat-icon>
+          <span class="margin-left-3 font-ui font-gray">{{
+            message.comments.length
+          }}</span>
+        </button>
+        <button mat-mini-fab (click)="addRepost($event)">
+          <mat-icon class="font-gray">recycling</mat-icon>
+        </button>
+        <button mat-mini-fab (click)="addLike($event)">
+          <mat-icon class="font-gray">thumb_up</mat-icon>
+        </button>
       </div>
     </div>
   </div>

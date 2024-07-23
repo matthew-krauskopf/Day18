@@ -85,7 +85,20 @@ export class MessagesComponent {
     });
   }
 
-  editMessage(message: Message) {
+  addComment($event: Event) {
+    $event.stopPropagation();
+  }
+
+  addRepost($event: Event) {
+    $event.stopPropagation();
+  }
+
+  addLike($event: Event) {
+    $event.stopPropagation();
+  }
+
+  editMessage($event: Event, message: Message) {
+    $event.stopPropagation();
     const dialogRef = this.dialog.open(EditMessageComponent, {
       data: {
         text: message.text,
@@ -106,7 +119,8 @@ export class MessagesComponent {
     });
   }
 
-  deleteMessage(message: Message) {
+  deleteMessage($event: Event, message: Message) {
+    $event.stopPropagation();
     const dialogRef = this.dialog.open(ConfirmActionComponent);
 
     dialogRef.afterClosed().subscribe((action) => {

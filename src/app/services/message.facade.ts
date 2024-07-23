@@ -63,6 +63,10 @@ export class MessageFacade {
     this.store.pushMessage(null);
   }
 
+  unloadMessages() {
+    this.store.pushMessages(null);
+  }
+
   loadMessages() {
     this.userFacade.loadUsers();
     combineLatest(this.user$, this.users$, this.rawMessages$)

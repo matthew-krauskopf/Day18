@@ -1,8 +1,5 @@
-<div
-  class="pane-height flex justify-center align-end"
-  *ngIf="user$ | async as user"
->
-  <div class="flex flex-wrap justify-center align-center pad-bot-10">
+<div class="pane flex justify-center align-end" *ngIf="user$ | async as user">
+  <div class="flex flex-wrap justify-center align-center pad-x-5 pad-bot-10">
     <img class="profile-pic" src="{{ user.pic }}" />
     <span class="margin-left-5 font-white font-ui bold">{{
       user.username
