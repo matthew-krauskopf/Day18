@@ -71,7 +71,7 @@ export class MessagesComponent {
           user
         );
       }
-      this.newMessageForm.reset();
+      this.newMessageForm.patchValue({ message: '' });
     });
   }
 
