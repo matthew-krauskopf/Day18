@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MessageFacade } from '../../services/message.facade';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss',
 })
-export class ThreadComponent implements OnInit {
+export class ThreadComponent implements OnInit, OnDestroy {
   messageFacade: MessageFacade = inject(MessageFacade);
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
@@ -25,11 +25,14 @@ export class ThreadComponent implements OnInit {
   }
 
   goBack() {
-    this.messageFacade.unloadMessage();
     this.router.navigate(['home', 'messages']);
   }
 
   ngOnInit(): void {
     this.messageFacade.loadMessage(this.route.snapshot.params['id']);
+  }
+
+  ngOnDestroy() {
+    this.messageFacade.unloadMessage();
   }
 }

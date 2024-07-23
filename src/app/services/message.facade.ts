@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MessageService } from './http/message.service';
 import { StoreService } from './store.service';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, take } from 'rxjs';
 import { UserFacade } from './user.facade';
 import { User } from '../models/user';
 import { Message } from '../models/message';
@@ -55,10 +55,19 @@ export class MessageFacade {
     this.store.pushMessages(newMessages);
   }
 
+  openMessage(message: Message | null) {
+    this.store.pushMessage(message);
+  }
+
+  unloadMessage() {
+    this.store.pushMessage(null);
+  }
+
   loadMessages() {
     this.userFacade.loadUsers();
     combineLatest(this.user$, this.users$, this.rawMessages$)
       .pipe(
+        take(1),
         map(([user, users, messages]) => {
           const fullMessages: Message[] = [];
           messages?.forEach((m) => {
@@ -79,33 +88,38 @@ export class MessageFacade {
       });
   }
 
-  unloadMessage() {
-    this.store.pushMessage(null);
-  }
-
   loadMessage(uuid: string) {
     this.userFacade.loadUsers();
-    const rawMessage$ = this.messageService.loadMessage(uuid);
 
-    combineLatest(this.user$, this.users$, rawMessage$)
-      .pipe(
-        map(([user, users, messages]) => {
-          if (messages.length > 0) {
-            // Loaded message successfully
-            const message = messages[0];
-            if (users) {
-              return this.enableButtons(
-                user,
-                this.linkUserInfo(message, users)
-              );
-            }
-          }
-          return null;
-        })
-      )
-      .subscribe((message) => {
-        this.store.pushMessage(message);
-      });
+    this.message$.pipe(take(1)).subscribe((message) => {
+      if (message) {
+        return;
+      } else {
+        const rawMessage$ = this.messageService.loadMessage(uuid);
+
+        combineLatest(this.user$, this.users$, rawMessage$)
+          .pipe(
+            take(1),
+            map(([user, users, messages]) => {
+              console.log(messages);
+              if (messages.length > 0) {
+                // Loaded message successfully
+                const message = messages[0];
+                if (users) {
+                  return this.enableButtons(
+                    user,
+                    this.linkUserInfo(message, users)
+                  );
+                }
+              }
+              return null;
+            })
+          )
+          .subscribe((message) => {
+            this.store.pushMessage(message);
+          });
+      }
+    });
   }
 
   watchMessage() {

@@ -35,7 +35,7 @@ import {
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent {
   user$: Observable<User | null>;
   messages$: Observable<Message[] | undefined>;
   usersFacade: UserFacade = inject(UserFacade);
@@ -58,11 +58,8 @@ export class MessagesComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.messageFacade.loadMessages();
-  }
-
   openThread(message: Message) {
+    this.messageFacade.openMessage(message);
     this.router.navigate(['home', 'thread', message.uuid]);
   }
 
@@ -84,7 +81,6 @@ export class MessagesComponent implements OnInit {
           user
         );
       }
-      console.log('here!');
       this.newMessageForm.reset();
     });
   }
