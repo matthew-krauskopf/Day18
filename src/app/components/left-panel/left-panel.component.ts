@@ -1,7 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from '../../models/user';
+import { Component, inject } from '@angular/core';
+import { UserFacade } from '../../services/user.facade';
 
 @Component({
   selector: 'app-left-panel',
@@ -11,5 +10,7 @@ import { User } from '../../models/user';
   styleUrl: './left-panel.component.scss',
 })
 export class LeftPanelComponent {
-  @Input() user$?: Observable<User | null>;
+  userFacade: UserFacade = inject(UserFacade);
+
+  user$ = this.userFacade.watchUser();
 }

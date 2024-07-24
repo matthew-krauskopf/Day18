@@ -20,10 +20,9 @@ export class AuthFacade {
     this.userService
       .loadUser(this.store.getItem(StoreType.USER) ?? '')
       .subscribe((users: User[]) => {
-        if (users.length > 0) {
-          this.attachPhoto(users[0]);
-        }
-        this.store.pushUser(users.length > 0 ? users[0] : null);
+        this.store.pushUser(
+          users.length > 0 ? this.attachPhoto(users[0]) : null
+        );
       });
   }
 
@@ -32,8 +31,7 @@ export class AuthFacade {
       if (users.length > 0) {
         let user: User = users[0];
         if (user.username == username && user.password == password) {
-          this.attachPhoto(user);
-          this.store.pushUser(users.length > 0 ? users[0] : null);
+          this.store.pushUser(this.attachPhoto(user));
           this.store.storeItem(StoreType.USER, username);
           this.store.pushLoginSuccess(true);
           return;
@@ -50,8 +48,15 @@ export class AuthFacade {
     this.store.pushUser(null);
   }
 
-  attachPhoto(user: User) {
-    user.pic = 'assets/profile-pics/{}.jpg'.replace('{}', String(user.id));
+  attachPhoto(user: User): User {
+    return {
+      ...user,
+      pic: 'assets/profile-pics/{}.jpg'.replace('{}', String(user.id)),
+    };
+  }
+
+  watchUser() {
+    return this.user$;
   }
 
   watchLoginSuccess() {
