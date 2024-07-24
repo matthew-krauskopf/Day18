@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
@@ -15,15 +14,6 @@ import { AuthFacade } from '../../services/auth.facade';
 export class TopBarComponent {
   router: Router = inject(Router);
   authFacade: AuthFacade = inject(AuthFacade);
-  loggedIn: boolean = false;
-
-  constructor() {
-    this.authFacade.user$.pipe(takeUntilDestroyed()).subscribe((user) => {
-      if (!user) {
-        this.router.navigate(['login']);
-      }
-    });
-  }
 
   goHome() {
     this.router.navigate(['home']);

@@ -3,6 +3,7 @@ import { StoreType } from '../models/storeType';
 import { User } from '../models/user';
 import { UserService } from './http/user.service';
 import { StoreService } from './store.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { StoreService } from './store.service';
 export class AuthFacade {
   store: StoreService = inject(StoreService);
   userService: UserService = inject(UserService);
+  router: Router = inject(Router);
 
   user$;
   loginSuccess$;
@@ -46,6 +48,7 @@ export class AuthFacade {
     this.store.removeItem(StoreType.USER);
     this.store.pushLoginSuccess(null);
     this.store.pushUser(null);
+    this.router.navigate(['/login']);
   }
 
   attachPhoto(user: User): User {
