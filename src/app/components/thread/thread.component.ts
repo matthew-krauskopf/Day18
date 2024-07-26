@@ -7,11 +7,18 @@ import { Observable } from 'rxjs';
 import { Message } from '../../models/message';
 import { MessageFacade } from '../../services/facades/message.facade';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
+import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, ActionBarComponent],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    ActionBarComponent,
+    PostMessageComponent,
+  ],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss',
 })

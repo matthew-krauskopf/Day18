@@ -18,6 +18,9 @@
     <div class="margin-x-5 border-y">
       <app-action-bar [message]="message"></app-action-bar>
     </div>
+    <div>
+      <app-post-message></app-post-message>
+    </div>
   </div>
   @for (comment of message.comments; track comment) {
   <div class="flex flex-col border-b">

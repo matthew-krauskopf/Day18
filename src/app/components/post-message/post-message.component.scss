@@ -1,0 +1,35 @@
+.border {
+  border-bottom: 1px solid grey;
+}
+
+.message-pane {
+  max-height: calc(100vh - 75px);
+}
+
+.profile-pic {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+
+.mat-mdc-mini-fab {
+  background-color: black;
+}
+
+.mat-mdc-unelevated-button[disabled], .mat-mdc-unelevated-button.mat-mdc-button-disabled {
+  background-color: #1707f78f;
+  color: #ffffff88;
+}
+
+.mat-mdc-unelevated-button:not(:disabled) {
+  background-color: #1707f7;
+  color: #fff;
+}
+
+.width {
+  max-width: calc(100%);
+}
+
+.message-width {
+  max-width: 80%;
+}

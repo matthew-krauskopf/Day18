@@ -20,6 +20,7 @@ import { UserFacade } from '../../services/facades/user.facade';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
+import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({
   selector: 'app-messages',
@@ -32,6 +33,7 @@ import { ActionBarComponent } from '../action-bar/action-bar.component';
     MatIconModule,
     ReactiveFormsModule,
     ActionBarComponent,
+    PostMessageComponent,
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',
@@ -44,10 +46,6 @@ export class MessagesComponent {
   router: Router = inject(Router);
   dialog: MatDialog = inject(MatDialog);
 
-  newMessageForm = new FormGroup({
-    message: new FormControl('', Validators.maxLength(280)),
-  });
-
   constructor() {
     this.user$ = this.usersFacade.watchUser();
     this.messages$ = this.messageFacade.watchMessages();
@@ -56,14 +54,6 @@ export class MessagesComponent {
   openThread(message: Message) {
     this.messageFacade.openMessage(message);
     this.router.navigate(['home', 'thread', message.uuid]);
-  }
-
-  addMessage(user: User) {
-    this.messageFacade.addMessage(
-      this.newMessageForm.value.message ?? '',
-      user
-    );
-    this.newMessageForm.patchValue({ message: '' });
   }
 
   addComment($event: Event) {
