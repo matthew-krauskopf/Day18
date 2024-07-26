@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { combineLatest, map, take } from 'rxjs';
-import { Message } from '../models/message';
-import { User } from '../models/user';
-import { MessageService } from './http/message.service';
-import { StoreService } from './store.service';
+import { Message } from '../../models/message';
+import { User } from '../../models/user';
+import { MessageService } from '../http/message.service';
+import { StoreService } from '../store.service';
 import { UserFacade } from './user.facade';
 
 @Injectable({

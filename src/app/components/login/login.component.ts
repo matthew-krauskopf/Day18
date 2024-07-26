@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AuthFacade } from '../../services/auth.facade';
+import { AuthFacade } from '../../services/facades/auth.facade';
 import { StoreService } from '../../services/store.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MessageFacade } from '../../services/message.facade';
-import { UserFacade } from '../../services/user.facade';
+import { MessageFacade } from '../../services/facades/message.facade';
+import { UserFacade } from '../../services/facades/user.facade';
 import { LeftPanelComponent } from '../left-panel/left-panel.component';
 import { TopBarComponent } from '../top-bar/top-bar.component';
 

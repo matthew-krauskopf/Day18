@@ -13,7 +13,7 @@ export class UserService extends BaseAPIService {
     return this.performGet([this.endpoint], 'username={}'.replace('{}', user));
   }
 
-  loadUsers(): Observable<User[]> {
+  getUsers(): Observable<User[]> {
     return this.performGet([this.endpoint]);
   }
 }

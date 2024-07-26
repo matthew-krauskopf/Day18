@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
-import { AuthFacade } from '../../services/auth.facade';
+import { AuthFacade } from '../../services/facades/auth.facade';
 
 @Component({
   selector: 'app-top-bar',

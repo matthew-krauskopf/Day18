@@ -15,8 +15,8 @@ import { Router } from '@angular/router';
 import { map, Observable, take } from 'rxjs';
 import { Message } from '../../models/message';
 import { User } from '../../models/user';
-import { MessageFacade } from '../../services/message.facade';
-import { UserFacade } from '../../services/user.facade';
+import { MessageFacade } from '../../services/facades/message.facade';
+import { UserFacade } from '../../services/facades/user.facade';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
 

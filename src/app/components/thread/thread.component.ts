@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Message } from '../../models/message';
-import { MessageFacade } from '../../services/message.facade';
+import { MessageFacade } from '../../services/facades/message.facade';
 
 @Component({
   selector: 'app-thread',

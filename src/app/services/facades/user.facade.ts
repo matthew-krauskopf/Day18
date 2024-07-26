@@ -1,9 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { map, Observable } from 'rxjs';
-import { User } from '../models/user';
-import { UserService } from './http/user.service';
-import { StoreService } from './store.service';
+import { Observable } from 'rxjs';
+import { User } from '../../models/user';
+import { UserService } from '../http/user.service';
+import { StoreService } from '../store.service';
+
+import { Store } from '@ngrx/store';
+import { loadUsers } from '../actions/user.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +18,7 @@ export class UserFacade {
   user$;
   users$;
 
-  constructor() {
+  constructor(private ngrxStore: Store) {
     this.user$ = this.store.watchUser().pipe(takeUntilDestroyed());
     this.users$ = this.store.watchUsers().pipe(takeUntilDestroyed());
   }
@@ -29,18 +32,6 @@ export class UserFacade {
   }
 
   loadUsers() {
-    this.userService
-      .loadUsers()
-      .pipe(map(this.attachPhotos))
-      .subscribe((users: User[]) => {
-        this.store.pushUsers(users.length > 0 ? users : null);
-      });
-  }
-
-  attachPhotos(users: User[]): User[] {
-    users.forEach(
-      (u) => (u.pic = 'assets/profile-pics/{}.jpg'.replace('{}', String(u.id)))
-    );
-    return users;
+    this.ngrxStore.dispatch(loadUsers());
   }
 }

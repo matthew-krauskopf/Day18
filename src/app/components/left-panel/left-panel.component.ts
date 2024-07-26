@@ -1,6 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { UserFacade } from '../../services/user.facade';
+import { UserFacade } from '../../services/facades/user.facade';
 
 @Component({
   selector: 'app-left-panel',
