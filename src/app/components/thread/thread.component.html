@@ -12,20 +12,28 @@
         message.username
       }}</span>
     </div>
-    <div class="margin-y-12">
+    <div class="margin-x-5 margin-y-12">
       <span class="font-white font-ui">{{ message.text }}</span>
+    </div>
+    <div class="margin-x-5 border-y">
+      <app-action-bar [message]="message"></app-action-bar>
     </div>
   </div>
   @for (comment of message.comments; track comment) {
-  <div class="flex flex-row pad-x-5 pad-y-7 border-b">
-    <div class="flex margin-x-5">
-      <img class="profile-pic" src="{{ comment.pic }}" />
+  <div class="flex flex-col border-b">
+    <div class="flex flex-row pad-x-5 pad-y-7">
+      <div class="flex margin-x-5">
+        <img class="profile-pic" src="{{ comment.pic }}" />
+      </div>
+      <div class="flex flex-col">
+        <span class="font-white bold font-ui">
+          {{ comment.username }}
+        </span>
+        <span class="font-white font-ui">{{ comment.text }}</span>
+      </div>
     </div>
-    <div class="flex flex-col">
-      <span class="font-white bold font-ui">
-        {{ comment.username }}
-      </span>
-      <span class="font-white font-ui">{{ comment.text }}</span>
+    <div class="margin-x-10">
+      <app-action-bar [message]="comment"></app-action-bar>
     </div>
   </div>
   }

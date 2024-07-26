@@ -19,6 +19,7 @@ import { MessageFacade } from '../../services/facades/message.facade';
 import { UserFacade } from '../../services/facades/user.facade';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
+import { ActionBarComponent } from '../action-bar/action-bar.component';
 
 @Component({
   selector: 'app-messages',
@@ -30,6 +31,7 @@ import { EditMessageComponent } from '../dialog/edit-message/edit-message.compon
     MatButtonModule,
     MatIconModule,
     ReactiveFormsModule,
+    ActionBarComponent,
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss',

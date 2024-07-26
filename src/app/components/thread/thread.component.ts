@@ -6,11 +6,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Message } from '../../models/message';
 import { MessageFacade } from '../../services/facades/message.facade';
+import { ActionBarComponent } from '../action-bar/action-bar.component';
 
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, ActionBarComponent],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss',
 })
