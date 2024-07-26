@@ -1,13 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, take } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { Message } from '../../models/message';
 import { User } from '../../models/user';
 import {
   addMessage,
   deleteMessage,
   editMessage,
+  loadMessage,
   loadMessages,
+  loadMessageSuccess,
 } from '../actions/message.actions';
 import { MessageService } from '../http/message.service';
 import { StoreService } from '../store.service';
@@ -20,10 +22,11 @@ export class MessageFacade {
   // Explicit
   user$;
   users$;
+  rawMessage$;
   rawMessages$;
-  message$;
 
   // Derived
+  message$;
   messages$;
 
   messageService: MessageService = inject(MessageService);
@@ -33,8 +36,21 @@ export class MessageFacade {
   constructor(private ngrxStore: Store) {
     this.user$ = this.userFacade.watchUser();
     this.users$ = this.userFacade.watchUsers();
-    this.message$ = this.store.watchMessage();
+    this.rawMessage$ = this.store.watchRawMessage();
     this.rawMessages$ = this.store.watchRawMessages();
+
+    this.message$ = combineLatest(
+      this.user$,
+      this.users$,
+      this.rawMessage$
+    ).pipe(
+      map(([user, users, message]) => {
+        if (message != null && users) {
+          return this.enableButtons(user, this.linkUserInfo(message, users));
+        }
+        return null;
+      })
+    );
 
     this.messages$ = combineLatest(
       this.user$,
@@ -76,12 +92,12 @@ export class MessageFacade {
     );
   }
 
-  openMessage(message: Message | null) {
-    this.store.pushMessage(message);
+  openMessage(message: Message) {
+    this.ngrxStore.dispatch(loadMessageSuccess({ message: message }));
   }
 
   unloadMessage() {
-    this.store.pushMessage(null);
+    this.store.pushRawMessage(null);
   }
 
   unloadMessages() {
@@ -89,42 +105,15 @@ export class MessageFacade {
   }
 
   loadMessages() {
-    this.ngrxStore.dispatch(loadMessages());
     this.userFacade.loadUsers();
+    this.ngrxStore.dispatch(loadMessages());
   }
 
   loadMessage(uuid: string) {
-    this.userFacade.loadUsers();
-
-    this.message$.pipe(take(1)).subscribe((message) => {
-      if (message) {
-        return;
-      } else {
-        const rawMessage$ = this.messageService.loadMessage(uuid);
-
-        combineLatest(this.user$, this.users$, rawMessage$)
-          .pipe(
-            take(1),
-            map(([user, users, messages]) => {
-              console.log(messages);
-              if (messages.length > 0) {
-                // Loaded message successfully
-                const message = messages[0];
-                if (users) {
-                  return this.enableButtons(
-                    user,
-                    this.linkUserInfo(message, users)
-                  );
-                }
-              }
-              return null;
-            })
-          )
-          .subscribe((message) => {
-            this.store.pushMessage(message);
-          });
-      }
-    });
+    if (!this.store.messageIsLoaded()) {
+      this.userFacade.loadUsers();
+      this.ngrxStore.dispatch(loadMessage({ uuid }));
+    }
   }
 
   watchMessage() {
@@ -141,7 +130,7 @@ export class MessageFacade {
       editable: user && user.id === message.author ? true : false,
       deletable:
         user &&
-        (user.id === message.author || user!.permission.toString() == 'ADMIN')
+        (user.id === message.author || user.permission.toString() == 'ADMIN')
           ? true
           : false,
     };

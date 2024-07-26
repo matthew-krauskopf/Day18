@@ -2,6 +2,23 @@ import { createAction, props } from '@ngrx/store';
 import { Message } from '../../models/message';
 import { User } from '../../models/user';
 
+export const loadMessage = createAction(
+  '[Thread] Load Message',
+  props<{ uuid: string }>()
+);
+
+export const loadMessageSuccess = createAction(
+  '[Thread] Load Message Success',
+  props<{ message: Message }>()
+);
+
+export const loadMessageFail = createAction('[Thread] Load Message Fail');
+
+export const loadHttpMessage = createAction(
+  '[Thread] Load Http Message',
+  props<{ uuid: string }>()
+);
+
 export const loadMessages = createAction('[Home] Load Messages');
 export const loadMessagesSuccess = createAction(
   '[Home] Load Messages Success',

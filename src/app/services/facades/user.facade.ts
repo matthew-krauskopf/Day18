@@ -32,6 +32,8 @@ export class UserFacade {
   }
 
   loadUsers() {
-    this.ngrxStore.dispatch(loadUsers());
+    if (!this.store.usersAreLoaded()) {
+      this.ngrxStore.dispatch(loadUsers());
+    }
   }
 }

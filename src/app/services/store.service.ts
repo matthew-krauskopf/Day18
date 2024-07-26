@@ -11,7 +11,7 @@ export class StoreService {
   private user: ReplaySubject<User | null> = new ReplaySubject(1);
   private users: ReplaySubject<User[] | null> = new ReplaySubject(1);
 
-  private message: ReplaySubject<Message | null> = new ReplaySubject(1);
+  private rawMessage: ReplaySubject<Message | null> = new ReplaySubject(1);
   private rawMessages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
 
   private loginSuccess: ReplaySubject<boolean | null> = new ReplaySubject(1);
@@ -26,12 +26,26 @@ export class StoreService {
     return this.users.asObservable();
   }
 
-  watchMessage() {
-    return this.message.asObservable();
+  watchRawMessage() {
+    return this.rawMessage.asObservable();
   }
 
   watchRawMessages() {
     return this.rawMessages.asObservable();
+  }
+
+  usersAreLoaded(): boolean {
+    let loaded: boolean = false;
+    this.users
+      .pipe(take(1))
+      .subscribe((u) => (loaded = u != null && u.length > 0));
+    return loaded;
+  }
+
+  messageIsLoaded(): boolean {
+    let loaded: boolean = false;
+    this.rawMessage.pipe(take(1)).subscribe((m) => (loaded = m != null));
+    return loaded;
   }
 
   getRawMessages() {
@@ -52,8 +66,8 @@ export class StoreService {
     this.users.next(users);
   }
 
-  pushMessage(message: Message | null) {
-    this.message.next(message);
+  pushRawMessage(message: Message | null) {
+    this.rawMessage.next(message);
   }
 
   pushRawMessages(messages: Message[] | null) {

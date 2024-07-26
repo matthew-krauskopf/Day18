@@ -57,7 +57,6 @@ export class MessagesComponent {
   }
 
   addMessage(user: User) {
-    console.log('Add...');
     this.messageFacade.addMessage(
       this.newMessageForm.value.message ?? '',
       user
