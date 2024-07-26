@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, take } from 'rxjs';
 import { Message } from '../models/message';
 import { StoreType } from '../models/storeType';
 import { User } from '../models/user';
@@ -12,7 +12,7 @@ export class StoreService {
   private users: ReplaySubject<User[] | null> = new ReplaySubject(1);
 
   private message: ReplaySubject<Message | null> = new ReplaySubject(1);
-  private messages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
+  private rawMessages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
 
   private loginSuccess: ReplaySubject<boolean | null> = new ReplaySubject(1);
 
@@ -30,8 +30,14 @@ export class StoreService {
     return this.message.asObservable();
   }
 
-  watchMessages() {
-    return this.messages.asObservable();
+  watchRawMessages() {
+    return this.rawMessages.asObservable();
+  }
+
+  getRawMessages() {
+    let rawMessages: any[] | null = [];
+    this.rawMessages.pipe(take(1)).subscribe((r) => (rawMessages = r));
+    return rawMessages;
   }
 
   watchLoginSuccess() {
@@ -50,8 +56,8 @@ export class StoreService {
     this.message.next(message);
   }
 
-  pushMessages(messages: Message[] | null) {
-    this.messages.next(messages);
+  pushRawMessages(messages: Message[] | null) {
+    this.rawMessages.next(messages);
   }
 
   pushLoginSuccess(loginSuccess: boolean | null) {

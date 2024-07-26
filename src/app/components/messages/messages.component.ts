@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { map, Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Message } from '../../models/message';
 import { User } from '../../models/user';
 import { MessageFacade } from '../../services/facades/message.facade';
@@ -36,7 +36,7 @@ import { EditMessageComponent } from '../dialog/edit-message/edit-message.compon
 })
 export class MessagesComponent {
   user$: Observable<User | null>;
-  messages$: Observable<Message[] | undefined>;
+  messages$: Observable<Message[] | null>;
   usersFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   router: Router = inject(Router);
@@ -48,13 +48,7 @@ export class MessagesComponent {
 
   constructor() {
     this.user$ = this.usersFacade.watchUser();
-    this.messages$ = this.messageFacade.watchMessages().pipe(
-      map((messages) => {
-        return messages?.sort((a, b) => {
-          return b.tmstp - a.tmstp;
-        });
-      })
-    );
+    this.messages$ = this.messageFacade.watchMessages();
   }
 
   openThread(message: Message) {
@@ -63,16 +57,12 @@ export class MessagesComponent {
   }
 
   addMessage(user: User) {
-    this.messages$.pipe(take(1)).subscribe((messages) => {
-      if (messages) {
-        this.messageFacade.addMessage(
-          messages,
-          this.newMessageForm.value.message ?? '',
-          user
-        );
-      }
-      this.newMessageForm.patchValue({ message: '' });
-    });
+    console.log('Add...');
+    this.messageFacade.addMessage(
+      this.newMessageForm.value.message ?? '',
+      user
+    );
+    this.newMessageForm.patchValue({ message: '' });
   }
 
   addComment($event: Event) {
@@ -98,13 +88,9 @@ export class MessagesComponent {
 
     dialogRef.afterClosed().subscribe((form) => {
       if (form) {
-        this.messages$.pipe(take(1)).subscribe((messages) => {
-          if (messages) {
-            this.messageFacade.editMessage(messages, {
-              ...message,
-              text: form.value.text,
-            });
-          }
+        this.messageFacade.editMessage({
+          ...message,
+          text: form.value.text,
         });
       }
     });
@@ -116,11 +102,7 @@ export class MessagesComponent {
 
     dialogRef.afterClosed().subscribe((action) => {
       if (action && action == true) {
-        this.messages$.pipe(take(1)).subscribe((messages) => {
-          if (messages) {
-            this.messageFacade.deleteMessage(messages, message);
-          }
-        });
+        this.messageFacade.deleteMessage(message);
       }
     });
   }

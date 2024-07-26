@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
 import { UserEffects } from './services/effects/user.effects';
+import { MessageEffects } from './services/effects/message.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimationsAsync(),
     provideStore(),
-    provideEffects(UserEffects),
+    provideEffects(UserEffects, MessageEffects),
   ],
 };

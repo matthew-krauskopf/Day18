@@ -13,7 +13,7 @@ export class MessageService extends BaseAPIService {
     return this.performGet([this.endpoint], 'uuid={}'.replace('{}', uuid));
   }
 
-  loadMessages(): Observable<Message[]> {
+  getMessages(): Observable<Message[]> {
     return this.performGet([this.endpoint]);
   }
 }

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { User } from '../../models/user';
 import {
   loadUsers,
@@ -29,13 +29,15 @@ export class UserEffects {
     )
   );
 
-  loadUsersSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadUsersSuccess),
-      map((payload) =>
-        this.storeService.pushUsers(payload.users.map(this.attachPhoto))
-      )
-    )
+  loadUsersSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(loadUsersSuccess),
+        tap((payload) =>
+          this.storeService.pushUsers(payload.users.map(this.attachPhoto))
+        )
+      ),
+    { dispatch: false }
   );
 
   attachPhoto(user: User): User {
