@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Message } from '../../models/message';
-import { User } from '../../models/user';
+import { User } from '../user/user.entity';
+import { Message } from './message.entity';
 
 export const loadMessage = createAction(
   '[Thread] Load Message',

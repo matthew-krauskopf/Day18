@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject, take } from 'rxjs';
-import { Message } from '../models/message';
-import { StoreType } from '../models/storeType';
-import { User } from '../models/user';
+import { StoreType } from '../enum/storeType';
+import { Message } from '../features/message/message.entity';
+import { User } from '../features/user/user.entity';
 
 @Injectable({
   providedIn: 'root',

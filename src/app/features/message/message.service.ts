@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Message } from '../../models/message';
-import { BaseAPIService } from './base-api.service';
+import { BaseAPIService } from '../base-api.service';
+import { Message } from './message.entity';
 
 @Injectable({
   providedIn: 'root',

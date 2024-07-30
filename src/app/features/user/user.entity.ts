@@ -1,4 +1,4 @@
-import { Permission } from './permission';
+import { Permission } from '../../enum/permission';
 
 export interface User {
   id: number;

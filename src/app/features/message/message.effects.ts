@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
-import { Message } from '../../models/message';
+import { MessageService } from './message.service';
+import { StoreService } from '../../services/store.service';
 import {
   addMessage,
   deleteMessage,
@@ -13,9 +14,8 @@ import {
   loadMessagesFail,
   loadMessagesSuccess,
   loadMessageSuccess,
-} from '../actions/message.actions';
-import { MessageService } from '../http/message.service';
-import { StoreService } from '../store.service';
+} from './message.actions';
+import { Message } from './message.entity';
 
 @Injectable()
 export class MessageEffects {

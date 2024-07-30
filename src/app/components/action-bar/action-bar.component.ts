@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Message } from '../../models/message';
+import { Message } from '../../features/message/message.entity';
 
 @Component({
   selector: 'app-action-bar',

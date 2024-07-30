@@ -1,14 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
-import { User } from '../../models/user';
-import {
-  loadUsers,
-  loadUsersFail,
-  loadUsersSuccess,
-} from '../actions/user.actions';
-import { UserService } from '../http/user.service';
-import { StoreService } from '../store.service';
+import { User } from './user.entity';
+import { StoreService } from '../../services/store.service';
+import { loadUsers, loadUsersFail, loadUsersSuccess } from './user.actions';
+import { UserService } from './user.service';
 
 @Injectable()
 export class UserEffects {

@@ -9,9 +9,9 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { User } from '../../models/user';
-import { MessageFacade } from '../../services/facades/message.facade';
-import { UserFacade } from '../../services/facades/user.facade';
+import { User } from '../../features/user/user.entity';
+import { MessageFacade } from '../../features/message/message.facade';
+import { UserFacade } from '../../features/user/user.facade';
 
 @Component({
   selector: 'app-post-message',

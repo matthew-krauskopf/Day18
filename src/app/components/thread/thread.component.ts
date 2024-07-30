@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Message } from '../../models/message';
-import { MessageFacade } from '../../services/facades/message.facade';
+import { Message } from '../../features/message/message.entity';
+import { MessageFacade } from '../../features/message/message.facade';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
 

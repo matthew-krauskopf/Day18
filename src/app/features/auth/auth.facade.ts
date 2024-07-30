@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { StoreType } from '../../models/storeType';
-import { User } from '../../models/user';
-import { UserService } from '../http/user.service';
-import { StoreService } from '../store.service';
+import { StoreType } from '../../enum/storeType';
+import { User } from '../user/user.entity';
+import { StoreService } from '../../services/store.service';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root',

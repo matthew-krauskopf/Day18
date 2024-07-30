@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,13 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Message } from '../../models/message';
-import { User } from '../../models/user';
-import { MessageFacade } from '../../services/facades/message.facade';
-import { UserFacade } from '../../services/facades/user.facade';
+import { User } from '../../features/user/user.entity';
+import { Message } from '../../features/message/message.entity';
+import { MessageFacade } from '../../features/message/message.facade';
+import { UserFacade } from '../../features/user/user.facade';
+import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
-import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({

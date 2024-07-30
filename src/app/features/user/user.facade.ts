@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { User } from '../../models/user';
-import { UserService } from '../http/user.service';
-import { StoreService } from '../store.service';
+import { User } from './user.entity';
+import { StoreService } from '../../services/store.service';
+import { UserService } from './user.service';
 
 import { Store } from '@ngrx/store';
-import { loadUsers } from '../actions/user.actions';
+import { loadUsers } from './user.actions';
 
 @Injectable({
   providedIn: 'root',

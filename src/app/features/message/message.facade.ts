@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, map } from 'rxjs';
-import { Message } from '../../models/message';
-import { User } from '../../models/user';
+import { MessageService } from './message.service';
+import { StoreService } from '../../services/store.service';
 import {
   addMessage,
   deleteMessage,
@@ -10,10 +10,10 @@ import {
   loadMessage,
   loadMessages,
   loadMessageSuccess,
-} from '../actions/message.actions';
-import { MessageService } from '../http/message.service';
-import { StoreService } from '../store.service';
-import { UserFacade } from './user.facade';
+} from './message.actions';
+import { UserFacade } from '../user/user.facade';
+import { Message } from './message.entity';
+import { User } from '../user/user.entity';
 
 @Injectable({
   providedIn: 'root',

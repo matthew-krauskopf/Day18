@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { map } from 'rxjs';
-import { User } from '../models/user';
-import { AuthFacade } from '../services/facades/auth.facade';
+import { AuthFacade } from '../features/auth/auth.facade';
+import { User } from '../features/user/user.entity';
 
 @Injectable({
   providedIn: 'root',
