@@ -39,11 +39,11 @@ export class MessageFacade {
     this.rawMessage$ = this.store.watchRawMessage();
     this.rawMessages$ = this.store.watchRawMessages();
 
-    this.message$ = combineLatest(
+    this.message$ = combineLatest([
       this.user$,
       this.users$,
-      this.rawMessage$
-    ).pipe(
+      this.rawMessage$,
+    ]).pipe(
       map(([user, users, message]) => {
         if (message != null && users) {
           return this.enableButtons(user, this.linkUserInfo(message, users));
@@ -52,11 +52,11 @@ export class MessageFacade {
       })
     );
 
-    this.messages$ = combineLatest(
+    this.messages$ = combineLatest([
       this.user$,
       this.users$,
-      this.rawMessages$
-    ).pipe(
+      this.rawMessages$,
+    ]).pipe(
       map(([user, users, messages]) => {
         const fullMessages: Message[] = [];
         messages?.forEach((m) => {
