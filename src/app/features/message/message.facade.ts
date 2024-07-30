@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatest, map } from 'rxjs';
-import { MessageService } from './message.service';
 import { StoreService } from '../../services/store.service';
+import { User } from '../user/user.entity';
+import { UserFacade } from '../user/user.facade';
 import {
   addMessage,
   deleteMessage,
@@ -10,10 +11,12 @@ import {
   loadMessage,
   loadMessages,
   loadMessageSuccess,
+  unloadMessage,
+  unloadMessages,
 } from './message.actions';
-import { UserFacade } from '../user/user.facade';
 import { Message } from './message.entity';
-import { User } from '../user/user.entity';
+import { MessageService } from './message.service';
+import { MessageUtils } from './message.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +35,7 @@ export class MessageFacade {
   messageService: MessageService = inject(MessageService);
   store: StoreService = inject(StoreService);
   userFacade: UserFacade = inject(UserFacade);
+  utils: MessageUtils = inject(MessageUtils);
 
   constructor(private ngrxStore: Store) {
     this.user$ = this.userFacade.watchUser();
@@ -44,12 +48,9 @@ export class MessageFacade {
       this.users$,
       this.rawMessage$,
     ]).pipe(
-      map(([user, users, message]) => {
-        if (message != null && users) {
-          return this.enableButtons(user, this.linkUserInfo(message, users));
-        }
-        return null;
-      })
+      map(([user, users, message]) =>
+        this.utils.linkMessageData(user, users, message)
+      )
     );
 
     this.messages$ = combineLatest([
@@ -57,21 +58,18 @@ export class MessageFacade {
       this.users$,
       this.rawMessages$,
     ]).pipe(
-      map(([user, users, messages]) => {
-        const fullMessages: Message[] = [];
-        messages?.forEach((m) => {
-          if (users) {
-            const author: User = users.filter((u) => u.id == m.author)[0];
-            if (author) {
-              fullMessages.push(
-                this.enableButtons(user, this.linkUserInfo(m, users))
-              );
-            }
-          }
-        });
-        return fullMessages.sort((a, b) => b.tmstp - a.tmstp);
-      })
+      map(([user, users, messages]) =>
+        this.utils.linkMessagesData(user, users, messages)
+      )
     );
+  }
+
+  watchMessage() {
+    return this.message$;
+  }
+
+  watchMessages() {
+    return this.messages$;
   }
 
   addMessage(messageText: string, user: User) {
@@ -97,11 +95,11 @@ export class MessageFacade {
   }
 
   unloadMessage() {
-    this.store.pushRawMessage(null);
+    this.ngrxStore.dispatch(unloadMessage());
   }
 
   unloadMessages() {
-    this.store.pushRawMessages(null);
+    this.ngrxStore.dispatch(unloadMessages());
   }
 
   loadMessages() {
@@ -114,39 +112,5 @@ export class MessageFacade {
       this.userFacade.loadUsers();
       this.ngrxStore.dispatch(loadMessage({ uuid }));
     }
-  }
-
-  watchMessage() {
-    return this.message$;
-  }
-
-  watchMessages() {
-    return this.messages$;
-  }
-
-  private enableButtons(user: User | null, message: Message): Message {
-    return {
-      ...message,
-      editable: user && user.id === message.author ? true : false,
-      deletable:
-        user &&
-        (user.id === message.author || user.permission.toString() == 'ADMIN')
-          ? true
-          : false,
-    };
-  }
-
-  private linkUserInfo(message: Message, users: User[]): Message {
-    const user: User = users.filter((u) => u.id == message.author)[0];
-    return {
-      ...message,
-      comments: message.comments
-        ? message.comments.map((c) => this.linkUserInfo(c, users))
-        : [],
-      username: user.username ?? '',
-      pic: user.pic ?? '',
-      editable: false,
-      deletable: false,
-    };
   }
 }

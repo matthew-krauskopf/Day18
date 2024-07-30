@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
-import { MessageService } from './message.service';
 import { StoreService } from '../../services/store.service';
 import {
   addMessage,
@@ -14,13 +13,18 @@ import {
   loadMessagesFail,
   loadMessagesSuccess,
   loadMessageSuccess,
+  unloadMessage,
+  unloadMessages,
 } from './message.actions';
 import { Message } from './message.entity';
+import { MessageService } from './message.service';
+import { MessageUtils } from './message.utils';
 
 @Injectable()
 export class MessageEffects {
   messageService: MessageService = inject(MessageService);
   storeService: StoreService = inject(StoreService);
+  utils: MessageUtils = inject(MessageUtils);
 
   constructor(private actions$: Actions) {}
 
@@ -33,6 +37,24 @@ export class MessageEffects {
         return message.length > 0
           ? loadMessageSuccess(message[0])
           : loadHttpMessage({ uuid: payload.uuid });
+      })
+    )
+  );
+
+  unloadMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(unloadMessage),
+      map(() => {
+        this.storeService.pushRawMessage(null);
+      })
+    )
+  );
+
+  unloadMessages$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(unloadMessages),
+      map(() => {
+        this.storeService.pushRawMessages(null);
       })
     )
   );
@@ -92,21 +114,13 @@ export class MessageEffects {
       this.actions$.pipe(
         ofType(addMessage),
         tap((payload) => {
-          const newMessage = {
-            author: payload.user.id,
-            uuid: crypto.randomUUID(),
-            text: payload.messageText,
-            comments: [],
-            username: payload.user.username,
-            pic: payload.user.pic,
-            deletable: false,
-            editable: false,
-            tmstp: Date.now(),
-          };
-
-          const newMsgArr = payload.messages.slice();
-          newMsgArr.push(newMessage);
-          this.storeService.pushRawMessages(newMsgArr);
+          this.storeService.pushRawMessages(
+            this.utils.addNewMessage(
+              payload.messages,
+              payload.user,
+              payload.messageText
+            )
+          );
         })
       ),
     { dispatch: false }
@@ -117,11 +131,9 @@ export class MessageEffects {
       this.actions$.pipe(
         ofType(editMessage),
         tap((payload) => {
-          const newMessages = payload.messages.filter(
-            (m) => m.uuid != payload.message.uuid
+          this.storeService.pushRawMessages(
+            this.utils.replaceMessage(payload.messages, payload.message)
           );
-          newMessages.push(payload.message);
-          this.storeService.pushRawMessages(newMessages);
         })
       ),
     { dispatch: false }
@@ -133,7 +145,7 @@ export class MessageEffects {
         ofType(deleteMessage),
         tap((payload) => {
           this.storeService.pushRawMessages(
-            payload.messages.filter((m) => m.uuid != payload.message.uuid)
+            this.utils.popMessage(payload.messages, payload.message)
           );
         })
       ),

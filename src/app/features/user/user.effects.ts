@@ -5,11 +5,13 @@ import { User } from './user.entity';
 import { StoreService } from '../../services/store.service';
 import { loadUsers, loadUsersFail, loadUsersSuccess } from './user.actions';
 import { UserService } from './user.service';
+import { UserUtils } from './user.utils';
 
 @Injectable()
 export class UserEffects {
   userService: UserService = inject(UserService);
   storeService: StoreService = inject(StoreService);
+  utils: UserUtils = inject(UserUtils);
 
   constructor(private actions$: Actions) {}
 
@@ -30,16 +32,9 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(loadUsersSuccess),
         tap((payload) =>
-          this.storeService.pushUsers(payload.users.map(this.attachPhoto))
+          this.storeService.pushUsers(payload.users.map(this.utils.attachPhoto))
         )
       ),
     { dispatch: false }
   );
-
-  attachPhoto(user: User): User {
-    return {
-      ...user,
-      pic: 'assets/profile-pics/{}.jpg'.replace('{}', String(user.id)),
-    };
-  }
 }

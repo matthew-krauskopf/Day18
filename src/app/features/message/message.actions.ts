@@ -7,6 +7,10 @@ export const loadMessage = createAction(
   props<{ uuid: string }>()
 );
 
+export const unloadMessage = createAction('[Thread] Unload Message');
+
+export const unloadMessages = createAction('[Thread] Unload Messages');
+
 export const loadMessageSuccess = createAction(
   '[Thread] Load Message Success',
   props<{ message: Message }>()
