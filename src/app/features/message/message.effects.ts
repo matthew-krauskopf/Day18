@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { StoreService } from '../../services/store.service';
 import {
+  addComment,
   addMessage,
   deleteMessage,
   editMessage,
@@ -41,22 +42,26 @@ export class MessageEffects {
     )
   );
 
-  unloadMessage$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(unloadMessage),
-      map(() => {
-        this.storeService.pushRawMessage(null);
-      })
-    )
+  unloadMessage$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(unloadMessage),
+        map(() => {
+          this.storeService.pushRawMessage(null);
+        })
+      ),
+    { dispatch: false }
   );
 
-  unloadMessages$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(unloadMessages),
-      map(() => {
-        this.storeService.pushRawMessages(null);
-      })
-    )
+  unloadMessages$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(unloadMessages),
+        map(() => {
+          this.storeService.pushRawMessages(null);
+        })
+      ),
+    { dispatch: false }
   );
 
   loadMessageSuccess$ = createEffect(
@@ -146,6 +151,23 @@ export class MessageEffects {
         tap((payload) => {
           this.storeService.pushRawMessages(
             this.utils.popMessage(payload.messages, payload.message)
+          );
+        })
+      ),
+    { dispatch: false }
+  );
+
+  addComment$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(addComment),
+        tap((payload) => {
+          this.storeService.pushRawMessage(
+            this.utils.addNewComment(
+              payload.message,
+              payload.user,
+              payload.messageText
+            )
           );
         })
       ),

@@ -19,7 +19,10 @@
       <app-action-bar [message]="message"></app-action-bar>
     </div>
     <div>
-      <app-post-message></app-post-message>
+      <app-post-message
+        (messageEmitter)="addComment($event)"
+        [mode]="'comment'"
+      ></app-post-message>
     </div>
   </div>
   @for (comment of message.comments; track comment) {

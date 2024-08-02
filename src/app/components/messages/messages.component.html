@@ -1,6 +1,6 @@
 <div class="message-pane flex-3">
   <div class="border">
-    <app-post-message></app-post-message>
+    <app-post-message (messageEmitter)="addMessage($event)"></app-post-message>
   </div>
   @for (message of messages$ | async; track message) {
   <div class="flex flex-row border pointer" (click)="openThread(message)">

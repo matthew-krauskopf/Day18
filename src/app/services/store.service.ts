@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ReplaySubject, take } from 'rxjs';
-import { StoreType } from '../enum/storeType';
 import { Message } from '../features/message/message.entity';
 import { User } from '../features/user/user.entity';
+import { StoreType } from '../model/enum/storeType';
 
 @Injectable({
   providedIn: 'root',
@@ -46,6 +46,12 @@ export class StoreService {
     let loaded: boolean = false;
     this.rawMessage.pipe(take(1)).subscribe((m) => (loaded = m != null));
     return loaded;
+  }
+
+  getRawMessage() {
+    let rawMessage: any | null = null;
+    this.rawMessage.pipe(take(1)).subscribe((r) => (rawMessage = r));
+    return rawMessage;
   }
 
   getRawMessages() {

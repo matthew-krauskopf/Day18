@@ -44,3 +44,8 @@ export const deleteMessage = createAction(
   '[Home] Delete Message',
   props<{ messages: Message[]; message: Message }>()
 );
+
+export const addComment = createAction(
+  '[Thread] Add Comment',
+  props<{ message: Message; messageText: string; user: User }>()
+);

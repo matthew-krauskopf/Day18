@@ -60,6 +60,26 @@ export class MessageUtils {
     return newMsgArr;
   }
 
+  addNewComment(message: Message, author: User, text: string) {
+    const newMessage = {
+      author: author.id,
+      uuid: crypto.randomUUID(),
+      text: text,
+      comments: [],
+      username: author.username,
+      pic: author.pic,
+      deletable: false,
+      editable: false,
+      tmstp: Date.now(),
+    };
+    const oldComments = message.comments.slice();
+    oldComments.push(newMessage);
+    return {
+      ...message,
+      comments: oldComments,
+    };
+  }
+
   linkMessageData(
     user: User | null,
     users: User[] | null,

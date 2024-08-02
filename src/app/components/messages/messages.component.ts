@@ -8,10 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { User } from '../../features/user/user.entity';
 import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
+import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
+import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
@@ -49,6 +50,10 @@ export class MessagesComponent {
   openThread(message: Message) {
     this.messageFacade.openMessage(message);
     this.router.navigate(['home', 'thread', message.uuid]);
+  }
+
+  addMessage($event: PostedMessage) {
+    this.messageFacade.addMessage($event.text, $event.user);
   }
 
   addComment($event: Event) {

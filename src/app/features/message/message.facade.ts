@@ -5,6 +5,7 @@ import { StoreService } from '../../services/store.service';
 import { User } from '../user/user.entity';
 import { UserFacade } from '../user/user.facade';
 import {
+  addComment,
   addMessage,
   deleteMessage,
   editMessage,
@@ -75,6 +76,18 @@ export class MessageFacade {
   addMessage(messageText: string, user: User) {
     this.ngrxStore.dispatch(
       addMessage({ messages: this.store.getRawMessages(), messageText, user })
+    );
+  }
+
+  addComment(messageText: string, user: User) {
+    this.ngrxStore.dispatch(
+      addComment({ message: this.store.getRawMessage(), messageText, user })
+    );
+    this.ngrxStore.dispatch(
+      editMessage({
+        messages: this.store.getRawMessages(),
+        message: this.store.getRawMessage(),
+      })
     );
   }
 

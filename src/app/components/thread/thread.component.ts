@@ -8,6 +8,7 @@ import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
+import { PostedMessage } from '../../model/posted-message';
 
 @Component({
   selector: 'app-thread',
@@ -42,5 +43,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.messageFacade.unloadMessage();
+  }
+
+  addComment($event: PostedMessage) {
+    this.messageFacade.addComment($event.text, $event.user);
   }
 }

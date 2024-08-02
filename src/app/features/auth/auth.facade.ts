@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { StoreType } from '../../enum/storeType';
-import { User } from '../user/user.entity';
+import { StoreType } from '../../model/enum/storeType';
 import { StoreService } from '../../services/store.service';
+import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
 
 @Injectable({
