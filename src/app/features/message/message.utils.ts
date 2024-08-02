@@ -36,10 +36,26 @@ export class MessageUtils {
     return messages.filter((m) => m.uuid != message.uuid);
   }
 
+  popComment(message: Message, comment: Message) {
+    return {
+      ...message,
+      comments: message.comments.filter((m) => m.uuid != comment.uuid),
+    };
+  }
+
   replaceMessage(messages: Message[], message: Message) {
     const newMessages = messages.filter((m) => m.uuid != message.uuid);
     newMessages.push(message);
     return newMessages;
+  }
+
+  replaceComment(message: Message, comment: Message): Message {
+    const newComments = message.comments.filter((m) => m.uuid != comment.uuid);
+    newComments.push(comment);
+    return {
+      ...message,
+      comments: newComments,
+    };
   }
 
   addNewMessage(messages: Message[], author: User, text: string) {
@@ -84,11 +100,18 @@ export class MessageUtils {
     user: User | null,
     users: User[] | null,
     message: Message | null
-  ) {
+  ): Message | null {
     if (message != null && users) {
-      return this.enableButtons(user, this.linkUserInfo(message, users));
+      return {
+        ...this.enableButtons(user, this.linkUserInfo(message, users)),
+        comments: message.comments
+          .map((c: Message) => {
+            return this.enableButtons(user, this.linkUserInfo(c, users));
+          })
+          .sort((a, b) => a.tmstp - b.tmstp),
+      };
     }
-    return null;
+    return message;
   }
 
   linkMessagesData(

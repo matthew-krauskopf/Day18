@@ -5,7 +5,9 @@ import { StoreService } from '../../services/store.service';
 import {
   addComment,
   addMessage,
+  deleteComment,
   deleteMessage,
+  editComment,
   editMessage,
   loadHttpMessage,
   loadMessage,
@@ -157,20 +159,61 @@ export class MessageEffects {
     { dispatch: false }
   );
 
-  addComment$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(addComment),
-        tap((payload) => {
-          this.storeService.pushRawMessage(
-            this.utils.addNewComment(
-              payload.message,
-              payload.user,
-              payload.messageText
-            )
-          );
-        })
-      ),
-    { dispatch: false }
+  addComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addComment),
+      exhaustMap((payload) => {
+        let newMessage = this.utils.addNewComment(
+          payload.message,
+          payload.user,
+          payload.messageText
+        );
+        this.storeService.pushRawMessage(newMessage);
+        return of(
+          editMessage({
+            messages: this.storeService.getRawMessages(),
+            message: newMessage,
+          })
+        );
+      })
+    )
+  );
+
+  editComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(editComment),
+      exhaustMap((payload) => {
+        let newMessage: Message = this.utils.replaceComment(
+          payload.message,
+          payload.comment
+        );
+        this.storeService.pushRawMessage(newMessage);
+        return of(
+          editMessage({
+            messages: this.storeService.getRawMessages(),
+            message: newMessage,
+          })
+        );
+      })
+    )
+  );
+
+  deleteComment$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteComment),
+      exhaustMap((payload) => {
+        let newMessage = this.utils.popComment(
+          payload.message,
+          payload.comment
+        );
+        this.storeService.pushRawMessage(newMessage);
+        return of(
+          editMessage({
+            messages: this.storeService.getRawMessages(),
+            message: newMessage,
+          })
+        );
+      })
+    )
   );
 }

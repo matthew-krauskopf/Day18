@@ -7,7 +7,9 @@ import { UserFacade } from '../user/user.facade';
 import {
   addComment,
   addMessage,
+  deleteComment,
   deleteMessage,
+  editComment,
   editMessage,
   loadMessage,
   loadMessages,
@@ -83,12 +85,6 @@ export class MessageFacade {
     this.ngrxStore.dispatch(
       addComment({ message: this.store.getRawMessage(), messageText, user })
     );
-    this.ngrxStore.dispatch(
-      editMessage({
-        messages: this.store.getRawMessages(),
-        message: this.store.getRawMessage(),
-      })
-    );
   }
 
   deleteMessage(message: Message) {
@@ -97,9 +93,21 @@ export class MessageFacade {
     );
   }
 
+  deleteComment(message: Message, comment: Message) {
+    this.ngrxStore.dispatch(
+      deleteComment({ message: message, comment: comment })
+    );
+  }
+
   editMessage(message: Message) {
     this.ngrxStore.dispatch(
       editMessage({ messages: this.store.getRawMessages(), message })
+    );
+  }
+
+  editComment(message: Message, comment: Message) {
+    this.ngrxStore.dispatch(
+      editComment({ message: message, comment: comment })
     );
   }
 

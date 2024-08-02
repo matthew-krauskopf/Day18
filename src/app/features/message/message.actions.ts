@@ -49,3 +49,13 @@ export const addComment = createAction(
   '[Thread] Add Comment',
   props<{ message: Message; messageText: string; user: User }>()
 );
+
+export const editComment = createAction(
+  '[Thread] Edit Comment',
+  props<{ message: Message; comment: Message }>()
+);
+
+export const deleteComment = createAction(
+  '[Thread] Delete Comment',
+  props<{ message: Message; comment: Message }>()
+);
