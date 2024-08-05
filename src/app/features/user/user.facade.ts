@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { map, Observable } from 'rxjs';
+import { map } from 'rxjs';
 import { StoreService } from '../../services/store.service';
-import { User } from './user.entity';
 import { UserService } from './user.service';
 
 import { Store } from '@ngrx/store';
@@ -30,7 +29,7 @@ export class UserFacade {
             };
       })
     );
-    this.users$ = this.store.watchUsers().pipe(takeUntilDestroyed());
+    this.users$ = this.store.watchUsers();
   }
 
   loadUsers() {

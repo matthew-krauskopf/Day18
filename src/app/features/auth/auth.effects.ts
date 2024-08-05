@@ -1,4 +1,6 @@
 import { inject, Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { StoreType } from '../../model/enum/storeType';
@@ -10,11 +12,10 @@ import {
   loginRejected,
   loginSuccess,
   logout,
+  relogin,
 } from './auth.actions';
 import { AuthService } from './auth.service';
 import { AuthUtils } from './auth.utils';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthEffects {
@@ -47,6 +48,23 @@ export class AuthEffects {
     )
   );
 
+  relogin$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(relogin),
+      map(() => {
+        const username = this.store.getItem(StoreType.USER);
+        if (username != null) {
+          return login({
+            username: username,
+            password: this.store.getItem(StoreType.PASSWORD) ?? '',
+          });
+        } else {
+          return logout();
+        }
+      })
+    )
+  );
+
   loginFetched$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loginFetched),
@@ -67,6 +85,7 @@ export class AuthEffects {
         map((payload) => {
           this.store.pushUser(payload.user);
           this.store.storeItem(StoreType.USER, payload.user.username);
+          this.store.storeItem(StoreType.PASSWORD, payload.user.password);
           this.router.navigate(['home', 'messages']);
         })
       ),
@@ -109,6 +128,7 @@ export class AuthEffects {
         ofType(logout),
         tap(() => {
           this.store.removeItem(StoreType.USER);
+          this.store.removeItem(StoreType.PASSWORD);
           this.store.pushUser(null);
           this.router.navigate(['/login']);
         })

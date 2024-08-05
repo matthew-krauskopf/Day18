@@ -6,6 +6,8 @@ export const login = createAction(
   props<{ username: string; password: string }>()
 );
 
+export const relogin = createAction('[Startup] Relogin');
+
 export const loginFetched = createAction(
   '[Login] Login Fetched',
   props<{ user: User; password: string }>()

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthFacade } from './features/auth/auth.facade';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,10 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'Day16';
+export class AppComponent implements OnInit {
+  authFacade: AuthFacade = inject(AuthFacade);
+
+  ngOnInit(): void {
+    this.authFacade.performCachedLogin();
+  }
 }
