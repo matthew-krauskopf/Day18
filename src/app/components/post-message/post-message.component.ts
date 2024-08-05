@@ -44,7 +44,7 @@ export class PostMessageComponent implements OnInit {
 
   placeholder: string = '';
 
-  user$ = this.userFacace.watchUser();
+  user$ = this.userFacace.user$;
 
   ngOnInit(): void {
     this.placeholder =

@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { StoreType } from '../../model/enum/storeType';
 import { StoreService } from '../../services/store.service';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
+import { login, logout } from './auth.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -12,57 +14,24 @@ export class AuthFacade {
   store: StoreService = inject(StoreService);
   userService: UserService = inject(UserService);
   router: Router = inject(Router);
+  ngrxStore: Store = inject(Store);
 
   user$;
-  loginSuccess$;
 
   constructor() {
     this.user$ = this.store.watchUser();
-    this.loginSuccess$ = this.store.watchLoginSuccess();
     this.userService
       .loadUser(this.store.getItem(StoreType.USER) ?? '')
       .subscribe((users: User[]) => {
-        this.store.pushUser(
-          users.length > 0 ? this.attachPhoto(users[0]) : null
-        );
+        this.store.pushUser(users.length > 0 ? users[0] : null);
       });
   }
 
   performLogin(username: string, password: string) {
-    this.userService.loadUser(username).subscribe((users) => {
-      if (users.length > 0) {
-        let user: User = users[0];
-        if (user.username == username && user.password == password) {
-          this.store.pushUser(this.attachPhoto(user));
-          this.store.storeItem(StoreType.USER, username);
-          this.store.pushLoginSuccess(true);
-          return;
-        }
-      }
-      // Emit null if login failed
-      this.store.pushLoginSuccess(false);
-    });
+    this.ngrxStore.dispatch(login({ username, password }));
   }
 
   logout() {
-    this.store.removeItem(StoreType.USER);
-    this.store.pushLoginSuccess(null);
-    this.store.pushUser(null);
-    this.router.navigate(['/login']);
-  }
-
-  attachPhoto(user: User): User {
-    return {
-      ...user,
-      pic: 'assets/profile-pics/{}.jpg'.replace('{}', String(user.id)),
-    };
-  }
-
-  watchUser() {
-    return this.user$;
-  }
-
-  watchLoginSuccess() {
-    return this.loginSuccess$;
+    this.ngrxStore.dispatch(logout());
   }
 }

@@ -15,11 +15,6 @@ import { TopBarComponent } from '../top-bar/top-bar.component';
 export class HomeComponent implements OnInit, OnDestroy {
   userFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
-  user$;
-
-  constructor() {
-    this.user$ = this.userFacade.watchUser();
-  }
 
   ngOnInit() {
     this.messageFacade.loadMessages();

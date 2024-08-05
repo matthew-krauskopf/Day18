@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -10,10 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { AuthFacade } from '../../features/auth/auth.facade';
-import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-login',
@@ -29,15 +26,10 @@ import { StoreService } from '../../services/store.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   authFacade: AuthFacade = inject(AuthFacade);
-  storeService: StoreService = inject(StoreService);
-  router: Router = inject(Router);
-  snackbar: MatSnackBar = inject(MatSnackBar);
 
   pattern: string = '\\w{5,}';
-
-  loginSuccess$;
 
   loginForm: FormGroup = new FormGroup({
     username: new FormControl('mattyk17', [
@@ -49,22 +41,6 @@ export class LoginComponent implements OnInit {
       Validators.pattern(this.pattern),
     ]),
   });
-
-  constructor() {
-    this.loginSuccess$ = this.authFacade.watchLoginSuccess();
-  }
-
-  ngOnInit(): void {
-    this.loginSuccess$.subscribe((loginSuccess) => {
-      if (loginSuccess) {
-        this.router.navigate(['home', 'messages']);
-      } else if (loginSuccess == false) {
-        this.snackbar.open('Invalid Login Credentials', 'Close', {
-          duration: 2000,
-        });
-      } // If null, do nothing
-    });
-  }
 
   performLogin() {
     this.authFacade.performLogin(

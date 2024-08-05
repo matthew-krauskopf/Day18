@@ -80,10 +80,6 @@ export class StoreService {
     this.rawMessages.next(messages);
   }
 
-  pushLoginSuccess(loginSuccess: boolean | null) {
-    this.loginSuccess.next(loginSuccess);
-  }
-
   storeItem(type: StoreType, val: string) {
     localStorage.setItem(type.toString(), val);
   }

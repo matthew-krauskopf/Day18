@@ -43,7 +43,7 @@ export class MessagesComponent {
   dialog: MatDialog = inject(MatDialog);
 
   constructor() {
-    this.user$ = this.usersFacade.watchUser();
+    this.user$ = this.usersFacade.user$;
     this.messages$ = this.messageFacade.watchMessages();
   }
 

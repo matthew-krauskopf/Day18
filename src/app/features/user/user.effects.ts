@@ -3,7 +3,12 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { User } from './user.entity';
 import { StoreService } from '../../services/store.service';
-import { loadUsers, loadUsersFail, loadUsersSuccess } from './user.actions';
+import {
+  loadUsers,
+  loadUsersFail,
+  loadUsersSuccess,
+  reloadUser,
+} from './user.actions';
 import { UserService } from './user.service';
 import { UserUtils } from './user.utils';
 

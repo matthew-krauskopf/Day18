@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
-import { User } from './user.entity';
+import { map, Observable } from 'rxjs';
 import { StoreService } from '../../services/store.service';
+import { User } from './user.entity';
 import { UserService } from './user.service';
 
 import { Store } from '@ngrx/store';
@@ -19,16 +19,18 @@ export class UserFacade {
   users$;
 
   constructor(private ngrxStore: Store) {
-    this.user$ = this.store.watchUser().pipe(takeUntilDestroyed());
+    this.user$ = this.store.watchUser().pipe(
+      takeUntilDestroyed(),
+      map((user) => {
+        return user == null
+          ? null
+          : {
+              ...user,
+              pic: 'assets/profile-pics/{}.jpg'.replace('{}', String(user.id)),
+            };
+      })
+    );
     this.users$ = this.store.watchUsers().pipe(takeUntilDestroyed());
-  }
-
-  watchUser(): Observable<User | null> {
-    return this.user$;
-  }
-
-  watchUsers(): Observable<User[] | null> {
-    return this.users$;
   }
 
   loadUsers() {

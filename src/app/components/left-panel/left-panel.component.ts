@@ -12,5 +12,5 @@ import { UserFacade } from '../../features/user/user.facade';
 export class LeftPanelComponent {
   userFacade: UserFacade = inject(UserFacade);
 
-  user$ = this.userFacade.watchUser();
+  user$ = this.userFacade.user$;
 }

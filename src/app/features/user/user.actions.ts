@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { User } from './user.entity';
 
 export const loadUser = createAction('[Login Page] Load User');
+export const reloadUser = createAction('[Startup] Reload User');
 export const loadUserSuccess = createAction('[Login Page] Load User Success');
 export const loadUserFail = createAction('[Login Page] Load User Fail');
 

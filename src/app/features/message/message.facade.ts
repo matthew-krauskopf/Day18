@@ -41,8 +41,8 @@ export class MessageFacade {
   utils: MessageUtils = inject(MessageUtils);
 
   constructor(private ngrxStore: Store) {
-    this.user$ = this.userFacade.watchUser();
-    this.users$ = this.userFacade.watchUsers();
+    this.user$ = this.userFacade.user$;
+    this.users$ = this.userFacade.users$;
     this.rawMessage$ = this.store.watchRawMessage();
     this.rawMessages$ = this.store.watchRawMessages();
 

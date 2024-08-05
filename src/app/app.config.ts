@@ -6,6 +6,7 @@ import { provideStore } from '@ngrx/store';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
+import { AuthEffects } from './features/auth/auth.effects';
 import { MessageEffects } from './features/message/message.effects';
 import { UserEffects } from './features/user/user.effects';
 
@@ -15,6 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimationsAsync(),
     provideStore(),
-    provideEffects(UserEffects, MessageEffects),
+    provideEffects(UserEffects, MessageEffects, AuthEffects),
   ],
 };
