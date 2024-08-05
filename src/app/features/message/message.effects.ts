@@ -2,8 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { StoreService } from '../../services/store.service';
+import { User } from '../user/user.entity';
 import {
   addComment,
+  addLike,
   addMessage,
   deleteComment,
   deleteMessage,
@@ -16,6 +18,9 @@ import {
   loadMessagesFail,
   loadMessagesSuccess,
   loadMessageSuccess,
+  removeLike,
+  toggleLike,
+  toggleLikeFailed,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -215,5 +220,87 @@ export class MessageEffects {
         );
       })
     )
+  );
+
+  toggleLike$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(toggleLike),
+      map((payload) => {
+        const user: User | null = this.storeService.getUser();
+        if (user != null) {
+          if (user.likedMessages.includes(payload.message.uuid)) {
+            return removeLike({ user, message: payload.message });
+          } else {
+            return addLike({ user, message: payload.message });
+          }
+        } else {
+          return toggleLikeFailed();
+        }
+      })
+    )
+  );
+
+  addLike$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(addLike),
+        map((payload) => {
+          const likedByArr = payload.message.likedBy.slice();
+          likedByArr.push(payload.user.id);
+          const newMessage: Message = {
+            ...payload.message,
+            likedBy: likedByArr,
+          };
+          this.storeService.pushRawMessages(
+            this.utils.replaceMessage(
+              this.storeService.getRawMessages(),
+              newMessage
+            )
+          );
+          this.storeService.pushRawMessage(newMessage);
+
+          const likedMessagesArr = payload.user.likedMessages.slice();
+          likedMessagesArr.push(payload.message.uuid);
+          const newUser: User = {
+            ...payload.user,
+            likedMessages: likedMessagesArr,
+          };
+          this.storeService.pushUser(newUser);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  removeLike$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(removeLike),
+        map((payload) => {
+          const likedByArr = payload.message.likedBy.filter(
+            (lb) => lb != payload.user.id
+          );
+          const newMessage: Message = {
+            ...payload.message,
+            likedBy: likedByArr,
+          };
+          this.storeService.pushRawMessages(
+            this.utils.replaceMessage(
+              this.storeService.getRawMessages(),
+              newMessage
+            )
+          );
+          this.storeService.pushRawMessage(newMessage);
+
+          const likedMessagesArr = payload.user.likedMessages.filter(
+            (lm) => lm != payload.message.uuid
+          );
+          const newUser: User = {
+            ...payload.user,
+            likedMessages: likedMessagesArr,
+          };
+          this.storeService.pushUser(newUser);
+        })
+      ),
+    { dispatch: false }
   );
 }

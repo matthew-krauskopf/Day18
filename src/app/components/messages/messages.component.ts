@@ -85,4 +85,8 @@ export class MessagesComponent {
       }
     });
   }
+
+  toggleLike(message: Message) {
+    this.messageFacade.toggleLike(message);
+  }
 }

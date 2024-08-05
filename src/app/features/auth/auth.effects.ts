@@ -86,7 +86,9 @@ export class AuthEffects {
           this.store.pushUser(payload.user);
           this.store.storeItem(StoreType.USER, payload.user.username);
           this.store.storeItem(StoreType.PASSWORD, payload.user.password);
-          this.router.navigate(['home', 'messages']);
+          if (this.router.url.includes('login')) {
+            this.router.navigate(['home', 'messages']);
+          }
         })
       ),
     { dispatch: false }

@@ -6,4 +6,5 @@ export interface User {
   username: string;
   password: string;
   permission: Permission;
+  likedMessages: string[];
 }

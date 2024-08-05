@@ -48,6 +48,12 @@ export class StoreService {
     return loaded;
   }
 
+  getUser(): User | null {
+    let user: User | null = null;
+    this.user.pipe(take(1)).subscribe((u) => (user = u));
+    return user;
+  }
+
   getRawMessage() {
     let rawMessage: any | null = null;
     this.rawMessage.pipe(take(1)).subscribe((r) => (rawMessage = r));

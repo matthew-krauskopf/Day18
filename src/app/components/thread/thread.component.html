@@ -16,7 +16,10 @@
       <span class="font-white font-ui">{{ message.text }}</span>
     </div>
     <div class="margin-x-5 border-y">
-      <app-action-bar [message]="message"></app-action-bar>
+      <app-action-bar
+        (likeEmitter)="toggleLike(message)"
+        [message]="message"
+      ></app-action-bar>
     </div>
     <div>
       <app-post-message

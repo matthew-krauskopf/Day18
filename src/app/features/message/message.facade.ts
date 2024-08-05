@@ -14,6 +14,7 @@ import {
   loadMessage,
   loadMessages,
   loadMessageSuccess,
+  toggleLike,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -125,5 +126,9 @@ export class MessageFacade {
       this.userFacade.loadUsers();
       this.ngrxStore.dispatch(loadMessage({ uuid }));
     }
+  }
+
+  toggleLike(message: Message) {
+    this.ngrxStore.dispatch(toggleLike({ message: message }));
   }
 }

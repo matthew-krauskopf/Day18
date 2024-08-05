@@ -114,6 +114,7 @@ export class MessageUtils {
     return {
       uuid: crypto.randomUUID(),
       comments: [],
+      likedBy: [],
       deletable: false,
       editable: false,
       tmstp: Date.now(),

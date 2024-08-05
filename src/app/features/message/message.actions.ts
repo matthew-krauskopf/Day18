@@ -59,3 +59,20 @@ export const deleteComment = createAction(
   '[Thread] Delete Comment',
   props<{ message: Message; comment: Message }>()
 );
+
+export const toggleLike = createAction(
+  '[Action Bar] Toggle Like',
+  props<{ message: Message }>()
+);
+
+export const addLike = createAction(
+  '[Action Bar] Add Like',
+  props<{ user: User; message: Message }>()
+);
+
+export const removeLike = createAction(
+  '[Action Bar] Remove Like',
+  props<{ user: User; message: Message }>()
+);
+
+export const toggleLikeFailed = createAction('[Action Bar] Toggle Like failed');
