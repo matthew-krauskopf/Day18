@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 
 import { Store } from '@ngrx/store';
 import { loadUsers } from './user.actions';
+import { UserUtils } from './user.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ import { loadUsers } from './user.actions';
 export class UserFacade {
   store: StoreService = inject(StoreService);
   userService: UserService = inject(UserService);
+  utils: UserUtils = inject(UserUtils);
 
   user$;
   users$;
@@ -21,15 +23,16 @@ export class UserFacade {
     this.user$ = this.store.watchUser().pipe(
       takeUntilDestroyed(),
       map((user) => {
-        return user == null
-          ? null
-          : {
-              ...user,
-              pic: 'assets/profile-pics/{}.jpg'.replace('{}', String(user.id)),
-            };
+        return user != null ? this.utils.attachPhoto(user) : null;
       })
     );
-    this.users$ = this.store.watchUsers();
+
+    this.users$ = this.store.watchUsers().pipe(
+      takeUntilDestroyed(),
+      map((users) => {
+        return users != null ? users.map(this.utils.attachPhoto) : null;
+      })
+    );
   }
 
   loadUsers() {

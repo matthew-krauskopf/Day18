@@ -44,7 +44,7 @@ export class MessagesComponent {
 
   constructor() {
     this.user$ = this.usersFacade.user$;
-    this.messages$ = this.messageFacade.watchMessages();
+    this.messages$ = this.messageFacade.messages$;
   }
 
   openThread(message: Message) {

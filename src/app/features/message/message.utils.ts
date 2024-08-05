@@ -58,38 +58,15 @@ export class MessageUtils {
     };
   }
 
-  addNewMessage(messages: Message[], author: User, text: string) {
-    const newMessage = {
-      author: author.id,
-      uuid: crypto.randomUUID(),
-      text: text,
-      comments: [],
-      username: author.username,
-      pic: author.pic,
-      deletable: false,
-      editable: false,
-      tmstp: Date.now(),
-    };
-
+  addNewMessage(messages: Message[], author: User, text: string): Message[] {
     const newMsgArr = messages.slice();
-    newMsgArr.push(newMessage);
+    newMsgArr.push(this.createNewMessage(author, text));
     return newMsgArr;
   }
 
-  addNewComment(message: Message, author: User, text: string) {
-    const newMessage = {
-      author: author.id,
-      uuid: crypto.randomUUID(),
-      text: text,
-      comments: [],
-      username: author.username,
-      pic: author.pic,
-      deletable: false,
-      editable: false,
-      tmstp: Date.now(),
-    };
+  addNewComment(message: Message, author: User, text: string): Message {
     const oldComments = message.comments.slice();
-    oldComments.push(newMessage);
+    oldComments.push(this.createNewMessage(author, text));
     return {
       ...message,
       comments: oldComments,
@@ -131,5 +108,19 @@ export class MessageUtils {
       }
     });
     return fullMessages.sort((a, b) => b.tmstp - a.tmstp);
+  }
+
+  private createNewMessage(author: User, text: string): Message {
+    return {
+      uuid: crypto.randomUUID(),
+      comments: [],
+      deletable: false,
+      editable: false,
+      tmstp: Date.now(),
+      author: author.id,
+      text: text,
+      username: author.username,
+      pic: author.pic,
+    };
   }
 }

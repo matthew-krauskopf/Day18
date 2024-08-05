@@ -36,9 +36,7 @@ export class UserEffects {
     () =>
       this.actions$.pipe(
         ofType(loadUsersSuccess),
-        tap((payload) =>
-          this.storeService.pushUsers(payload.users.map(this.utils.attachPhoto))
-        )
+        tap((payload) => this.storeService.pushUsers(payload.users))
       ),
     { dispatch: false }
   );

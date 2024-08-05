@@ -35,7 +35,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   message$: Observable<Message | null>;
 
   constructor() {
-    this.message$ = this.messageFacade.watchMessage();
+    this.message$ = this.messageFacade.message$;
   }
 
   goBack() {

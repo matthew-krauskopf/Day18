@@ -67,14 +67,6 @@ export class MessageFacade {
     );
   }
 
-  watchMessage() {
-    return this.message$;
-  }
-
-  watchMessages() {
-    return this.messages$;
-  }
-
   addMessage(messageText: string, user: User) {
     this.ngrxStore.dispatch(
       addMessage({ messages: this.store.getRawMessages(), messageText, user })
