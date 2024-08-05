@@ -56,18 +56,6 @@ export class MessagesComponent {
     this.messageFacade.addMessage($event.text, $event.user);
   }
 
-  addComment($event: Event) {
-    $event.stopPropagation();
-  }
-
-  addRepost($event: Event) {
-    $event.stopPropagation();
-  }
-
-  addLike($event: Event) {
-    $event.stopPropagation();
-  }
-
   editMessage($event: Event, message: Message) {
     $event.stopPropagation();
 

@@ -37,7 +37,6 @@ import { PostedMessage } from '../../model/posted-message';
 })
 export class PostMessageComponent implements OnInit {
   userFacace: UserFacade = inject(UserFacade);
-  messageFacade: MessageFacade = inject(MessageFacade);
 
   @Input() mode?: string;
   @Output() messageEmitter: EventEmitter<PostedMessage> = new EventEmitter();
