@@ -5,8 +5,11 @@ export interface Message {
   comments: string[];
   likedBy: number[];
   parent: string | undefined;
+  retwatAuthor: number | undefined;
+  retwattedBy: number | undefined;
 
   username: string;
+  retwatUsername: string | undefined;
   pic: string;
   deletable: boolean;
   editable: boolean;

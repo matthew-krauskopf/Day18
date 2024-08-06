@@ -3,37 +3,50 @@
     <app-post-message (messageEmitter)="addMessage($event)"></app-post-message>
   </div>
   @for (message of messages$ | async; track message) {
-  <div class="flex flex-row border pointer" (click)="openThread(message)">
-    <div class="flex justify-center margin-x-6 margin-y-5">
-      <img class="profile-pic" src="{{ message.pic }}" />
+  <div class="flex flex-col border pointer" (click)="openThread(message)">
+    @if(message.retwatAuthor != null) {
+    <div class="flex align-center pad-top-3 pad-left-20 font-gray">
+      <mat-icon class="flex align-center retwat-size">recycling</mat-icon>
+      <span class="margin-left-3 font-s font-ui"
+        >{{ message.retwatUsername }} Retwatted</span
+      >
     </div>
-    <div class="flex flex-col w-full">
-      <div class="flex justify-spread margin-top-5 pad-left-1">
-        <div class="">
-          <div class="">
-            <span class="bold font-white font-ui">{{
-              message.username != null ? message.username : message.author
-            }}</span>
-          </div>
-          <div class="margin-y-3">
-            <span class="font-white font-ui">{{ message.text }}</span>
-          </div>
-        </div>
-        <div class="flex justify-right flex-1 pad-right-5">
-          @if (message.editable) {
-          <button (click)="editMessage($event, message)" mat-mini-fab>
-            <mat-icon class="font-gray">edit</mat-icon>
-          </button>
-          } @if(message.deletable) {
-          <button (click)="deleteMessage($event, message)" mat-mini-fab>
-            <mat-icon class="font-gray">delete</mat-icon>
-          </button>
-          }
-        </div>
+    }
+    <div class="flex flex-row">
+      <div class="flex justify-center margin-x-6 margin-y-5">
+        <img class="profile-pic" src="{{ message.pic }}" />
       </div>
-      <div class="pad-right-5">
-        <app-action-bar (likeEmitter)="toggleLike(message)" [message]="message">
-        </app-action-bar>
+      <div class="flex flex-col w-full margin-top-5 pad-left-1">
+        <div class="flex justify-spread">
+          <div class="">
+            <div class="">
+              <span class="bold font-white font-ui">{{
+                message.username != null ? message.username : message.author
+              }}</span>
+            </div>
+            <div class="margin-y-3">
+              <span class="font-white font-ui">{{ message.text }}</span>
+            </div>
+          </div>
+          <div class="flex justify-right flex-1 pad-right-5">
+            @if (message.editable) {
+            <button (click)="editMessage($event, message)" mat-mini-fab>
+              <mat-icon class="font-gray">edit</mat-icon>
+            </button>
+            } @if(message.deletable) {
+            <button (click)="deleteMessage($event, message)" mat-mini-fab>
+              <mat-icon class="font-gray">delete</mat-icon>
+            </button>
+            }
+          </div>
+        </div>
+        <div class="pad-right-5">
+          <app-action-bar
+            (likeEmitter)="toggleLike(message)"
+            [message]="message"
+          >
+          </app-action-bar>
+        </div>
       </div>
     </div>
   </div>

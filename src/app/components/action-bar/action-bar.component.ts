@@ -18,6 +18,7 @@ export class ActionBarComponent {
 
   user$ = this.userFacade.user$;
   @Input() message?: Message;
+  @Output() retwatEmitter: EventEmitter<void> = new EventEmitter();
   @Output() likeEmitter: EventEmitter<void> = new EventEmitter();
 
   isLiked: Observable<boolean> = this.user$.pipe(
@@ -34,7 +35,7 @@ export class ActionBarComponent {
     $event.stopPropagation();
   }
 
-  addRepost($event: Event) {
+  addRetwat($event: Event) {
     $event.stopPropagation();
   }
 

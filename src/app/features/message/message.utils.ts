@@ -23,6 +23,8 @@ export class MessageUtils {
     return {
       ...message,
       username: user.username ?? '',
+      retwatUsername:
+        users.find((u) => message.retwatAuthor == u.id)?.username ?? undefined,
       pic: user.pic ?? '',
       editable: false,
       deletable: false,
@@ -104,12 +106,15 @@ export class MessageUtils {
       parent: parent,
       comments: [],
       likedBy: [],
+      retwatAuthor: undefined,
+      retwattedBy: undefined,
       deletable: false,
       editable: false,
       tmstp: Date.now(),
       author: author.id,
       text: text,
       username: author.username,
+      retwatUsername: undefined,
       pic: author.pic,
     };
   }
