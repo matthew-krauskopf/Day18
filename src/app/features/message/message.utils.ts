@@ -22,9 +22,6 @@ export class MessageUtils {
     const user: User = users.filter((u) => u.id == message.author)[0];
     return {
       ...message,
-      comments: message.comments
-        ? message.comments.map((c) => this.linkUserInfo(c, users))
-        : [],
       username: user.username ?? '',
       pic: user.pic ?? '',
       editable: false,
@@ -36,26 +33,10 @@ export class MessageUtils {
     return messages.filter((m) => m.uuid != message.uuid);
   }
 
-  popComment(message: Message, comment: Message) {
-    return {
-      ...message,
-      comments: message.comments.filter((m) => m.uuid != comment.uuid),
-    };
-  }
-
   replaceMessage(messages: Message[], message: Message) {
     const newMessages = messages.filter((m) => m.uuid != message.uuid);
     newMessages.push(message);
     return newMessages;
-  }
-
-  replaceComment(message: Message, comment: Message): Message {
-    const newComments = message.comments.filter((m) => m.uuid != comment.uuid);
-    newComments.push(comment);
-    return {
-      ...message,
-      comments: newComments,
-    };
   }
 
   addNewMessage(messages: Message[], author: User, text: string): Message[] {
@@ -65,11 +46,15 @@ export class MessageUtils {
   }
 
   addNewComment(message: Message, author: User, text: string): Message {
-    const oldComments = message.comments.slice();
-    oldComments.push(this.createNewMessage(author, text));
+    return this.createNewMessage(author, text, message.uuid);
+  }
+
+  attachComment(parent: Message, comment: Message) {
+    const comments = parent.comments.slice();
+    comments.push(comment.uuid);
     return {
-      ...message,
-      comments: oldComments,
+      ...parent,
+      comments: comments,
     };
   }
 
@@ -81,11 +66,6 @@ export class MessageUtils {
     if (message != null && users) {
       return {
         ...this.enableButtons(user, this.linkUserInfo(message, users)),
-        comments: message.comments
-          .map((c: Message) => {
-            return this.enableButtons(user, this.linkUserInfo(c, users));
-          })
-          .sort((a, b) => a.tmstp - b.tmstp),
       };
     }
     return message;
@@ -110,9 +90,18 @@ export class MessageUtils {
     return fullMessages.sort((a, b) => b.tmstp - a.tmstp);
   }
 
-  private createNewMessage(author: User, text: string): Message {
+  getCurrentMessage(messages: Message[], uuid: string) {
+    return messages.find((m) => m.uuid == uuid);
+  }
+
+  private createNewMessage(
+    author: User,
+    text: string,
+    parent?: string
+  ): Message {
     return {
       uuid: crypto.randomUUID(),
+      parent: parent,
       comments: [],
       likedBy: [],
       deletable: false,

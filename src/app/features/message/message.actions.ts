@@ -13,7 +13,7 @@ export const unloadMessages = createAction('[Thread] Unload Messages');
 
 export const loadMessageSuccess = createAction(
   '[Thread] Load Message Success',
-  props<{ message: Message }>()
+  props<{ message: Message; comments: Message[] }>()
 );
 
 export const loadMessageFail = createAction('[Thread] Load Message Fail');
@@ -48,16 +48,6 @@ export const deleteMessage = createAction(
 export const addComment = createAction(
   '[Thread] Add Comment',
   props<{ message: Message; messageText: string; user: User }>()
-);
-
-export const editComment = createAction(
-  '[Thread] Edit Comment',
-  props<{ message: Message; comment: Message }>()
-);
-
-export const deleteComment = createAction(
-  '[Thread] Delete Comment',
-  props<{ message: Message; comment: Message }>()
 );
 
 export const toggleLike = createAction(

@@ -11,8 +11,9 @@ export class StoreService {
   private user: ReplaySubject<User | null> = new ReplaySubject(1);
   private users: ReplaySubject<User[] | null> = new ReplaySubject(1);
 
-  private rawMessage: ReplaySubject<Message | null> = new ReplaySubject(1);
+  private selectedMessage: ReplaySubject<string | null> = new ReplaySubject(1);
   private rawMessages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
+  private rawComments: ReplaySubject<Message[] | null> = new ReplaySubject(1);
 
   private loginSuccess: ReplaySubject<boolean | null> = new ReplaySubject(1);
 
@@ -26,12 +27,16 @@ export class StoreService {
     return this.users.asObservable();
   }
 
-  watchRawMessage() {
-    return this.rawMessage.asObservable();
+  watchSelectedMessage() {
+    return this.selectedMessage.asObservable();
   }
 
   watchRawMessages() {
     return this.rawMessages.asObservable();
+  }
+
+  watchRawComments() {
+    return this.rawComments.asObservable();
   }
 
   usersAreLoaded(): boolean {
@@ -44,7 +49,7 @@ export class StoreService {
 
   messageIsLoaded(): boolean {
     let loaded: boolean = false;
-    this.rawMessage.pipe(take(1)).subscribe((m) => (loaded = m != null));
+    this.selectedMessage.pipe(take(1)).subscribe((m) => (loaded = m != null));
     return loaded;
   }
 
@@ -54,10 +59,12 @@ export class StoreService {
     return user;
   }
 
-  getRawMessage() {
-    let rawMessage: any | null = null;
-    this.rawMessage.pipe(take(1)).subscribe((r) => (rawMessage = r));
-    return rawMessage;
+  getSelectedMessage(): string | null {
+    let selectedMessage: any | null = null;
+    this.selectedMessage
+      .pipe(take(1))
+      .subscribe((sm) => (selectedMessage = sm));
+    return selectedMessage;
   }
 
   getRawMessages() {
@@ -78,12 +85,16 @@ export class StoreService {
     this.users.next(users);
   }
 
-  pushRawMessage(message: Message | null) {
-    this.rawMessage.next(message);
+  pushRawMessage(uuid: string | null) {
+    this.selectedMessage.next(uuid);
   }
 
   pushRawMessages(messages: Message[] | null) {
     this.rawMessages.next(messages);
+  }
+
+  pushRawComments(comments: Message[] | null) {
+    this.rawComments.next(comments);
   }
 
   storeItem(type: StoreType, val: string) {

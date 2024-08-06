@@ -1,15 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of, tap } from 'rxjs';
+import { catchError, combineLatest, exhaustMap, map, of, tap } from 'rxjs';
 import { StoreService } from '../../services/store.service';
 import { User } from '../user/user.entity';
 import {
   addComment,
   addLike,
   addMessage,
-  deleteComment,
   deleteMessage,
-  editComment,
   editMessage,
   loadHttpMessage,
   loadMessage,
@@ -42,8 +40,9 @@ export class MessageEffects {
       map((payload) => {
         const rawMessages = this.storeService.getRawMessages();
         const message = rawMessages.filter((rm) => rm == payload.uuid);
+        const comments = rawMessages.filter((rm) => rm.parent == payload.uuid);
         return message.length > 0
-          ? loadMessageSuccess(message[0])
+          ? loadMessageSuccess({ message: message[0], comments: comments })
           : loadHttpMessage({ uuid: payload.uuid });
       })
     )
@@ -76,7 +75,8 @@ export class MessageEffects {
       this.actions$.pipe(
         ofType(loadMessageSuccess),
         tap((payload) => {
-          this.storeService.pushRawMessage(payload.message);
+          this.storeService.pushRawMessage(payload.message.uuid);
+          this.storeService.pushRawComments(payload.comments);
         })
       ),
     { dispatch: false }
@@ -86,10 +86,13 @@ export class MessageEffects {
     this.actions$.pipe(
       ofType(loadHttpMessage),
       exhaustMap((payload) =>
-        this.messageService.loadMessage(payload.uuid).pipe(
-          map((message: Message[]) => {
+        combineLatest([
+          this.messageService.loadMessage(payload.uuid),
+          this.messageService.loadComments(payload.uuid),
+        ]).pipe(
+          map(([message, comments]) => {
             return message.length > 0
-              ? loadMessageSuccess({ message: message[0] })
+              ? loadMessageSuccess({ message: message[0], comments: comments })
               : loadMessageFail();
           }),
           catchError(() => of(loadMessageFail()))
@@ -168,54 +171,19 @@ export class MessageEffects {
     this.actions$.pipe(
       ofType(addComment),
       exhaustMap((payload) => {
-        let newMessage = this.utils.addNewComment(
+        let comment = this.utils.addNewComment(
           payload.message,
           payload.user,
           payload.messageText
         );
-        this.storeService.pushRawMessage(newMessage);
+        this.storeService.pushRawMessages(
+          this.utils.replaceMessage(this.storeService.getRawMessages(), comment)
+        );
+        let updatedMessage = this.utils.attachComment(payload.message, comment);
         return of(
           editMessage({
             messages: this.storeService.getRawMessages(),
-            message: newMessage,
-          })
-        );
-      })
-    )
-  );
-
-  editComment$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(editComment),
-      exhaustMap((payload) => {
-        let newMessage: Message = this.utils.replaceComment(
-          payload.message,
-          payload.comment
-        );
-        this.storeService.pushRawMessage(newMessage);
-        return of(
-          editMessage({
-            messages: this.storeService.getRawMessages(),
-            message: newMessage,
-          })
-        );
-      })
-    )
-  );
-
-  deleteComment$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(deleteComment),
-      exhaustMap((payload) => {
-        let newMessage = this.utils.popComment(
-          payload.message,
-          payload.comment
-        );
-        this.storeService.pushRawMessage(newMessage);
-        return of(
-          editMessage({
-            messages: this.storeService.getRawMessages(),
-            message: newMessage,
+            message: updatedMessage,
           })
         );
       })
@@ -257,7 +225,6 @@ export class MessageEffects {
               newMessage
             )
           );
-          this.storeService.pushRawMessage(newMessage);
 
           const likedMessagesArr = payload.user.likedMessages.slice();
           likedMessagesArr.push(payload.message.uuid);
@@ -289,7 +256,6 @@ export class MessageEffects {
               newMessage
             )
           );
-          this.storeService.pushRawMessage(newMessage);
 
           const likedMessagesArr = payload.user.likedMessages.filter(
             (lm) => lm != payload.message.uuid

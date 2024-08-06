@@ -8,13 +8,13 @@
   <button mat-mini-fab (click)="addRepost($event)">
     <mat-icon class="font-gray">recycling</mat-icon>
   </button>
-  <button mat-mini-fab (click)="toggleLike($event)">
-    <mat-icon
-      [ngStyle]="{ color: (isLiked | async) ? 'blue' : 'grey' }"
-      class="font-gray"
-      >thumb_up</mat-icon
-    >
-    <span class="margin-left-3 font-ui font-gray">{{
+  <button
+    [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"
+    mat-mini-fab
+    (click)="toggleLike($event)"
+  >
+    <mat-icon>thumb_up</mat-icon>
+    <span class="margin-left-3 font-ui">{{
       message && message.likedBy ? message.likedBy.length : 0
     }}</span>
   </button>

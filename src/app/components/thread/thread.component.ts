@@ -33,9 +33,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
   dialog: MatDialog = inject(MatDialog);
 
   message$: Observable<Message | null>;
+  comments$;
 
   constructor() {
     this.message$ = this.messageFacade.message$;
+    this.comments$ = this.messageFacade.comments$;
   }
 
   goBack() {
@@ -50,11 +52,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.messageFacade.unloadMessage();
   }
 
-  addComment($event: PostedMessage) {
-    this.messageFacade.addComment($event.text, $event.user);
+  addComment($event: PostedMessage, parent: Message) {
+    this.messageFacade.addComment(parent, $event.text, $event.user);
   }
 
-  editComment(message: Message, comment: Message) {
+  editComment(comment: Message) {
     const dialogRef = this.dialog.open(EditMessageComponent, {
       data: {
         text: comment.text,
@@ -63,7 +65,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((form) => {
       if (form) {
-        this.messageFacade.editComment(message, {
+        this.messageFacade.editMessage({
           ...comment,
           text: form.value.text,
         });
@@ -71,12 +73,12 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteComment(message: Message, comment: Message) {
+  deleteComment(comment: Message) {
     const dialogRef = this.dialog.open(ConfirmActionComponent);
 
     dialogRef.afterClosed().subscribe((action) => {
       if (action && action == true) {
-        this.messageFacade.deleteComment(message, comment);
+        this.messageFacade.deleteMessage(comment);
       }
     });
   }

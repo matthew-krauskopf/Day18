@@ -2,8 +2,9 @@ export interface Message {
   author: number;
   uuid: string;
   text: string;
-  comments: Message[];
+  comments: string[];
   likedBy: number[];
+  parent: string | undefined;
 
   username: string;
   pic: string;

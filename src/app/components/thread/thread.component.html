@@ -23,12 +23,12 @@
     </div>
     <div>
       <app-post-message
-        (messageEmitter)="addComment($event)"
+        (messageEmitter)="addComment($event, message)"
         [mode]="'comment'"
       ></app-post-message>
     </div>
   </div>
-  @for (comment of message.comments; track comment) {
+  @for (comment of comments$ | async; track comment) {
   <div class="flex flex-col border-b">
     <div class="flex flex-row pad-x-5 pad-y-7">
       <div class="flex margin-x-5">
@@ -42,18 +42,21 @@
       </div>
       <div class="flex justify-right flex-1 pad-right-5">
         @if (comment.editable) {
-        <button (click)="editComment(message, comment)" mat-mini-fab>
+        <button (click)="editComment(comment)" mat-mini-fab>
           <mat-icon class="font-gray">edit</mat-icon>
         </button>
         } @if(comment.deletable) {
-        <button (click)="deleteComment(message, comment)" mat-mini-fab>
+        <button (click)="deleteComment(comment)" mat-mini-fab>
           <mat-icon class="font-gray">delete</mat-icon>
         </button>
         }
       </div>
     </div>
     <div class="margin-x-10">
-      <app-action-bar [message]="comment"></app-action-bar>
+      <app-action-bar
+        (likeEmitter)="toggleLike(comment)"
+        [message]="comment"
+      ></app-action-bar>
     </div>
   </div>
   }

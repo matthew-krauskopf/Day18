@@ -7,9 +7,7 @@ import { UserFacade } from '../user/user.facade';
 import {
   addComment,
   addMessage,
-  deleteComment,
   deleteMessage,
-  editComment,
   editMessage,
   loadMessage,
   loadMessages,
@@ -29,12 +27,14 @@ export class MessageFacade {
   // Explicit
   user$;
   users$;
-  rawMessage$;
+  selectedMessaged$;
   rawMessages$;
+  rawComments$;
 
   // Derived
   message$;
   messages$;
+  comments$;
 
   messageService: MessageService = inject(MessageService);
   store: StoreService = inject(StoreService);
@@ -44,16 +44,24 @@ export class MessageFacade {
   constructor(private ngrxStore: Store) {
     this.user$ = this.userFacade.user$;
     this.users$ = this.userFacade.users$;
-    this.rawMessage$ = this.store.watchRawMessage();
+    this.selectedMessaged$ = this.store.watchSelectedMessage();
+    this.rawComments$ = this.store.watchRawComments();
     this.rawMessages$ = this.store.watchRawMessages();
 
     this.message$ = combineLatest([
       this.user$,
       this.users$,
-      this.rawMessage$,
+      this.rawMessages$,
+      this.selectedMessaged$,
     ]).pipe(
-      map(([user, users, message]) =>
-        this.utils.linkMessageData(user, users, message)
+      map(([user, users, messages, selectedMessaged]) =>
+        this.utils.linkMessageData(
+          user,
+          users,
+          messages && selectedMessaged
+            ? messages.find((m) => m.uuid == selectedMessaged) ?? null
+            : null
+        )
       )
     );
 
@@ -63,7 +71,26 @@ export class MessageFacade {
       this.rawMessages$,
     ]).pipe(
       map(([user, users, messages]) =>
-        this.utils.linkMessagesData(user, users, messages)
+        this.utils
+          .linkMessagesData(user, users, messages)
+          .filter((m) => m.parent == undefined)
+      )
+    );
+
+    this.comments$ = combineLatest([
+      this.user$,
+      this.users$,
+      this.rawMessages$,
+      this.message$,
+    ]).pipe(
+      map(([user, users, messages, message]) =>
+        this.utils.linkMessagesData(
+          user,
+          users,
+          message && messages
+            ? messages.filter((m) => m.parent == message.uuid)
+            : messages
+        )
       )
     );
   }
@@ -74,21 +101,13 @@ export class MessageFacade {
     );
   }
 
-  addComment(messageText: string, user: User) {
-    this.ngrxStore.dispatch(
-      addComment({ message: this.store.getRawMessage(), messageText, user })
-    );
+  addComment(message: Message, messageText: string, user: User) {
+    this.ngrxStore.dispatch(addComment({ message, messageText, user }));
   }
 
   deleteMessage(message: Message) {
     this.ngrxStore.dispatch(
       deleteMessage({ messages: this.store.getRawMessages(), message: message })
-    );
-  }
-
-  deleteComment(message: Message, comment: Message) {
-    this.ngrxStore.dispatch(
-      deleteComment({ message: message, comment: comment })
     );
   }
 
@@ -98,14 +117,10 @@ export class MessageFacade {
     );
   }
 
-  editComment(message: Message, comment: Message) {
-    this.ngrxStore.dispatch(
-      editComment({ message: message, comment: comment })
-    );
-  }
-
   openMessage(message: Message) {
-    this.ngrxStore.dispatch(loadMessageSuccess({ message: message }));
+    this.ngrxStore.dispatch(
+      loadMessageSuccess({ message: message, comments: [] })
+    );
   }
 
   unloadMessage() {
