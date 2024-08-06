@@ -13,9 +13,6 @@ export class StoreService {
 
   private selectedMessage: ReplaySubject<string | null> = new ReplaySubject(1);
   private rawMessages: ReplaySubject<Message[] | null> = new ReplaySubject(1);
-  private rawComments: ReplaySubject<Message[] | null> = new ReplaySubject(1);
-
-  private loginSuccess: ReplaySubject<boolean | null> = new ReplaySubject(1);
 
   constructor() {}
 
@@ -33,10 +30,6 @@ export class StoreService {
 
   watchRawMessages() {
     return this.rawMessages.asObservable();
-  }
-
-  watchRawComments() {
-    return this.rawComments.asObservable();
   }
 
   usersAreLoaded(): boolean {
@@ -73,10 +66,6 @@ export class StoreService {
     return rawMessages;
   }
 
-  watchLoginSuccess() {
-    return this.loginSuccess.asObservable();
-  }
-
   pushUser(user: User | null) {
     this.user.next(user);
   }
@@ -91,10 +80,6 @@ export class StoreService {
 
   pushRawMessages(messages: Message[] | null) {
     this.rawMessages.next(messages);
-  }
-
-  pushRawComments(comments: Message[] | null) {
-    this.rawComments.next(comments);
   }
 
   storeItem(type: StoreType, val: string) {

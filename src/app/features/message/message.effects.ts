@@ -40,9 +40,8 @@ export class MessageEffects {
       map((payload) => {
         const rawMessages = this.storeService.getRawMessages();
         const message = rawMessages.filter((rm) => rm == payload.uuid);
-        const comments = rawMessages.filter((rm) => rm.parent == payload.uuid);
         return message.length > 0
-          ? loadMessageSuccess({ message: message[0], comments: comments })
+          ? loadMessageSuccess({ message: message[0] })
           : loadHttpMessage({ uuid: payload.uuid });
       })
     )
@@ -76,7 +75,6 @@ export class MessageEffects {
         ofType(loadMessageSuccess),
         tap((payload) => {
           this.storeService.pushRawMessage(payload.message.uuid);
-          this.storeService.pushRawComments(payload.comments);
         })
       ),
     { dispatch: false }
@@ -92,7 +90,7 @@ export class MessageEffects {
         ]).pipe(
           map(([message, comments]) => {
             return message.length > 0
-              ? loadMessageSuccess({ message: message[0], comments: comments })
+              ? loadMessageSuccess({ message: message[0] })
               : loadMessageFail();
           }),
           catchError(() => of(loadMessageFail()))

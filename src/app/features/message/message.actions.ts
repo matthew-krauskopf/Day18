@@ -13,7 +13,7 @@ export const unloadMessages = createAction('[Thread] Unload Messages');
 
 export const loadMessageSuccess = createAction(
   '[Thread] Load Message Success',
-  props<{ message: Message; comments: Message[] }>()
+  props<{ message: Message }>()
 );
 
 export const loadMessageFail = createAction('[Thread] Load Message Fail');

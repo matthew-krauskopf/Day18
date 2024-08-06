@@ -29,7 +29,6 @@ export class MessageFacade {
   users$;
   selectedMessaged$;
   rawMessages$;
-  rawComments$;
 
   // Derived
   message$;
@@ -45,7 +44,6 @@ export class MessageFacade {
     this.user$ = this.userFacade.user$;
     this.users$ = this.userFacade.users$;
     this.selectedMessaged$ = this.store.watchSelectedMessage();
-    this.rawComments$ = this.store.watchRawComments();
     this.rawMessages$ = this.store.watchRawMessages();
 
     this.message$ = combineLatest([
@@ -118,9 +116,7 @@ export class MessageFacade {
   }
 
   openMessage(message: Message) {
-    this.ngrxStore.dispatch(
-      loadMessageSuccess({ message: message, comments: [] })
-    );
+    this.ngrxStore.dispatch(loadMessageSuccess({ message: message }));
   }
 
   unloadMessage() {
