@@ -154,7 +154,7 @@ export class MessageUtils {
       comments: [],
       likedBy: [],
       retwatAuthor: undefined,
-      retwattedBy: undefined,
+      retwattedBy: [],
       deletable: false,
       editable: false,
       tmstp: Date.now(),
@@ -174,7 +174,7 @@ export class MessageUtils {
       tmstp: Date.now(),
       text: message.text,
 
-      parent: undefined,
+      parent: message.parent,
       comments: [],
       likedBy: [],
       retwattedBy: undefined,

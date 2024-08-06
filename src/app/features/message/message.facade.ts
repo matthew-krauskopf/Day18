@@ -74,7 +74,7 @@ export class MessageFacade {
       map(([user, users, messages]) =>
         this.utils
           .linkMessagesData(user, users, messages)
-          .filter((m) => m.parent == undefined)
+          .filter((m) => m.parent == undefined || m.retwatAuthor)
       )
     );
 
@@ -89,7 +89,9 @@ export class MessageFacade {
           user,
           users,
           message && messages
-            ? messages.filter((m) => m.parent == message.uuid)
+            ? messages.filter(
+                (m) => m.parent == message.uuid && !m.retwatAuthor
+              )
             : messages
         )
       )

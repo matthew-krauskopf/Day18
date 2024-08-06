@@ -77,7 +77,10 @@ export class MessageEffects {
       this.actions$.pipe(
         ofType(loadMessageSuccess),
         tap((payload) => {
-          this.storeService.pushRawMessage(payload.message.uuid);
+          console.log(payload.message);
+          this.storeService.pushRawMessage(
+            payload.message.parent ?? payload.message.uuid
+          );
         })
       ),
     { dispatch: false }
