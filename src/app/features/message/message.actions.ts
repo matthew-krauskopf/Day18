@@ -66,3 +66,22 @@ export const removeLike = createAction(
 );
 
 export const toggleLikeFailed = createAction('[Action Bar] Toggle Like failed');
+
+export const toggleRetwat = createAction(
+  '[Action Bar] Toggle Retwat',
+  props<{ message: Message }>()
+);
+
+export const addRetwat = createAction(
+  '[Action Bar] Add Retwat',
+  props<{ user: User; message: Message }>()
+);
+
+export const removeRetwat = createAction(
+  '[Action Bar] Remove Retwat',
+  props<{ user: User; message: Message }>()
+);
+
+export const toggleRetwatFailed = createAction(
+  '[Action Bar] Toggle Retwat failed'
+);

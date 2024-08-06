@@ -8,9 +8,12 @@
   <button
     [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
     mat-mini-fab
-    (click)="addRetwat($event)"
+    (click)="toggleRetwat($event)"
   >
     <mat-icon>recycling</mat-icon>
+    <span class="margin-left-3 font-ui">{{
+      message && message.retwattedBy ? message.retwattedBy.length : 0
+    }}</span>
   </button>
   <button
     [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"

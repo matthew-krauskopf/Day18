@@ -9,8 +9,12 @@ export class MessageUtils {
   enableButtons(user: User | null, message: Message): Message {
     return {
       ...message,
-      editable: user && user.id === message.author ? true : false,
+      editable:
+        !message.retwatAuthor && user && user.id === message.author
+          ? true
+          : false,
       deletable:
+        !message.retwatAuthor &&
         user &&
         (user.id === message.author || user.permission.toString() == 'ADMIN')
           ? true
@@ -32,7 +36,18 @@ export class MessageUtils {
   }
 
   popMessage(messages: Message[], message: Message) {
-    return messages.filter((m) => m.uuid != message.uuid);
+    return messages.filter((m) => !(m.uuid == message.uuid));
+  }
+
+  popTwat(messages: Message[], message: Message, user: User) {
+    return messages.filter(
+      (m) =>
+        !(
+          m.uuid == message.uuid &&
+          m.tmstp != message.tmstp &&
+          user.id == m.retwatAuthor
+        )
+    );
   }
 
   replaceMessage(messages: Message[], message: Message) {
@@ -47,6 +62,36 @@ export class MessageUtils {
     const newMsgArr = messages.slice();
     newMsgArr.push(this.createNewMessage(author, text));
     return newMsgArr;
+  }
+
+  addNewRetwat(messages: Message[], message: Message, user: User) {
+    const newMsgArr = messages.slice();
+    newMsgArr.push(this.createRetwat(user, message));
+    return newMsgArr;
+  }
+
+  markUntwatted(messages: Message[], message: Message, user: User) {
+    if (message.retwattedBy) {
+      return this.replaceMessage(messages, {
+        ...message,
+        retwattedBy: message.retwattedBy.filter((rt) => rt != user.id),
+      });
+    } else {
+      return messages;
+    }
+  }
+
+  markRetwatted(messages: Message[], message: Message, user: User) {
+    if (message.retwattedBy) {
+      const retwatArr = message.retwattedBy.slice();
+      retwatArr.push(user.id);
+      return this.replaceMessage(messages, {
+        ...message,
+        retwattedBy: retwatArr,
+      });
+    } else {
+      return messages;
+    }
   }
 
   addNewComment(message: Message, author: User, text: string): Message {
@@ -118,6 +163,26 @@ export class MessageUtils {
       username: author.username,
       retwatUsername: undefined,
       pic: author.pic,
+    };
+  }
+
+  private createRetwat(user: User, message: Message): Message {
+    return {
+      uuid: message.uuid,
+      author: message.author,
+      retwatAuthor: user.id,
+      tmstp: Date.now(),
+      text: message.text,
+
+      parent: undefined,
+      comments: [],
+      likedBy: [],
+      retwattedBy: undefined,
+      deletable: false,
+      editable: false,
+      username: '',
+      retwatUsername: undefined,
+      pic: '',
     };
   }
 }

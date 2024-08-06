@@ -7,6 +7,7 @@ import {
   addComment,
   addLike,
   addMessage,
+  addRetwat,
   deleteMessage,
   editMessage,
   loadHttpMessage,
@@ -17,8 +18,10 @@ import {
   loadMessagesSuccess,
   loadMessageSuccess,
   removeLike,
+  removeRetwat,
   toggleLike,
   toggleLikeFailed,
+  toggleRetwat,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -261,6 +264,92 @@ export class MessageEffects {
           const newUser: User = {
             ...payload.user,
             likedMessages: likedMessagesArr,
+          };
+          this.storeService.pushUser(newUser);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  toggleRetwat$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(toggleRetwat),
+      map((payload) => {
+        const user: User | null = this.storeService.getUser();
+        if (user) {
+          if (user.retwats.includes(payload.message.uuid)) {
+            return removeRetwat({ user, message: payload.message });
+          } else {
+            return addRetwat({ user, message: payload.message });
+          }
+        } else {
+          return toggleLikeFailed();
+        }
+      })
+    )
+  );
+
+  addRetwat$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(addRetwat),
+        map((payload) => {
+          // Update message with new retwat user
+          this.storeService.pushRawMessages(
+            this.utils.markRetwatted(
+              this.storeService.getRawMessages(),
+              payload.message,
+              payload.user
+            )
+          );
+
+          this.storeService.pushRawMessages(
+            this.utils.addNewRetwat(
+              this.storeService.getRawMessages(),
+              payload.message,
+              payload.user
+            )
+          );
+
+          const retwats = payload.user.retwats.slice();
+          retwats.push(payload.message.uuid);
+          const newUser: User = {
+            ...payload.user,
+            retwats: retwats,
+          };
+          this.storeService.pushUser(newUser);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  removeRetwat$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(removeRetwat),
+        map((payload) => {
+          // Update message with new retwat user
+          this.storeService.pushRawMessages(
+            this.utils.markUntwatted(
+              this.storeService.getRawMessages(),
+              payload.message,
+              payload.user
+            )
+          );
+
+          this.storeService.pushRawMessages(
+            this.utils.popTwat(
+              this.storeService.getRawMessages(),
+              payload.message,
+              payload.user
+            )
+          );
+
+          const newUser: User = {
+            ...payload.user,
+            retwats: payload.user.retwats.filter(
+              (rt) => rt != payload.message.uuid
+            ),
           };
           this.storeService.pushUser(newUser);
         })

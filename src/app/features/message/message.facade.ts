@@ -13,6 +13,7 @@ import {
   loadMessages,
   loadMessageSuccess,
   toggleLike,
+  toggleRetwat,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -143,5 +144,9 @@ export class MessageFacade {
 
   toggleLike(message: Message) {
     this.ngrxStore.dispatch(toggleLike({ message: message }));
+  }
+
+  toggleRetwat(message: Message) {
+    this.ngrxStore.dispatch(toggleRetwat({ message }));
   }
 }

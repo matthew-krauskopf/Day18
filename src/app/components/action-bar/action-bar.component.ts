@@ -46,8 +46,9 @@ export class ActionBarComponent {
     $event.stopPropagation();
   }
 
-  addRetwat($event: Event) {
+  toggleRetwat($event: Event) {
     $event.stopPropagation();
+    this.retwatEmitter.emit();
   }
 
   toggleLike($event: Event) {
