@@ -86,4 +86,8 @@ export class ThreadComponent implements OnInit, OnDestroy {
   toggleLike(message: Message) {
     this.messageFacade.toggleLike(message);
   }
+
+  toggleRetwat(message: Message) {
+    this.messageFacade.toggleRetwat(message);
+  }
 }

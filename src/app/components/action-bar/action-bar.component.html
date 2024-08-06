@@ -1,10 +1,10 @@
-<div class="pad-bot-2 flex justify-spread">
-  <button mat-mini-fab (click)="addComment($event)">
+<div class="pad-bot-2 flex justify-spread align-center">
+  <div class="flex align-center">
     <mat-icon class="font-gray">comment</mat-icon>
-    <span class="margin-left-3 font-ui font-gray">{{
+    <span class="margin-left-3 font-ui font-gray font-13">{{
       message && message.comments ? message.comments.length : 0
     }}</span>
-  </button>
+  </div>
   <button
     [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
     mat-mini-fab

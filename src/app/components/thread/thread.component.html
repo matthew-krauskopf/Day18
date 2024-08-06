@@ -18,6 +18,7 @@
     <div class="margin-x-5 border-y">
       <app-action-bar
         (likeEmitter)="toggleLike(message)"
+        (retwatEmitter)="toggleRetwat(message)"
         [message]="message"
       ></app-action-bar>
     </div>
@@ -56,6 +57,7 @@
     <div class="margin-x-10">
       <app-action-bar
         (likeEmitter)="toggleLike(comment)"
+        (retwatEmitter)="toggleRetwat(comment)"
         [message]="comment"
       ></app-action-bar>
     </div>
