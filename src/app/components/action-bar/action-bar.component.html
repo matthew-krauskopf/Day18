@@ -5,8 +5,12 @@
       message && message.comments ? message.comments.length : 0
     }}</span>
   </button>
-  <button mat-mini-fab (click)="addRetwat($event)">
-    <mat-icon class="font-gray">recycling</mat-icon>
+  <button
+    [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
+    mat-mini-fab
+    (click)="addRetwat($event)"
+  >
+    <mat-icon>recycling</mat-icon>
   </button>
   <button
     [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"

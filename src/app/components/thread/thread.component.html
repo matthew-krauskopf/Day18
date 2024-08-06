@@ -52,12 +52,14 @@
         }
       </div>
     </div>
+    @if(!comment.retwatAuthor) {
     <div class="margin-x-10">
       <app-action-bar
         (likeEmitter)="toggleLike(comment)"
         [message]="comment"
       ></app-action-bar>
     </div>
+    }
   </div>
   }
 </div>

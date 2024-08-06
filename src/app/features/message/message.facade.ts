@@ -57,7 +57,9 @@ export class MessageFacade {
           user,
           users,
           messages && selectedMessaged
-            ? messages.find((m) => m.uuid == selectedMessaged) ?? null
+            ? messages.find(
+                (m) => m.uuid == selectedMessaged && !m.retwatAuthor
+              ) ?? null
             : null
         )
       )

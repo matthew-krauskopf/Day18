@@ -36,7 +36,9 @@ export class MessageUtils {
   }
 
   replaceMessage(messages: Message[], message: Message) {
-    const newMessages = messages.filter((m) => m.uuid != message.uuid);
+    const newMessages = messages.filter(
+      (m) => !(m.uuid == message.uuid && m.tmstp == message.tmstp)
+    );
     newMessages.push(message);
     return newMessages;
   }

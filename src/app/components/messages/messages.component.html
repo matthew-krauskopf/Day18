@@ -40,6 +40,7 @@
             }
           </div>
         </div>
+        @if(!message.retwatAuthor) {
         <div class="pad-right-5">
           <app-action-bar
             (likeEmitter)="toggleLike(message)"
@@ -47,6 +48,7 @@
           >
           </app-action-bar>
         </div>
+        }
       </div>
     </div>
   </div>

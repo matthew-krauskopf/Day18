@@ -31,6 +31,17 @@ export class ActionBarComponent {
     })
   );
 
+  isRetwatted: Observable<boolean> = this.user$.pipe(
+    map((u) => {
+      return (
+        u != null &&
+        this.message != null &&
+        (u.retwats.includes(this.message.uuid) ||
+          this.message.retwatAuthor == u.id)
+      );
+    })
+  );
+
   addComment($event: Event) {
     $event.stopPropagation();
   }
