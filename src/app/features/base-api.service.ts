@@ -19,16 +19,16 @@ export abstract class BaseAPIService {
     };
   }
 
-  protected performGet(
+  protected performGet<T>(
     endpoint: string[],
     ...params: string[]
-  ): Observable<[]> {
+  ): Observable<T[]> {
     return this.http
-      .get<[]>(
+      .get<T[]>(
         this.baseUrl +
           endpoint.join('/') +
           (params.length > 0 ? '?' + params.join('&') : '')
       )
-      .pipe(catchError(this.handleError<[]>()));
+      .pipe(catchError(this.handleError<T[]>()));
   }
 }
