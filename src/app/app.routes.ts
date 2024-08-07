@@ -30,13 +30,19 @@ export const routes: Routes = [
         path: 'messages',
         component: MessagesComponent,
       },
-      //{
-      //  path: 'profile/:id',
-      //  component: ProfileComponent,
-      //},
       {
-        path: 'thread/:id',
-        component: ThreadComponent,
+        path: 'thread',
+        children: [
+          {
+            path: '',
+            redirectTo: '/home',
+            pathMatch: 'full',
+          },
+          {
+            path: ':id',
+            component: ThreadComponent,
+          },
+        ],
       },
     ],
   },
