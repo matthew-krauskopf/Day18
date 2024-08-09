@@ -90,52 +90,9 @@ export function addNewMessage(
   author: User,
   text: string
 ): Message[] {
-  console.log(messages);
   const newMsgArr = messages.slice();
   newMsgArr.push(createNewMessage(author, text));
   return newMsgArr;
-}
-
-export function addNewRetwat(
-  messages: Message[],
-  message: Message,
-  user: User
-) {
-  const newMsgArr = messages.slice();
-  newMsgArr.push(createRetwat(user, message));
-  return newMsgArr;
-}
-
-export function markUntwatted(
-  messages: Message[],
-  message: Message,
-  user: User
-) {
-  if (message.retwattedBy) {
-    return replaceMessage(messages, {
-      ...message,
-      retwattedBy: message.retwattedBy.filter((rt) => rt != user.id),
-    });
-  } else {
-    return messages;
-  }
-}
-
-export function markRetwatted(
-  messages: Message[],
-  message: Message,
-  user: User
-) {
-  if (message.retwattedBy) {
-    const retwatArr = message.retwattedBy.slice();
-    retwatArr.push(user.id);
-    return replaceMessage(messages, {
-      ...message,
-      retwattedBy: retwatArr,
-    });
-  } else {
-    return messages;
-  }
 }
 
 export function addNewComment(
@@ -217,4 +174,59 @@ export function addLikeToMessageFn(
   };
   newMessage.likedBy.push(user.id);
   return messages != null ? replaceMessage(messages, newMessage) : [];
+}
+
+export function removeLikeFromMessageFn(
+  messages: Message[] | null,
+  message: Message,
+  user: User
+) {
+  console.log('Removing from message');
+  const newMessage: Message = {
+    ...message,
+    likedBy: message.likedBy.filter((m) => m != user.id),
+  };
+  return messages != null ? replaceMessage(messages, newMessage) : [];
+}
+
+export function addRetwatFn(
+  messages: Message[] | null,
+  message: Message,
+  user: User
+) {
+  if (messages != null && message.retwattedBy) {
+    // Mark retwatted
+    const retwatArr = message.retwattedBy.slice();
+    retwatArr.push(user.id);
+    let newMessages = replaceMessage(messages, {
+      ...message,
+      retwattedBy: retwatArr,
+    });
+
+    // Add retwat as message
+    newMessages.push(createRetwat(user, message));
+    return newMessages;
+  } else {
+    return messages;
+  }
+}
+
+export function removeRetwatFn(
+  messages: Message[] | null,
+  message: Message,
+  user: User
+) {
+  if (messages != null && message.retwattedBy) {
+    // Mark untwatted
+    const retwatArr = message.retwattedBy.filter((u) => u != user.id);
+    let newMessages = replaceMessage(messages, {
+      ...message,
+      retwattedBy: retwatArr,
+    });
+
+    // Remove retwat
+    return popTwat(newMessages, message, user);
+  } else {
+    return messages;
+  }
 }

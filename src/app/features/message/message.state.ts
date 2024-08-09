@@ -4,10 +4,13 @@ import {
   addLike,
   addLikeToMessage,
   addMessage,
+  addRetwat,
   deleteMessage,
   editMessage,
   loadMessagesSuccess,
   loadMessageSuccess,
+  removeLike,
+  removeRetwat,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -16,7 +19,10 @@ import {
   addLikeToMessageFn,
   addNewComment,
   addNewMessage,
+  addRetwatFn,
   popMessage,
+  removeLikeFromMessageFn,
+  removeRetwatFn,
   replaceMessage,
 } from './message.utils';
 
@@ -67,5 +73,17 @@ export const messageReducer = createReducer(
   on(addLike, (state, { user, message }) => ({
     ...state,
     messages: addLikeToMessageFn(state.messages, message, user),
+  })),
+  on(removeLike, (state, { user, message }) => ({
+    ...state,
+    messages: removeLikeFromMessageFn(state.messages, message, user),
+  })),
+  on(addRetwat, (state, { user, message }) => ({
+    ...state,
+    messages: addRetwatFn(state.messages, message, user),
+  })),
+  on(removeRetwat, (state, { user, message }) => ({
+    ...state,
+    messages: removeRetwatFn(state.messages, message, user),
   }))
 );

@@ -30,3 +30,40 @@ export function addLikeToUserFn(user: User | null, uuid: string): User | null {
   newUser.likedMessages.push(uuid);
   return newUser;
 }
+
+export function removeLikeFromUserFn(
+  user: User | null,
+  uuid: string
+): User | null {
+  if (user == null) return null;
+
+  const newUser = {
+    ...user,
+    likedMessages: user.likedMessages.filter((m) => m != uuid),
+  };
+  return newUser;
+}
+
+export function addRetwatToUser(user: User | null, uuid: string): User | null {
+  if (user == null) return user;
+
+  const newUser = {
+    ...user,
+    retwats: user.retwats.slice(),
+  };
+  newUser.retwats.push(uuid);
+  return newUser;
+}
+
+export function removeRetwatFromUser(
+  user: User | null,
+  uuid: string
+): User | null {
+  if (user == null) return user;
+
+  const newUser = {
+    ...user,
+    retwats: user.retwats.filter((rt) => rt != uuid),
+  };
+  return newUser;
+}

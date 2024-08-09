@@ -86,11 +86,11 @@ export class MessagesComponent {
     });
   }
 
-  toggleLike(message: Message) {
-    this.messageFacade.toggleLike(message);
+  toggleLike(user: User, message: Message) {
+    this.messageFacade.toggleLike(user, message);
   }
 
-  toggleRetwat(message: Message) {
-    this.messageFacade.toggleRetwat(message);
+  toggleRetwat(user: User, message: Message) {
+    this.messageFacade.toggleRetwat(user, message);
   }
 }

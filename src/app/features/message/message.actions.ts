@@ -52,7 +52,7 @@ export const addComment = createAction(
 
 export const toggleLike = createAction(
   '[Action Bar] Toggle Like',
-  props<{ message: Message }>()
+  props<{ user: User; message: Message }>()
 );
 
 export const addLike = createAction(
@@ -74,7 +74,7 @@ export const toggleLikeFailed = createAction('[Action Bar] Toggle Like failed');
 
 export const toggleRetwat = createAction(
   '[Action Bar] Toggle Retwat',
-  props<{ message: Message }>()
+  props<{ user: User; message: Message }>()
 );
 
 export const addRetwat = createAction(

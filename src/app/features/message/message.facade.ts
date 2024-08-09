@@ -8,7 +8,7 @@ import {
   addMessage,
   deleteMessage,
   editMessage,
-  loadMessage,
+  loadHttpMessage,
   loadMessages,
   loadMessageSuccess,
   toggleLike,
@@ -91,16 +91,15 @@ export class MessageFacade {
 
   loadMessage(uuid: string) {
     if (!this.store.messageIsLoaded()) {
-      this.userFacade.loadUsers();
-      this.ngrxStore.dispatch(loadMessage({ uuid }));
+      this.ngrxStore.dispatch(loadHttpMessage({ uuid }));
     }
   }
 
-  toggleLike(message: Message) {
-    this.ngrxStore.dispatch(toggleLike({ message: message }));
+  toggleLike(user: User, message: Message) {
+    this.ngrxStore.dispatch(toggleLike({ user, message }));
   }
 
-  toggleRetwat(message: Message) {
-    this.ngrxStore.dispatch(toggleRetwat({ message }));
+  toggleRetwat(user: User, message: Message) {
+    this.ngrxStore.dispatch(toggleRetwat({ user, message }));
   }
 }

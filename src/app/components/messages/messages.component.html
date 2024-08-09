@@ -43,8 +43,9 @@
         @if(!message.retwatAuthor) {
         <div class="pad-right-5">
           <app-action-bar
-            (likeEmitter)="toggleLike(message)"
-            (retwatEmitter)="toggleRetwat(message)"
+            *ngIf="user$ | async as user"
+            (likeEmitter)="toggleLike(user, message)"
+            (retwatEmitter)="toggleRetwat(user, message)"
             [message]="message"
           >
           </app-action-bar>

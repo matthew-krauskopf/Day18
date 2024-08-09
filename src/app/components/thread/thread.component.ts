@@ -12,6 +12,8 @@ import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
+import { UserFacade } from '../../features/user/user.facade';
+import { User } from '../../features/user/user.entity';
 
 @Component({
   selector: 'app-thread',
@@ -27,15 +29,18 @@ import { PostMessageComponent } from '../post-message/post-message.component';
   styleUrl: './thread.component.scss',
 })
 export class ThreadComponent implements OnInit, OnDestroy {
+  userFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   dialog: MatDialog = inject(MatDialog);
 
+  user$;
   message$: Observable<Message | null>;
   comments$;
 
   constructor() {
+    this.user$ = this.userFacade.user$;
     this.message$ = this.messageFacade.message$;
     this.comments$ = this.messageFacade.comments$;
   }
@@ -83,11 +88,11 @@ export class ThreadComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleLike(message: Message) {
-    this.messageFacade.toggleLike(message);
+  toggleLike(user: User, message: Message) {
+    this.messageFacade.toggleLike(user, message);
   }
 
-  toggleRetwat(message: Message) {
-    this.messageFacade.toggleRetwat(message);
+  toggleRetwat(user: User, message: Message) {
+    this.messageFacade.toggleRetwat(user, message);
   }
 }
