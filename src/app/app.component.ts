@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
   authFacade: AuthFacade = inject(AuthFacade);
 
   ngOnInit(): void {
-    console.log('Cached login');
     this.authFacade.performCachedLogin();
   }
 }
