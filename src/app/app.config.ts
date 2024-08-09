@@ -10,7 +10,7 @@ import { AuthEffects } from './features/auth/auth.effects';
 import { MessageEffects } from './features/message/message.effects';
 import { messageKey, messageReducer } from './features/message/message.state';
 import { UserEffects } from './features/user/user.effects';
-import { userKey, userReducer } from './features/user/user.reducer';
+import { userKey, userReducer } from './features/user/user.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [

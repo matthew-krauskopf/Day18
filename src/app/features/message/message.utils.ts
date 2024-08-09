@@ -60,7 +60,8 @@ export function linkUserInfo(message: Message, users: User[]): Message {
   };
 }
 
-export function popMessage(messages: Message[], message: Message) {
+export function popMessage(messages: Message[] | null, message: Message) {
+  if (messages == null) return messages;
   return messages.filter((m) => !(m.uuid == message.uuid));
 }
 

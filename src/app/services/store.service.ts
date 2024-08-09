@@ -24,14 +24,6 @@ export class StoreService {
     return this.users.asObservable();
   }
 
-  watchSelectedMessage() {
-    return this.selectedMessage.asObservable();
-  }
-
-  watchRawMessages() {
-    return this.rawMessages.asObservable();
-  }
-
   usersAreLoaded(): boolean {
     let loaded: boolean = false;
     this.users
@@ -46,40 +38,8 @@ export class StoreService {
     return loaded;
   }
 
-  getUser(): User | null {
-    let user: User | null = null;
-    this.user.pipe(take(1)).subscribe((u) => (user = u));
-    return user;
-  }
-
-  getSelectedMessage(): string | null {
-    let selectedMessage: any | null = null;
-    this.selectedMessage
-      .pipe(take(1))
-      .subscribe((sm) => (selectedMessage = sm));
-    return selectedMessage;
-  }
-
-  getRawMessages() {
-    let rawMessages: any[] | null = [];
-    this.rawMessages.pipe(take(1)).subscribe((r) => (rawMessages = r));
-    return rawMessages;
-  }
-
   pushUser(user: User | null) {
     this.user.next(user);
-  }
-
-  pushUsers(users: User[] | null) {
-    this.users.next(users);
-  }
-
-  pushRawMessage(uuid: string | null) {
-    this.selectedMessage.next(uuid);
-  }
-
-  pushRawMessages(messages: Message[] | null) {
-    this.rawMessages.next(messages);
   }
 
   storeItem(type: StoreType, val: string) {

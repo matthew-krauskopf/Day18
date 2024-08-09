@@ -58,13 +58,13 @@ export const messageReducer = createReducer(
       messageText
     ),
   })),
-  on(editMessage, (state, { messages, message }) => ({
+  on(editMessage, (state, { message }) => ({
     ...state,
-    messages: replaceMessage(messages, message),
+    messages: replaceMessage(state.messages, message),
   })),
-  on(deleteMessage, (state, { messages, message }) => ({
+  on(deleteMessage, (state, { message }) => ({
     ...state,
-    messages: popMessage(messages, message),
+    messages: popMessage(state.messages, message),
   })),
   on(addComment, (state, { user, message, messageText }) => ({
     ...state,

@@ -37,12 +37,12 @@ export const addMessage = createAction(
 
 export const editMessage = createAction(
   '[Home] Edit Message',
-  props<{ messages: Message[]; message: Message }>()
+  props<{ message: Message }>()
 );
 
 export const deleteMessage = createAction(
   '[Home] Delete Message',
-  props<{ messages: Message[]; message: Message }>()
+  props<{ message: Message }>()
 );
 
 export const addComment = createAction(

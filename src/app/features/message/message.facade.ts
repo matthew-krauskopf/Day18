@@ -28,11 +28,6 @@ import { MessageService } from './message.service';
   providedIn: 'root',
 })
 export class MessageFacade {
-  // Explicit
-  user$;
-  users$;
-  rawMessages$;
-
   // Derived
   message$;
   messages$;
@@ -40,13 +35,8 @@ export class MessageFacade {
 
   messageService: MessageService = inject(MessageService);
   store: StoreService = inject(StoreService);
-  userFacade: UserFacade = inject(UserFacade);
 
   constructor(private ngrxStore: Store) {
-    this.user$ = this.userFacade.user$;
-    this.users$ = this.userFacade.users$;
-    this.rawMessages$ = this.store.watchRawMessages();
-
     this.message$ = this.ngrxStore.select(selectMessage);
     this.messages$ = this.ngrxStore.select(selectMessages);
     this.comments$ = this.ngrxStore.select(selectComments);
@@ -61,15 +51,11 @@ export class MessageFacade {
   }
 
   deleteMessage(message: Message) {
-    this.ngrxStore.dispatch(
-      deleteMessage({ messages: this.store.getRawMessages(), message: message })
-    );
+    this.ngrxStore.dispatch(deleteMessage({ message: message }));
   }
 
   editMessage(message: Message) {
-    this.ngrxStore.dispatch(
-      editMessage({ messages: this.store.getRawMessages(), message })
-    );
+    this.ngrxStore.dispatch(editMessage({ message }));
   }
 
   openMessage(message: Message) {
@@ -85,7 +71,6 @@ export class MessageFacade {
   }
 
   loadMessages() {
-    this.userFacade.loadUsers();
     this.ngrxStore.dispatch(loadMessages());
   }
 
