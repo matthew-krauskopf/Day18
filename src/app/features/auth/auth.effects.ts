@@ -15,13 +15,12 @@ import {
   relogin,
 } from './auth.actions';
 import { AuthService } from './auth.service';
-import { AuthUtils } from './auth.utils';
+import { performLogin } from './auth.utils';
 
 @Injectable()
 export class AuthEffects {
   authService: AuthService = inject(AuthService);
-  utils: AuthUtils = inject(AuthUtils);
-  store: StoreService = inject(StoreService);
+  localStorage: StoreService = inject(StoreService);
   router: Router = inject(Router);
   snackbar: MatSnackBar = inject(MatSnackBar);
 
@@ -52,11 +51,11 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(relogin),
       map(() => {
-        const username = this.store.getItem(StoreType.USER);
+        const username = this.localStorage.getItem(StoreType.USER);
         if (username != null) {
           return login({
             username: username,
-            password: this.store.getItem(StoreType.PASSWORD) ?? '',
+            password: this.localStorage.getItem(StoreType.PASSWORD) ?? '',
           });
         } else {
           return logout();
@@ -69,7 +68,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(loginFetched),
       map((payload) => {
-        if (this.utils.performLogin(payload.user, payload.password)) {
+        if (performLogin(payload.user, payload.password)) {
           return loginSuccess({ user: payload.user });
         } else {
           return loginRejected();
@@ -83,9 +82,11 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(loginSuccess),
         map((payload) => {
-          this.store.pushUser(payload.user);
-          this.store.storeItem(StoreType.USER, payload.user.username);
-          this.store.storeItem(StoreType.PASSWORD, payload.user.password);
+          this.localStorage.storeItem(StoreType.USER, payload.user.username);
+          this.localStorage.storeItem(
+            StoreType.PASSWORD,
+            payload.user.password
+          );
           if (this.router.url.includes('login')) {
             this.router.navigate(['home', 'messages']);
           }
@@ -129,9 +130,8 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(logout),
         tap(() => {
-          this.store.removeItem(StoreType.USER);
-          this.store.removeItem(StoreType.PASSWORD);
-          this.store.pushUser(null);
+          this.localStorage.removeItem(StoreType.USER);
+          this.localStorage.removeItem(StoreType.PASSWORD);
           this.router.navigate(['/login']);
         })
       ),

@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
 import { AuthEffects } from './features/auth/auth.effects';
+import { authReducer } from './features/auth/auth.state';
 import { MessageEffects } from './features/message/message.effects';
 import { messageKey, messageReducer } from './features/message/message.state';
 import { UserEffects } from './features/user/user.effects';
@@ -21,7 +22,11 @@ export const appConfig: ApplicationConfig = {
     provideEffects(UserEffects, MessageEffects, AuthEffects),
     provideState({ name: messageKey, reducer: messageReducer }),
     importProvidersFrom(
-      StoreModule.forRoot({ user: userReducer, messages: messageReducer })
+      StoreModule.forRoot({
+        user: userReducer,
+        messages: messageReducer,
+        auth: authReducer,
+      })
     ),
   ],
 };

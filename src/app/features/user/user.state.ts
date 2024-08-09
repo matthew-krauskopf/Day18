@@ -1,17 +1,18 @@
 import { createReducer, on } from '@ngrx/store';
+import { loginSuccess, logout } from '../auth/auth.actions';
 import {
   addLike,
-  removeLike,
   addRetwat,
+  removeLike,
   removeRetwat,
 } from '../message/message.actions';
-import { loadUsersSuccess } from './user.actions';
+import { loadUsersSuccess, unloadUsers } from './user.actions';
 import { User } from './user.entity';
 import {
-  attachPhoto,
   addLikeToUserFn,
-  removeLikeFromUserFn,
   addRetwatToUser,
+  attachPhoto,
+  removeLikeFromUserFn,
   removeRetwatFromUser,
 } from './user.utils';
 
@@ -48,5 +49,17 @@ export const userReducer = createReducer(
   on(removeRetwat, (state, { message }) => ({
     ...state,
     user: removeRetwatFromUser(state.user, message.uuid),
+  })),
+  on(loginSuccess, (state, { user }) => ({
+    ...state,
+    user: attachPhoto(user),
+  })),
+  on(logout, (state) => ({
+    ...state,
+    user: null,
+  })),
+  on(unloadUsers, (state) => ({
+    ...state,
+    users: null,
   }))
 );

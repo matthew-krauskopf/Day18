@@ -2,7 +2,6 @@ import { createReducer, on } from '@ngrx/store';
 import {
   addComment,
   addLike,
-  addLikeToMessage,
   addMessage,
   addRetwat,
   deleteMessage,

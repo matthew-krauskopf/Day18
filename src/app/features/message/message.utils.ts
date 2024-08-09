@@ -168,7 +168,6 @@ export function addLikeToMessageFn(
   message: Message,
   user: User
 ) {
-  console.log('Adding to message');
   const newMessage: Message = {
     ...message,
     likedBy: message.likedBy.slice(),
@@ -182,7 +181,6 @@ export function removeLikeFromMessageFn(
   message: Message,
   user: User
 ) {
-  console.log('Removing from message');
   const newMessage: Message = {
     ...message,
     likedBy: message.likedBy.filter((m) => m != user.id),

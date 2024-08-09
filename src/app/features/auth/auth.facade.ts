@@ -1,30 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { StoreService } from '../../services/store.service';
 import { login, logout, relogin } from './auth.actions';
+import { selectUser } from './auth.selectors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthFacade {
-  store: StoreService = inject(StoreService);
-  ngrxStore: Store = inject(Store);
-
+  store: Store = inject(Store);
   user$;
 
   constructor() {
-    this.user$ = this.store.watchUser();
+    this.user$ = this.store.select(selectUser);
   }
 
   performCachedLogin() {
-    this.ngrxStore.dispatch(relogin());
+    this.store.dispatch(relogin());
   }
 
   performLogin(username: string, password: string) {
-    this.ngrxStore.dispatch(login({ username, password }));
+    this.store.dispatch(login({ username, password }));
   }
 
   logout() {
-    this.ngrxStore.dispatch(logout());
+    this.store.dispatch(logout());
   }
 }

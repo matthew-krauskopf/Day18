@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreService } from '../../services/store.service';
 import { User } from '../user/user.entity';
-import { UserFacade } from '../user/user.facade';
 import {
   addComment,
   addMessage,
@@ -34,57 +33,55 @@ export class MessageFacade {
   comments$;
 
   messageService: MessageService = inject(MessageService);
-  store: StoreService = inject(StoreService);
+  localStorage: StoreService = inject(StoreService);
 
-  constructor(private ngrxStore: Store) {
-    this.message$ = this.ngrxStore.select(selectMessage);
-    this.messages$ = this.ngrxStore.select(selectMessages);
-    this.comments$ = this.ngrxStore.select(selectComments);
+  constructor(private store: Store) {
+    this.message$ = this.store.select(selectMessage);
+    this.messages$ = this.store.select(selectMessages);
+    this.comments$ = this.store.select(selectComments);
   }
 
   addMessage(messageText: string, user: User) {
-    this.ngrxStore.dispatch(addMessage({ messageText, user }));
+    this.store.dispatch(addMessage({ messageText, user }));
   }
 
   addComment(message: Message, messageText: string, user: User) {
-    this.ngrxStore.dispatch(addComment({ message, messageText, user }));
+    this.store.dispatch(addComment({ message, messageText, user }));
   }
 
   deleteMessage(message: Message) {
-    this.ngrxStore.dispatch(deleteMessage({ message: message }));
+    this.store.dispatch(deleteMessage({ message: message }));
   }
 
   editMessage(message: Message) {
-    this.ngrxStore.dispatch(editMessage({ message }));
+    this.store.dispatch(editMessage({ message }));
   }
 
   openMessage(message: Message) {
-    this.ngrxStore.dispatch(loadMessageSuccess({ message: message }));
+    this.store.dispatch(loadMessageSuccess({ message: message }));
   }
 
   unloadMessage() {
-    this.ngrxStore.dispatch(unloadMessage());
+    this.store.dispatch(unloadMessage());
   }
 
   unloadMessages() {
-    this.ngrxStore.dispatch(unloadMessages());
+    this.store.dispatch(unloadMessages());
   }
 
   loadMessages() {
-    this.ngrxStore.dispatch(loadMessages());
+    this.store.dispatch(loadMessages());
   }
 
   loadMessage(uuid: string) {
-    if (!this.store.messageIsLoaded()) {
-      this.ngrxStore.dispatch(loadHttpMessage({ uuid }));
-    }
+    this.store.dispatch(loadHttpMessage({ uuid }));
   }
 
   toggleLike(user: User, message: Message) {
-    this.ngrxStore.dispatch(toggleLike({ user, message }));
+    this.store.dispatch(toggleLike({ user, message }));
   }
 
   toggleRetwat(user: User, message: Message) {
-    this.ngrxStore.dispatch(toggleRetwat({ user, message }));
+    this.store.dispatch(toggleRetwat({ user, message }));
   }
 }

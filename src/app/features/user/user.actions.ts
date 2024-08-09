@@ -13,6 +13,8 @@ export const loadUsersSuccess = createAction(
 );
 export const loadUsersFail = createAction('[Home] Load Users Fail');
 
+export const unloadUsers = createAction('[Home] Unload Users');
+
 export const addLikeToUser = createAction(
   '[Action Bar] Add Like To User',
   props<{ user: User; uuid: string }>()

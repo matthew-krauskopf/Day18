@@ -4,12 +4,10 @@ import { catchError, exhaustMap, map, of } from 'rxjs';
 import { loadUsers, loadUsersFail, loadUsersSuccess } from './user.actions';
 import { User } from './user.entity';
 import { UserService } from './user.service';
-import { UserUtils } from './user.utils';
 
 @Injectable()
 export class UserEffects {
   userService: UserService = inject(UserService);
-  utils: UserUtils = inject(UserUtils);
 
   constructor(private actions$: Actions) {}
 

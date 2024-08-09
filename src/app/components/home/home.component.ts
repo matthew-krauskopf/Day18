@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.userFacade.unloadUsers();
+    this.userFacade.unloadUsers();
     this.messageFacade.unloadMessages();
   }
 }

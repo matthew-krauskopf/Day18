@@ -1,8 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, combineLatest, exhaustMap, map, of } from 'rxjs';
-import { StoreService } from '../../services/store.service';
-import { User } from '../user/user.entity';
 import {
   addLike,
   addRetwat,
@@ -23,7 +21,6 @@ import { MessageService } from './message.service';
 @Injectable()
 export class MessageEffects {
   messageService: MessageService = inject(MessageService);
-  storeService: StoreService = inject(StoreService);
 
   constructor(private actions$: Actions) {}
 
