@@ -12,3 +12,8 @@ export const loadUsersSuccess = createAction(
   props<{ users: User[] }>()
 );
 export const loadUsersFail = createAction('[Home] Load Users Fail');
+
+export const addLikeToUser = createAction(
+  '[Action Bar] Add Like To User',
+  props<{ user: User; uuid: string }>()
+);

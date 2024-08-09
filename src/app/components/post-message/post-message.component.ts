@@ -16,7 +16,6 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MessageFacade } from '../../features/message/message.facade';
 import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';

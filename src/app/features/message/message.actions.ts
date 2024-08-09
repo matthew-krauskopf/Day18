@@ -32,7 +32,7 @@ export const loadMessagesFail = createAction('[Home] Load Messages Fail');
 
 export const addMessage = createAction(
   '[Home] Add Message',
-  props<{ messages: Message[]; messageText: string; user: User }>()
+  props<{ messageText: string; user: User }>()
 );
 
 export const editMessage = createAction(
@@ -60,6 +60,11 @@ export const addLike = createAction(
   props<{ user: User; message: Message }>()
 );
 
+export const addLikeToMessage = createAction(
+  '[Action Bar] Add Like To Message',
+  props<{ user: User; message: Message }>()
+);
+
 export const removeLike = createAction(
   '[Action Bar] Remove Like',
   props<{ user: User; message: Message }>()
@@ -84,4 +89,9 @@ export const removeRetwat = createAction(
 
 export const toggleRetwatFailed = createAction(
   '[Action Bar] Toggle Retwat failed'
+);
+
+export const addCommentToMessages = createAction(
+  '[Thread] Add Comment To Messages',
+  props<{ user: User; message: Message; text: string }>()
 );

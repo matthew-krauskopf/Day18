@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatest, map } from 'rxjs';
 import { StoreService } from '../../services/store.service';
 import { User } from '../user/user.entity';
 import { UserFacade } from '../user/user.facade';
@@ -18,8 +17,12 @@ import {
   unloadMessages,
 } from './message.actions';
 import { Message } from './message.entity';
+import {
+  selectComments,
+  selectMessage,
+  selectMessages,
+} from './message.selectors';
 import { MessageService } from './message.service';
-import { MessageUtils } from './message.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +31,6 @@ export class MessageFacade {
   // Explicit
   user$;
   users$;
-  selectedMessaged$;
   rawMessages$;
 
   // Derived
@@ -39,69 +41,19 @@ export class MessageFacade {
   messageService: MessageService = inject(MessageService);
   store: StoreService = inject(StoreService);
   userFacade: UserFacade = inject(UserFacade);
-  utils: MessageUtils = inject(MessageUtils);
 
   constructor(private ngrxStore: Store) {
     this.user$ = this.userFacade.user$;
     this.users$ = this.userFacade.users$;
-    this.selectedMessaged$ = this.store.watchSelectedMessage();
     this.rawMessages$ = this.store.watchRawMessages();
 
-    this.message$ = combineLatest([
-      this.user$,
-      this.users$,
-      this.rawMessages$,
-      this.selectedMessaged$,
-    ]).pipe(
-      map(([user, users, messages, selectedMessaged]) =>
-        this.utils.linkMessageData(
-          user,
-          users,
-          messages && selectedMessaged
-            ? messages.find(
-                (m) => m.uuid == selectedMessaged && !m.retwatAuthor
-              ) ?? null
-            : null
-        )
-      )
-    );
-
-    this.messages$ = combineLatest([
-      this.user$,
-      this.users$,
-      this.rawMessages$,
-    ]).pipe(
-      map(([user, users, messages]) =>
-        this.utils
-          .linkMessagesData(user, users, messages)
-          .filter((m) => m.parent == undefined || m.retwatAuthor)
-      )
-    );
-
-    this.comments$ = combineLatest([
-      this.user$,
-      this.users$,
-      this.rawMessages$,
-      this.message$,
-    ]).pipe(
-      map(([user, users, messages, message]) =>
-        this.utils.linkMessagesData(
-          user,
-          users,
-          message && messages
-            ? messages.filter(
-                (m) => m.parent == message.uuid && !m.retwatAuthor
-              )
-            : messages
-        )
-      )
-    );
+    this.message$ = this.ngrxStore.select(selectMessage);
+    this.messages$ = this.ngrxStore.select(selectMessages);
+    this.comments$ = this.ngrxStore.select(selectComments);
   }
 
   addMessage(messageText: string, user: User) {
-    this.ngrxStore.dispatch(
-      addMessage({ messages: this.store.getRawMessages(), messageText, user })
-    );
+    this.ngrxStore.dispatch(addMessage({ messageText, user }));
   }
 
   addComment(message: Message, messageText: string, user: User) {
