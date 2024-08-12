@@ -10,6 +10,6 @@ export class AuthService extends BaseAPIService {
   endpoint = '/users';
 
   getUser(user: string): Observable<User[]> {
-    return this.performGet([this.endpoint], 'username={}'.replace('{}', user));
+    return this.performGet(this.endpoint, { key: 'username', value: user });
   }
 }

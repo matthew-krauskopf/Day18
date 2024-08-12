@@ -10,17 +10,14 @@ export class MessageService extends BaseAPIService {
   endpoint = '/improvedMessages';
 
   loadMessage(uuid: string): Observable<Message[]> {
-    return this.performGet([this.endpoint], 'uuid={}'.replace('{}', uuid));
+    return this.performGet(this.endpoint, { key: 'uuid', value: uuid });
   }
 
   loadComments(parentUuid: string): Observable<Message[]> {
-    return this.performGet(
-      [this.endpoint],
-      'parent={}'.replace('{}', parentUuid)
-    );
+    return this.performGet(this.endpoint, { key: 'parent', value: parentUuid });
   }
 
   getMessages(): Observable<Message[]> {
-    return this.performGet([this.endpoint]);
+    return this.performGet(this.endpoint);
   }
 }

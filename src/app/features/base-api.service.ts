@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, of } from 'rxjs';
+import { HttpParam } from '../model/http-param';
 
 @Injectable({
   providedIn: 'root',
@@ -20,15 +21,15 @@ export abstract class BaseAPIService {
   }
 
   protected performGet<T>(
-    endpoint: string[],
-    ...params: string[]
+    endpoint: string,
+    ...params: HttpParam[]
   ): Observable<T[]> {
+    let options = new HttpParams();
+    params.forEach((p) => {
+      options = options.append(p.key, p.value);
+    });
     return this.http
-      .get<T[]>(
-        this.baseUrl +
-          endpoint.join('/') +
-          (params.length > 0 ? '?' + params.join('&') : '')
-      )
+      .get<T[]>(this.baseUrl + endpoint, { params: options })
       .pipe(catchError(this.handleError<T[]>()));
   }
 }
