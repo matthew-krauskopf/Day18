@@ -1,13 +1,9 @@
 .message-pane {
-  max-height: calc(100vh - 75px);
+  max-height: calc(100vh - 69px);
   min-width: 414px;
   max-width: 600px;
   border-right: 1px solid grey;
   border-left: 1px solid grey;
-}
-
-.width {
-  overflow-x: hidden
 }
 
 .right-pane {

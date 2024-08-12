@@ -1,31 +1,34 @@
-<div class="message-pane flex-3">
-  <div class="border">
+<div>
+  <div class="border-bottom">
     <app-post-message (messageEmitter)="addMessage($event)"></app-post-message>
   </div>
   @for (message of messages$ | async; track message) {
-  <div class="flex flex-col border pointer" (click)="openThread(message)">
+  <div
+    class="flex flex-col border-bottom cursor-pointer"
+    (click)="openThread(message)"
+  >
     @if(message.retwatAuthor != null) {
-    <div class="flex align-center pad-top-3 pad-left-20 font-gray">
-      <mat-icon class="flex align-center retwat-size">recycling</mat-icon>
-      <span class="margin-left-3 font-s font-ui"
+    <div class="flex items-center pad-top-3 pad-left-20 font-gray">
+      <mat-icon class="flex items-center text-xl">recycling</mat-icon>
+      <span class="margin-left-3 text-sm font-ui"
         >{{ message.retwatUsername }} Retwatted</span
       >
     </div>
     }
     <div class="flex flex-row">
       <div class="flex justify-center margin-x-6 margin-y-5">
-        <img class="profile-pic" src="{{ message.pic }}" />
+        <img class="h-10 max-w-10 rounded-3xl" src="{{ message.pic }}" />
       </div>
       <div class="flex flex-col w-full margin-top-5 pad-left-1">
-        <div class="flex justify-spread">
+        <div class="flex justify-between">
           <div class="">
             <div class="">
-              <span class="bold font-white font-ui">{{
+              <span class="font-bold text-white font-ui">{{
                 message.username != null ? message.username : message.author
               }}</span>
             </div>
             <div class="margin-y-3">
-              <span class="font-white font-ui">{{ message.text }}</span>
+              <span class="text-white font-ui">{{ message.text }}</span>
             </div>
           </div>
           <div class="flex justify-right flex-1 pad-right-5">

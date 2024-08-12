@@ -1,11 +1,15 @@
-<div class="border flex align-center justify-spread pad-y-5">
+<div class="border-bottom flex items-center justify-between pad-y-5">
   <div class="pad-left-10">
-    <img (click)="goHome()" class="pointer pic-r" src="assets/twitter.png" />
+    <img
+      (click)="goHome()"
+      class="cursor-pointer h-12 w-12"
+      src="assets/twitter.png"
+    />
   </div>
-  <span class="font-white bold font-xl">Twatter</span>
-  <div class="margin-right-10 flex align-center">
+  <span class="text-white font-bold text-2xl">Twatter</span>
+  <div class="margin-right-10 flex items-center">
     <button mat-button (click)="authFacade.logout()">
-      <span class="font-white">Sign Out</span>
+      <span class="text-white">Sign Out</span>
     </button>
   </div>
 </div>
