@@ -40,6 +40,16 @@ export const editMessage = createAction(
   props<{ message: Message }>()
 );
 
+export const saveEdittedMessage = createAction(
+  '[Dialog] Save Editted Message',
+  props<{ message: Message }>()
+);
+
+export const confirmDeleteMessage = createAction(
+  '[Message] Confirm Delete Message',
+  props<{ message: Message }>()
+);
+
 export const deleteMessage = createAction(
   '[Home] Delete Message',
   props<{ message: Message }>()
@@ -95,3 +105,5 @@ export const addCommentToMessages = createAction(
   '[Thread] Add Comment To Messages',
   props<{ user: User; message: Message; text: string }>()
 );
+
+export const noAction = createAction('[noop] No Action');

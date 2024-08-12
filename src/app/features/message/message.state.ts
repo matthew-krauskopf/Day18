@@ -10,6 +10,7 @@ import {
   loadMessageSuccess,
   removeLike,
   removeRetwat,
+  saveEdittedMessage,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -57,7 +58,7 @@ export const messageReducer = createReducer(
       messageText
     ),
   })),
-  on(editMessage, (state, { message }) => ({
+  on(saveEdittedMessage, (state, { message }) => ({
     ...state,
     messages: replaceMessage(state.messages, message),
   })),

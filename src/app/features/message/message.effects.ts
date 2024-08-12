@@ -1,17 +1,25 @@
 import { inject, Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, combineLatest, exhaustMap, map, of } from 'rxjs';
+import { ConfirmActionComponent } from '../../components/dialog/confirm-action/confirm-action.component';
+import { EditMessageComponent } from '../../components/dialog/edit-message/edit-message.component';
 import {
   addLike,
   addRetwat,
+  confirmDeleteMessage,
+  deleteMessage,
+  editMessage,
   loadHttpMessage,
   loadMessageFail,
   loadMessages,
   loadMessagesFail,
   loadMessagesSuccess,
   loadMessageSuccess,
+  noAction,
   removeLike,
   removeRetwat,
+  saveEdittedMessage,
   toggleLike,
   toggleLikeFailed,
   toggleRetwat,
@@ -21,6 +29,7 @@ import { MessageService } from './message.service';
 @Injectable()
 export class MessageEffects {
   messageService: MessageService = inject(MessageService);
+  dialog: MatDialog = inject(MatDialog);
 
   constructor(private actions$: Actions) {}
 
@@ -87,6 +96,51 @@ export class MessageEffects {
           return toggleLikeFailed();
         }
       })
+    )
+  );
+
+  editMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(editMessage),
+      exhaustMap((payload) =>
+        this.dialog
+          .open(EditMessageComponent, {
+            data: {
+              text: payload.message.text,
+            },
+          })
+          .afterClosed()
+          .pipe(
+            map((form) =>
+              form
+                ? saveEdittedMessage({
+                    message: {
+                      ...payload.message,
+                      text: form.value.text,
+                    },
+                  })
+                : noAction()
+            )
+          )
+      )
+    )
+  );
+
+  confirmDeleteMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(confirmDeleteMessage),
+      exhaustMap((payload) =>
+        this.dialog
+          .open(ConfirmActionComponent)
+          .afterClosed()
+          .pipe(
+            map((action) =>
+              action == true
+                ? deleteMessage({ message: payload.message })
+                : noAction()
+            )
+          )
+      )
     )
   );
 }

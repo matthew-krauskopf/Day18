@@ -5,7 +5,7 @@ import { User } from '../user/user.entity';
 import {
   addComment,
   addMessage,
-  deleteMessage,
+  confirmDeleteMessage,
   editMessage,
   loadHttpMessage,
   loadMessages,
@@ -49,8 +49,8 @@ export class MessageFacade {
     this.store.dispatch(addComment({ message, messageText, user }));
   }
 
-  deleteMessage(message: Message) {
-    this.store.dispatch(deleteMessage({ message: message }));
+  confirmDeleteMessage(message: Message) {
+    this.store.dispatch(confirmDeleteMessage({ message }));
   }
 
   editMessage(message: Message) {

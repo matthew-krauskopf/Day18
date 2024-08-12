@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -14,8 +13,6 @@ import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
-import { ConfirmActionComponent } from '../dialog/confirm-action/confirm-action.component';
-import { EditMessageComponent } from '../dialog/edit-message/edit-message.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({
@@ -40,7 +37,6 @@ export class MessagesComponent {
   usersFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   router: Router = inject(Router);
-  dialog: MatDialog = inject(MatDialog);
 
   constructor() {
     this.user$ = this.usersFacade.user$;
@@ -58,32 +54,12 @@ export class MessagesComponent {
 
   editMessage($event: Event, message: Message) {
     $event.stopPropagation();
-
-    const dialogRef = this.dialog.open(EditMessageComponent, {
-      data: {
-        text: message.text,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((form) => {
-      if (form) {
-        this.messageFacade.editMessage({
-          ...message,
-          text: form.value.text,
-        });
-      }
-    });
+    this.messageFacade.editMessage(message);
   }
 
   deleteMessage($event: Event, message: Message) {
     $event.stopPropagation();
-    const dialogRef = this.dialog.open(ConfirmActionComponent);
-
-    dialogRef.afterClosed().subscribe((action) => {
-      if (action && action == true) {
-        this.messageFacade.deleteMessage(message);
-      }
-    });
+    this.messageFacade.confirmDeleteMessage(message);
   }
 
   toggleLike(user: User, message: Message) {
