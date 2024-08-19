@@ -3,10 +3,10 @@ import { Message } from './message.entity';
 
 export function linkMessageData(
   user: User | null,
-  users: User[] | null,
+  users: User[],
   message: Message | null
 ): Message | null {
-  if (message != null && users) {
+  if (message != null) {
     return {
       ...enableButtons(user, linkUserInfo(message, users)),
     };
@@ -16,16 +16,14 @@ export function linkMessageData(
 
 export function linkMessagesData(
   user: User | null,
-  users: User[] | null,
-  messages: Message[] | null
+  users: User[],
+  messages: Message[]
 ) {
   const fullMessages: Message[] = [];
-  messages?.forEach((m) => {
-    if (users) {
-      const author: User = users.filter((u) => u.id == m.author)[0];
-      if (author) {
-        fullMessages.push(enableButtons(user, linkUserInfo(m, users)));
-      }
+  messages.forEach((m) => {
+    const author: User = users.filter((u) => u.id == m.author)[0];
+    if (author) {
+      fullMessages.push(enableButtons(user, linkUserInfo(m, users)));
     }
   });
   return fullMessages.sort((a, b) => b.tmstp - a.tmstp);
@@ -60,8 +58,7 @@ export function linkUserInfo(message: Message, users: User[]): Message {
   };
 }
 
-export function popMessage(messages: Message[] | null, message: Message) {
-  if (messages == null) return messages;
+export function popMessage(messages: Message[], message: Message) {
   return messages.filter((m) => !(m.uuid == message.uuid));
 }
 
@@ -76,51 +73,35 @@ export function popTwat(messages: Message[], message: Message, user: User) {
   );
 }
 
-export function replaceMessage(messages: Message[] | null, message: Message) {
-  if (messages == null) return [];
-
-  const newMessages = messages.filter(
-    (m) => !(m.uuid == message.uuid && m.tmstp == message.tmstp)
-  );
-  newMessages.push(message);
-  return newMessages;
-}
-
-export function addNewMessage(
-  messages: Message[],
-  author: User,
-  text: string
-): Message[] {
-  const newMsgArr = messages.slice();
-  newMsgArr.push(createNewMessage(author, text));
-  return newMsgArr;
+export function replaceMessage(messages: Message[], message: Message) {
+  return [
+    ...messages.filter(
+      (m) => !(m.uuid == message.uuid && m.tmstp == message.tmstp)
+    ),
+    message,
+  ];
 }
 
 export function addNewComment(
-  messages: Message[] | null,
+  messages: Message[],
   message: Message,
   author: User,
   text: string
 ): Message[] {
-  if (messages == null) return [];
-
   const comment = createNewMessage(author, text, message.uuid);
-  const updatedMessage = {
+  const updatedMessage: Message = {
     ...message,
-    comments: message.comments.slice(),
+    comments: [...message.comments, comment.uuid],
   };
-  updatedMessage.comments.push(comment.uuid);
 
-  let updatedMessages = replaceMessage(messages, updatedMessage);
-  updatedMessages.push(comment);
-  return updatedMessages;
+  return [...replaceMessage(messages, updatedMessage), comment];
 }
 
 export function getCurrentMessage(messages: Message[], uuid: string) {
   return messages.find((m) => m.uuid == uuid);
 }
 
-function createNewMessage(
+export function createNewMessage(
   author: User,
   text: string,
   parent?: string
@@ -164,20 +145,19 @@ function createRetwat(user: User, message: Message): Message {
 }
 
 export function addLikeToMessageFn(
-  messages: Message[] | null,
+  messages: Message[],
   message: Message,
   user: User
 ) {
   const newMessage: Message = {
     ...message,
-    likedBy: message.likedBy.slice(),
+    likedBy: [...message.likedBy, user.id],
   };
-  newMessage.likedBy.push(user.id);
-  return messages != null ? replaceMessage(messages, newMessage) : [];
+  return replaceMessage(messages, newMessage);
 }
 
 export function removeLikeFromMessageFn(
-  messages: Message[] | null,
+  messages: Message[],
   message: Message,
   user: User
 ) {
@@ -185,15 +165,11 @@ export function removeLikeFromMessageFn(
     ...message,
     likedBy: message.likedBy.filter((m) => m != user.id),
   };
-  return messages != null ? replaceMessage(messages, newMessage) : [];
+  return replaceMessage(messages, newMessage);
 }
 
-export function addRetwatFn(
-  messages: Message[] | null,
-  message: Message,
-  user: User
-) {
-  if (messages != null && message.retwattedBy) {
+export function addRetwatFn(messages: Message[], message: Message, user: User) {
+  if (message.retwattedBy) {
     // Mark retwatted
     const retwatArr = message.retwattedBy.slice();
     retwatArr.push(user.id);
@@ -211,11 +187,11 @@ export function addRetwatFn(
 }
 
 export function removeRetwatFn(
-  messages: Message[] | null,
+  messages: Message[],
   message: Message,
   user: User
 ) {
-  if (messages != null && message.retwattedBy) {
+  if (message.retwattedBy) {
     // Mark untwatted
     const retwatArr = message.retwattedBy.filter((u) => u != user.id);
     let newMessages = replaceMessage(messages, {

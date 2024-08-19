@@ -18,14 +18,14 @@ import {
 
 export interface UserState {
   user: User | null;
-  users: User[] | null;
+  users: User[];
 }
 
 export const userKey = 'user';
 
 export const userState: UserState = {
   user: null,
-  users: null,
+  users: [],
 };
 
 export const userReducer = createReducer(
@@ -60,6 +60,6 @@ export const userReducer = createReducer(
   })),
   on(unloadUsers, (state) => ({
     ...state,
-    users: null,
+    users: [],
   }))
 );

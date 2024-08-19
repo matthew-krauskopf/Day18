@@ -33,7 +33,7 @@ import { PostMessageComponent } from '../post-message/post-message.component';
 })
 export class MessagesComponent {
   user$: Observable<User | null>;
-  messages$: Observable<Message[] | null>;
+  messages$: Observable<Message[]>;
   usersFacade: UserFacade = inject(UserFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   router: Router = inject(Router);

@@ -18,8 +18,8 @@ import { Message } from './message.entity';
 import {
   addLikeToMessageFn,
   addNewComment,
-  addNewMessage,
   addRetwatFn,
+  createNewMessage,
   popMessage,
   removeLikeFromMessageFn,
   removeRetwatFn,
@@ -28,18 +28,18 @@ import {
 
 export interface MessageState {
   messageId: string | null;
-  messages: Message[] | null;
+  messages: Message[];
 }
 
 export const messageKey = 'message';
 
-export const messageState: MessageState = {
+export const currentMessage: MessageState = {
   messageId: null,
-  messages: null,
+  messages: [],
 };
 
 export const messageReducer = createReducer(
-  messageState,
+  currentMessage,
   on(loadMessagesSuccess, (state, { messages }) => ({
     ...state,
     messages: messages,
@@ -49,14 +49,10 @@ export const messageReducer = createReducer(
     messageId: message.uuid,
   })),
   on(unloadMessage, (state) => ({ ...state, message: null })),
-  on(unloadMessages, (state) => ({ ...state, messages: null })),
+  on(unloadMessages, (state) => ({ ...state, messages: [] })),
   on(addMessage, (state, { messageText, user }) => ({
     ...state,
-    messages: addNewMessage(
-      state.messages != null ? state.messages : [],
-      user,
-      messageText
-    ),
+    messages: [...state.messages, createNewMessage(user, messageText)],
   })),
   on(saveEdittedMessage, (state, { message }) => ({
     ...state,
