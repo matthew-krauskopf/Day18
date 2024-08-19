@@ -1,12 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, combineLatest, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of } from 'rxjs';
 import { ConfirmActionComponent } from '../../components/dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../../components/dialog/edit-message/edit-message.component';
 import {
-  addLike,
-  addRetwat,
   confirmDeleteMessage,
   deleteMessage,
   editMessage,
@@ -17,12 +15,7 @@ import {
   loadMessagesSuccess,
   loadMessageSuccess,
   noAction,
-  removeLike,
-  removeRetwat,
   saveEdittedMessage,
-  toggleLike,
-  toggleLikeFailed,
-  toggleRetwat,
 } from './message.actions';
 import { MessageService } from './message.service';
 
@@ -37,12 +30,12 @@ export class MessageEffects {
     this.actions$.pipe(
       ofType(loadHttpMessage),
       exhaustMap((payload) =>
-        combineLatest([this.messageService.loadMessage(payload.uuid)]).pipe(
-          map(([message]) => {
-            return message.length > 0
-              ? loadMessageSuccess({ message: message[0] })
-              : loadMessageFail();
-          }),
+        this.messageService.loadMessage(payload.uuid).pipe(
+          map((messages) =>
+            messages.length > 0
+              ? loadMessageSuccess({ message: messages[0] })
+              : loadMessageFail()
+          ),
           catchError(() => of(loadMessageFail()))
         )
       )
@@ -58,44 +51,6 @@ export class MessageEffects {
           catchError(() => of(loadMessagesFail()))
         )
       )
-    )
-  );
-
-  toggleLike$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(toggleLike),
-      map((payload) => {
-        if (payload.user != null) {
-          console.log(payload.message);
-          if (payload.user.likedMessages.includes(payload.message.uuid)) {
-            return removeLike({ user: payload.user, message: payload.message });
-          } else {
-            return addLike({ user: payload.user, message: payload.message });
-          }
-        } else {
-          return toggleLikeFailed();
-        }
-      })
-    )
-  );
-
-  toggleRetwat$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(toggleRetwat),
-      map((payload) => {
-        if (payload.user) {
-          if (payload.user.retwats.includes(payload.message.uuid)) {
-            return removeRetwat({
-              user: payload.user,
-              message: payload.message,
-            });
-          } else {
-            return addRetwat({ user: payload.user, message: payload.message });
-          }
-        } else {
-          return toggleLikeFailed();
-        }
-      })
     )
   );
 

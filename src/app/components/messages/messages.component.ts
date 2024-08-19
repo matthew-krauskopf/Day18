@@ -63,10 +63,18 @@ export class MessagesComponent {
   }
 
   toggleLike(user: User, message: Message) {
-    this.messageFacade.toggleLike(user, message);
+    if (user.likedMessages.includes(message.uuid)) {
+      this.messageFacade.removeLike(user, message);
+    } else {
+      this.messageFacade.addLike(user, message);
+    }
   }
 
   toggleRetwat(user: User, message: Message) {
-    this.messageFacade.toggleRetwat(user, message);
+    if (user.retwats.includes(message.uuid)) {
+      return this.messageFacade.removeRetwat(user, message);
+    } else {
+      return this.messageFacade.addRetwat(user, message);
+    }
   }
 }

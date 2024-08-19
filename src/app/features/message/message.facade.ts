@@ -4,14 +4,16 @@ import { StoreService } from '../../services/store.service';
 import { User } from '../user/user.entity';
 import {
   addComment,
+  addLike,
   addMessage,
+  addRetwat,
   confirmDeleteMessage,
   editMessage,
   loadHttpMessage,
   loadMessages,
   loadMessageSuccess,
-  toggleLike,
-  toggleRetwat,
+  removeLike,
+  removeRetwat,
   unloadMessage,
   unloadMessages,
 } from './message.actions';
@@ -77,11 +79,19 @@ export class MessageFacade {
     this.store.dispatch(loadHttpMessage({ uuid }));
   }
 
-  toggleLike(user: User, message: Message) {
-    this.store.dispatch(toggleLike({ user, message }));
+  addLike(user: User, message: Message) {
+    this.store.dispatch(addLike({ user, message }));
   }
 
-  toggleRetwat(user: User, message: Message) {
-    this.store.dispatch(toggleRetwat({ user, message }));
+  removeLike(user: User, message: Message) {
+    this.store.dispatch(removeLike({ user, message }));
+  }
+
+  addRetwat(user: User, message: Message) {
+    this.store.dispatch(addRetwat({ user, message }));
+  }
+
+  removeRetwat(user: User, message: Message) {
+    this.store.dispatch(removeRetwat({ user, message }));
   }
 }
