@@ -11,11 +11,9 @@ import { selectUser, selectUsers } from './user.selectors';
 export class UserFacade {
   userService: UserService = inject(UserService);
 
-  user$;
   users$;
 
   constructor(private store: Store) {
-    this.user$ = this.store.select(selectUser);
     this.users$ = this.store.select(selectUsers);
   }
 

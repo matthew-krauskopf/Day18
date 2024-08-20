@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
+import { AuthFacade } from '../../features/auth/auth.facade';
 
 @Component({
   selector: 'app-post-message',
@@ -35,14 +36,14 @@ import { PostedMessage } from '../../model/posted-message';
   styleUrl: './post-message.component.scss',
 })
 export class PostMessageComponent implements OnInit {
-  userFacace: UserFacade = inject(UserFacade);
+  authFacade: AuthFacade = inject(AuthFacade);
 
   @Input() mode?: string;
   @Output() messageEmitter: EventEmitter<PostedMessage> = new EventEmitter();
 
   placeholder: string = '';
 
-  user$ = this.userFacace.user$;
+  user$ = this.authFacade.user$;
 
   ngOnInit(): void {
     this.placeholder =

@@ -1,5 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { combineLatest, map } from 'rxjs';
+import { UserFacade } from '../user/user.facade';
 import { login, logout, relogin } from './auth.actions';
 import { selectUser } from './auth.selectors';
 
@@ -8,10 +10,16 @@ import { selectUser } from './auth.selectors';
 })
 export class AuthFacade {
   store: Store = inject(Store);
+  userFacade: UserFacade = inject(UserFacade);
   user$;
+  userId$;
 
   constructor() {
-    this.user$ = this.store.select(selectUser);
+    this.userId$ = this.store.select(selectUser);
+
+    this.user$ = combineLatest([this.userId$, this.userFacade.users$]).pipe(
+      map(([userId, users]) => users.find((u) => u.id == userId) ?? null)
+    );
   }
 
   performCachedLogin() {

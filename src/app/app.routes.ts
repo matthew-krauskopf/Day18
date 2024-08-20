@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { ThreadComponent } from './components/thread/thread.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -52,6 +53,20 @@ export const routes: Routes = [
                 component: EngagedByComponent,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'profile',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'messages',
+          },
+          {
+            path: ':id',
+            component: ProfileComponent,
           },
         ],
       },

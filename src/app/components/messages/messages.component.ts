@@ -14,6 +14,7 @@ import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
+import { AuthFacade } from '../../features/auth/auth.facade';
 
 @Component({
   selector: 'app-messages',
@@ -32,14 +33,14 @@ import { PostMessageComponent } from '../post-message/post-message.component';
   styleUrl: './messages.component.scss',
 })
 export class MessagesComponent {
-  user$: Observable<User | null>;
+  user$;
   messages$: Observable<Message[]>;
-  usersFacade: UserFacade = inject(UserFacade);
+  authFacade: AuthFacade = inject(AuthFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   router: Router = inject(Router);
 
   constructor() {
-    this.user$ = this.usersFacade.user$;
+    this.user$ = this.authFacade.user$;
     this.messages$ = this.messageFacade.messages$;
   }
 

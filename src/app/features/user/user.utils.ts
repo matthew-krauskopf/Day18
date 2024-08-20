@@ -7,42 +7,28 @@ export function attachPhoto(user: User): User {
   };
 }
 
-export function addLikeToUserFn(user: User | null, uuid: string): User | null {
-  if (user == null) return null;
-
+export function addLikeToUserFn(user: User, uuid: string): User {
   return {
     ...user,
     likedMessages: [...user.likedMessages, uuid],
   };
 }
 
-export function removeLikeFromUserFn(
-  user: User | null,
-  uuid: string
-): User | null {
-  if (user == null) return null;
-
+export function removeLikeFromUserFn(user: User, uuid: string): User {
   return {
     ...user,
     likedMessages: user.likedMessages.filter((m) => m != uuid),
   };
 }
 
-export function addRetwatToUser(user: User | null, uuid: string): User | null {
-  if (user == null) return user;
-
+export function addRetwatToUser(user: User, uuid: string): User {
   return {
     ...user,
     retwats: [...user.retwats, uuid],
   };
 }
 
-export function removeRetwatFromUser(
-  user: User | null,
-  uuid: string
-): User | null {
-  if (user == null) return user;
-
+export function removeRetwatFromUser(user: User, uuid: string): User {
   return {
     ...user,
     retwats: user.retwats.filter((rt) => rt != uuid),

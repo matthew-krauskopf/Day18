@@ -1,1 +1,16 @@
-<p>profile works!</p>
+@if(currentUser$ | async; as currentUser) {
+<div class="pad-x-5">
+  <div class="flex items-center">
+    <button
+      (click)="goBack()"
+      class="flex items-center margin-y-3"
+      mat-mini-fab
+    >
+      <mat-icon class="text-white">arrow_back</mat-icon>
+    </button>
+    <span class="pad-x-10 text-2xl text-white font-bold font-ui">{{
+      currentUser.username
+    }}</span>
+  </div>
+</div>
+}

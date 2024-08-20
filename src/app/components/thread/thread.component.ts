@@ -11,6 +11,7 @@ import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
+import { AuthFacade } from '../../features/auth/auth.facade';
 
 @Component({
   selector: 'app-thread',
@@ -26,7 +27,7 @@ import { PostMessageComponent } from '../post-message/post-message.component';
   styleUrl: './thread.component.scss',
 })
 export class ThreadComponent implements OnInit, OnDestroy {
-  userFacade: UserFacade = inject(UserFacade);
+  authFacade: AuthFacade = inject(AuthFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
@@ -36,7 +37,7 @@ export class ThreadComponent implements OnInit, OnDestroy {
   comments$;
 
   constructor() {
-    this.user$ = this.userFacade.user$;
+    this.user$ = this.authFacade.user$;
     this.message$ = this.messageFacade.message$;
     this.comments$ = this.messageFacade.comments$;
   }

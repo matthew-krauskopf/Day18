@@ -34,21 +34,33 @@ export const userReducer = createReducer(
     ...state,
     users: users.map(attachPhoto),
   })),
-  on(addLike, (state, { message }) => ({
+  on(addLike, (state, { user, message }) => ({
     ...state,
-    user: addLikeToUserFn(state.user, message.uuid),
+    users: [
+      ...state.users.filter((u) => u.id != user.id),
+      addLikeToUserFn(user, message.uuid),
+    ],
   })),
-  on(removeLike, (state, { message }) => ({
+  on(removeLike, (state, { user, message }) => ({
     ...state,
-    user: removeLikeFromUserFn(state.user, message.uuid),
+    users: [
+      ...state.users.filter((u) => u.id != user.id),
+      removeLikeFromUserFn(user, message.uuid),
+    ],
   })),
-  on(addRetwat, (state, { message }) => ({
+  on(addRetwat, (state, { user, message }) => ({
     ...state,
-    user: addRetwatToUser(state.user, message.uuid),
+    users: [
+      ...state.users.filter((u) => u.id != user.id),
+      addRetwatToUser(user, message.uuid),
+    ],
   })),
-  on(removeRetwat, (state, { message }) => ({
+  on(removeRetwat, (state, { user, message }) => ({
     ...state,
-    user: removeRetwatFromUser(state.user, message.uuid),
+    users: [
+      ...state.users.filter((u) => u.id != user.id),
+      removeRetwatFromUser(user, message.uuid),
+    ],
   })),
   on(loginSuccess, (state, { user }) => ({
     ...state,

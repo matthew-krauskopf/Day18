@@ -1,6 +1,6 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { UserFacade } from '../../features/user/user.facade';
+import { AuthFacade } from '../../features/auth/auth.facade';
 
 @Component({
   selector: 'app-left-panel',
@@ -10,7 +10,6 @@ import { UserFacade } from '../../features/user/user.facade';
   styleUrl: './left-panel.component.scss',
 })
 export class LeftPanelComponent {
-  userFacade: UserFacade = inject(UserFacade);
-
-  user$ = this.userFacade.user$;
+  authFacade: AuthFacade = inject(AuthFacade);
+  user$ = this.authFacade.user$;
 }

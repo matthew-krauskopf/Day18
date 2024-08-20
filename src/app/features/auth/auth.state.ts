@@ -3,23 +3,23 @@ import { User } from '../user/user.entity';
 import { loginSuccess, logout } from './auth.actions';
 
 export interface AuthState {
-  user: User | null;
+  userId: number | null;
 }
 
 export const authKey = 'auth';
 
 export const authState: AuthState = {
-  user: null,
+  userId: null,
 };
 
 export const authReducer = createReducer(
   authState,
   on(loginSuccess, (state, { user }) => ({
     ...state,
-    user: user,
+    userId: user.id,
   })),
   on(logout, (state) => ({
     ...state,
-    user: null,
+    userId: null,
   }))
 );
