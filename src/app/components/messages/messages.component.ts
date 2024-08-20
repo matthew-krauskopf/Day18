@@ -45,7 +45,7 @@ export class MessagesComponent {
 
   openThread(message: Message) {
     this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'thread', message.uuid]);
+    this.router.navigate(['home', 'messages', message.uuid]);
   }
 
   addMessage($event: PostedMessage) {
@@ -79,10 +79,10 @@ export class MessagesComponent {
   }
 
   viewLikes(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid, 'likedBy']);
+    this.router.navigate(['home', 'messages', message.uuid, 'likedBy']);
   }
 
   viewRetwats(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid, 'retwattedBy']);
+    this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
   }
 }

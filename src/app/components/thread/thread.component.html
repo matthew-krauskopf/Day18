@@ -1,7 +1,7 @@
 <div *ngIf="message$ | async as message">
   <div class="pad-x-5 border-bottom">
     <div class="flex items-center">
-      <button (click)="goBack()" class="margin-y-3" mat-mini-fab>
+      <button (click)="goBack(message)" class="margin-y-3" mat-mini-fab>
         <mat-icon class="text-white">arrow_back</mat-icon>
       </button>
       <span class="pad-x-10 text-2xl text-white font-bold font-ui">Thread</span>
@@ -22,6 +22,8 @@
         (retwatEmitter)="toggleRetwat(user, message)"
         (viewLikesEmitter)="viewLikes(message)"
         (viewRetwatsEmitter)="viewRetwats(message)"
+        [isLikedSignal]="user.likedMessages.includes(message.uuid)"
+        [isRetwattedSignal]="user.retwats.includes(message.uuid)"
         [message]="message"
       ></app-action-bar>
     </div>
@@ -33,7 +35,10 @@
     </div>
   </div>
   @for (comment of comments$ | async; track comment) {
-  <div class="flex flex-col border-bottom">
+  <div
+    class="flex flex-col border-bottom cursor-pointer"
+    (click)="openThread(comment)"
+  >
     <div class="flex flex-row pad-x-5 pad-y-7">
       <div class="flex margin-x-5">
         <img class="h-10 max-w-10 rounded-3xl" src="{{ comment.pic }}" />
@@ -46,11 +51,11 @@
       </div>
       <div class="flex justify-right flex-1 pad-right-5">
         @if (comment.editable) {
-        <button (click)="editComment(comment)" mat-mini-fab>
+        <button (click)="editComment($event, comment)" mat-mini-fab>
           <mat-icon class="font-gray">edit</mat-icon>
         </button>
         } @if(comment.deletable) {
-        <button (click)="deleteComment(comment)" mat-mini-fab>
+        <button (click)="deleteComment($event, comment)" mat-mini-fab>
           <mat-icon class="font-gray">delete</mat-icon>
         </button>
         }
@@ -65,6 +70,8 @@
         (viewLikesEmitter)="viewLikes(comment)"
         (viewRetwatsEmitter)="viewRetwats(comment)"
         [message]="comment"
+        [isLikedSignal]="user.likedMessages.includes(comment.uuid)"
+        [isRetwattedSignal]="user.retwats.includes(comment.uuid)"
       ></app-action-bar>
     </div>
     }

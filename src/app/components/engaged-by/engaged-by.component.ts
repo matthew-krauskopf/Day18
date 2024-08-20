@@ -30,7 +30,6 @@ export class EngagedByComponent implements OnInit {
   ngOnInit(): void {
     this.messageFacade.loadMessage(this.route.snapshot.params['id']);
     this.mode = this.route.snapshot.routeConfig?.path;
-    console.log(this.mode);
   }
 
   constructor() {
@@ -49,14 +48,14 @@ export class EngagedByComponent implements OnInit {
   }
 
   goBack(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid]);
+    this.router.navigate(['home', 'messages', message.uuid]);
   }
 
   goToLikes(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid, 'likedBy']);
+    this.router.navigate(['home', 'messages', message.uuid, 'likedBy']);
   }
 
   goToRetwats(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid, 'retwattedBy']);
+    this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
   }
 }

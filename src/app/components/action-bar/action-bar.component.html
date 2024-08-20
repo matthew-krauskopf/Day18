@@ -7,7 +7,7 @@
   </div>
   <div class="flex items-center">
     <button
-      [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
+      [ngStyle]="{ color: isRetwattedSignal ? 'rgb(58, 245, 83)' : 'grey' }"
       mat-mini-fab
       (click)="toggleRetwat($event)"
     >
@@ -15,7 +15,7 @@
     </button>
     <span
       (click)="openRetwattedBy()"
-      [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
+      [ngStyle]="{ color: isRetwattedSignal ? 'rgb(58, 245, 83)' : 'grey' }"
       class="show-on-hover cursor-pointer pad-x-3 font-ui text-xs"
       >{{
         message && message.retwattedBy ? message.retwattedBy.length : 0
@@ -24,7 +24,7 @@
   </div>
   <div class="flex items-center">
     <button
-      [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"
+      [ngStyle]="{ color: isLikedSignal ? 'rgb(0, 162, 255)' : 'grey' }"
       mat-mini-fab
       (click)="toggleLike($event)"
     >
@@ -32,7 +32,7 @@
     </button>
     <span
       (click)="openLikedBy()"
-      [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"
+      [ngStyle]="{ color: isLikedSignal ? 'rgb(0, 162, 255)' : 'grey' }"
       class="show-on-hover cursor-pointer pad-x-3 font-ui text-xs"
       >{{ message && message.likedBy ? message.likedBy.length : 0 }}</span
     >

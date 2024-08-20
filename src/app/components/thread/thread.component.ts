@@ -41,8 +41,20 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.comments$ = this.messageFacade.comments$;
   }
 
-  goBack() {
-    this.router.navigate(['home', 'messages']);
+  goBack(message: Message) {
+    if (message.parent) {
+      this.messageFacade.unloadMessage();
+      this.messageFacade.loadMessage(message.parent);
+      this.router.navigate(['home', 'messages', message.parent]);
+    } else {
+      this.router.navigate(['home', 'messages']);
+    }
+  }
+
+  openThread(message: Message) {
+    this.messageFacade.unloadMessage();
+    this.messageFacade.openMessage(message);
+    this.router.navigate(['home', 'messages', message.uuid]);
   }
 
   ngOnInit(): void {
@@ -57,11 +69,13 @@ export class ThreadComponent implements OnInit, OnDestroy {
     this.messageFacade.addComment(parent, $event.text, $event.user);
   }
 
-  editComment(comment: Message) {
+  editComment($event: Event, comment: Message) {
+    $event.stopPropagation();
     this.messageFacade.editMessage(comment);
   }
 
-  deleteComment(comment: Message) {
+  deleteComment($event: Event, comment: Message) {
+    $event.stopPropagation();
     this.messageFacade.confirmDeleteMessage(comment);
   }
 
@@ -75,17 +89,19 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   toggleRetwat(user: User, message: Message) {
     if (user.retwats.includes(message.uuid)) {
-      return this.messageFacade.removeRetwat(user, message);
+      this.messageFacade.removeRetwat(user, message);
     } else {
-      return this.messageFacade.addRetwat(user, message);
+      this.messageFacade.addRetwat(user, message);
     }
   }
 
   viewLikes(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid, 'likedBy']);
+    this.messageFacade.openMessage(message);
+    this.router.navigate(['home', 'messages', message.uuid, 'likedBy']);
   }
 
   viewRetwats(message: Message) {
-    this.router.navigate(['home', 'thread', message.uuid, 'retwattedBy']);
+    this.messageFacade.openMessage(message);
+    this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
   }
 }

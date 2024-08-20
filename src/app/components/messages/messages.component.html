@@ -51,6 +51,8 @@
             (retwatEmitter)="toggleRetwat(user, message)"
             (viewLikesEmitter)="viewLikes(message)"
             (viewRetwatsEmitter)="viewRetwats(message)"
+            [isLikedSignal]="user.likedMessages.includes(message.uuid)"
+            [isRetwattedSignal]="user.retwats.includes(message.uuid)"
             [message]="message"
           >
           </app-action-bar>

@@ -10,12 +10,10 @@ export function attachPhoto(user: User): User {
 export function addLikeToUserFn(user: User | null, uuid: string): User | null {
   if (user == null) return null;
 
-  const newUser = {
+  return {
     ...user,
-    likedMessages: user.likedMessages.slice(),
+    likedMessages: [...user.likedMessages, uuid],
   };
-  newUser.likedMessages.push(uuid);
-  return newUser;
 }
 
 export function removeLikeFromUserFn(
@@ -24,22 +22,19 @@ export function removeLikeFromUserFn(
 ): User | null {
   if (user == null) return null;
 
-  const newUser = {
+  return {
     ...user,
     likedMessages: user.likedMessages.filter((m) => m != uuid),
   };
-  return newUser;
 }
 
 export function addRetwatToUser(user: User | null, uuid: string): User | null {
   if (user == null) return user;
 
-  const newUser = {
+  return {
     ...user,
-    retwats: user.retwats.slice(),
+    retwats: [...user.retwats, uuid],
   };
-  newUser.retwats.push(uuid);
-  return newUser;
 }
 
 export function removeRetwatFromUser(
@@ -48,9 +43,8 @@ export function removeRetwatFromUser(
 ): User | null {
   if (user == null) return user;
 
-  const newUser = {
+  return {
     ...user,
     retwats: user.retwats.filter((rt) => rt != uuid),
   };
-  return newUser;
 }
