@@ -5,24 +5,36 @@
       message && message.comments ? message.comments.length : 0
     }}</span>
   </div>
-  <button
-    [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
-    mat-mini-fab
-    (click)="toggleRetwat($event)"
-  >
-    <mat-icon>recycling</mat-icon>
-    <span class="margin-left-3 font-ui text-xs">{{
-      message && message.retwattedBy ? message.retwattedBy.length : 0
-    }}</span>
-  </button>
-  <button
-    [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"
-    mat-mini-fab
-    (click)="toggleLike($event)"
-  >
-    <mat-icon>thumb_up</mat-icon>
-    <span class="margin-left-3 font-ui text-xs">{{
-      message && message.likedBy ? message.likedBy.length : 0
-    }}</span>
-  </button>
+  <div class="flex items-center">
+    <button
+      [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
+      mat-mini-fab
+      (click)="toggleRetwat($event)"
+    >
+      <mat-icon>recycling</mat-icon>
+    </button>
+    <span
+      (click)="openRetwattedBy()"
+      [ngStyle]="{ color: (isRetwatted | async) ? 'rgb(58, 245, 83)' : 'grey' }"
+      class="show-on-hover cursor-pointer pad-x-3 font-ui text-xs"
+      >{{
+        message && message.retwattedBy ? message.retwattedBy.length : 0
+      }}</span
+    >
+  </div>
+  <div class="flex items-center">
+    <button
+      [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"
+      mat-mini-fab
+      (click)="toggleLike($event)"
+    >
+      <mat-icon>thumb_up</mat-icon>
+    </button>
+    <span
+      (click)="openLikedBy()"
+      [ngStyle]="{ color: (isLiked | async) ? 'rgb(0, 162, 255)' : 'grey' }"
+      class="show-on-hover cursor-pointer pad-x-3 font-ui text-xs"
+      >{{ message && message.likedBy ? message.likedBy.length : 0 }}</span
+    >
+  </div>
 </div>

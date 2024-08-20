@@ -21,6 +21,9 @@ export class ActionBarComponent {
   @Output() retwatEmitter: EventEmitter<void> = new EventEmitter();
   @Output() likeEmitter: EventEmitter<void> = new EventEmitter();
 
+  @Output() viewLikesEmitter: EventEmitter<void> = new EventEmitter();
+  @Output() viewRetwatsEmitter: EventEmitter<void> = new EventEmitter();
+
   isLiked: Observable<boolean> = this.user$.pipe(
     map((u) => {
       return (
@@ -54,5 +57,13 @@ export class ActionBarComponent {
   toggleLike($event: Event) {
     $event.stopPropagation();
     this.likeEmitter.emit();
+  }
+
+  openLikedBy() {
+    this.viewLikesEmitter.emit();
+  }
+
+  openRetwattedBy() {
+    this.viewRetwatsEmitter.emit();
   }
 }

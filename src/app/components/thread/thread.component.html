@@ -20,6 +20,8 @@
         *ngIf="user$ | async as user"
         (likeEmitter)="toggleLike(user, message)"
         (retwatEmitter)="toggleRetwat(user, message)"
+        (viewLikesEmitter)="viewLikes(message)"
+        (viewRetwatsEmitter)="viewRetwats(message)"
         [message]="message"
       ></app-action-bar>
     </div>
@@ -60,6 +62,8 @@
         *ngIf="user$ | async as user"
         (likeEmitter)="toggleLike(user, comment)"
         (retwatEmitter)="toggleRetwat(user, comment)"
+        (viewLikesEmitter)="viewLikes(comment)"
+        (viewRetwatsEmitter)="viewRetwats(comment)"
         [message]="comment"
       ></app-action-bar>
     </div>

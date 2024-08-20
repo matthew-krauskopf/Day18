@@ -77,4 +77,12 @@ export class MessagesComponent {
       return this.messageFacade.addRetwat(user, message);
     }
   }
+
+  viewLikes(message: Message) {
+    this.router.navigate(['home', 'thread', message.uuid, 'likedBy']);
+  }
+
+  viewRetwats(message: Message) {
+    this.router.navigate(['home', 'thread', message.uuid, 'retwattedBy']);
+  }
 }

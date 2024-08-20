@@ -49,10 +49,10 @@ export function linkUserInfo(message: Message, users: User[]): Message {
   const user: User = users.filter((u) => u.id == message.author)[0];
   return {
     ...message,
-    username: user.username ?? '',
+    username: user ? user.username : '',
     retwatUsername:
       users.find((u) => message.retwatAuthor == u.id)?.username ?? undefined,
-    pic: user.pic ?? '',
+    pic: user ? user.pic : '',
     editable: false,
     deletable: false,
   };

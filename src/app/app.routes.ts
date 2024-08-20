@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { EngagedByComponent } from './components/engaged-by/engaged-by.component';
 import { LoginComponent } from './components/login/login.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -40,7 +41,21 @@ export const routes: Routes = [
           },
           {
             path: ':id',
-            component: ThreadComponent,
+            children: [
+              {
+                path: '',
+                pathMatch: 'full',
+                component: ThreadComponent,
+              },
+              {
+                path: 'likedBy',
+                component: EngagedByComponent,
+              },
+              {
+                path: 'retwattedBy',
+                component: EngagedByComponent,
+              },
+            ],
           },
         ],
       },

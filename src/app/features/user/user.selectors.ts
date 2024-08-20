@@ -7,7 +7,7 @@ export const selectUserState = createFeatureSelector<UserState>('user');
 export const selectUsers = createSelector(
   selectUserState,
   (userState: UserState) => {
-    return userState.users != null ? userState.users.map(attachPhoto) : null;
+    return userState.users.map(attachPhoto);
   }
 );
 
