@@ -1,6 +1,6 @@
 @if(currentUser$ | async; as currentUser) {
-<div class="pad-x-10 margin-y-10">
-  <div class="flex flex-col">
+<div class="margin-y-10">
+  <div class="pad-x-10 flex flex-col">
     <div class="flex justify-between">
       <div class="flex items-center">
         <button (click)="goBack()" class="flex items-center" mat-mini-fab>
@@ -23,13 +23,24 @@
       </div>
     </div>
   </div>
-  <div class="margin-left-5 margin-top-20">
+  <div class="pad-x-10 margin-left-5 margin-top-20">
     <img class="h-32 max-w-32 rounded-full" src="{{ currentUser.pic }}" />
   </div>
-  <div class="margin-top-5">
+  <div class="pad-x-10 margin-top-5">
     <span class="text-2xl text-white font-bold font-ui">{{
       currentUser.username
     }}</span>
+  </div>
+  <div class="margin-top-10 w-full h-12 flex justify-evenly">
+    @for (m of modes; track m) {
+    <app-option-select
+      class="flex-1"
+      [label]="m"
+      [mode]="mode"
+      (labelEmitter)="changeMode($event)"
+    >
+    </app-option-select>
+    }
   </div>
 </div>
 }

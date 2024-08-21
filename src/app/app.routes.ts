@@ -67,6 +67,25 @@ export const routes: Routes = [
           {
             path: ':id',
             component: ProfileComponent,
+            children: [
+              {
+                path: '',
+                pathMatch: 'full',
+                component: ProfileComponent,
+              },
+              {
+                path: 'likes',
+                component: ProfileComponent,
+              },
+              {
+                path: 'comments',
+                component: ProfileComponent,
+              },
+              {
+                path: 'retwats',
+                component: ProfileComponent,
+              },
+            ],
           },
         ],
       },
