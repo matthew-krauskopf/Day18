@@ -20,6 +20,7 @@ import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { AuthFacade } from '../../features/auth/auth.facade';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-message',
@@ -37,6 +38,7 @@ import { AuthFacade } from '../../features/auth/auth.facade';
 })
 export class PostMessageComponent implements OnInit {
   authFacade: AuthFacade = inject(AuthFacade);
+  router: Router = inject(Router);
 
   @Input() mode?: string;
   @Output() messageEmitter: EventEmitter<PostedMessage> = new EventEmitter();
@@ -60,5 +62,9 @@ export class PostMessageComponent implements OnInit {
       text: this.newMessageForm.value.message ?? '',
     });
     this.newMessageForm.patchValue({ message: '' });
+  }
+
+  goToProfile(user: User) {
+    this.router.navigate(['home', 'profile', user.id]);
   }
 }

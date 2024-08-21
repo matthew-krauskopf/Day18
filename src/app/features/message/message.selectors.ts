@@ -51,3 +51,15 @@ export const selectComments = createSelector(
     );
   }
 );
+
+export const selectAllMessages = createSelector(
+  selectMessageState,
+  selectUserState,
+  (messageState: MessageState, userState: UserState) => {
+    return linkMessagesData(
+      userState.user,
+      userState.users,
+      messageState.messages
+    );
+  }
+);

@@ -56,13 +56,9 @@ export class ProfileComponent implements OnInit {
 
     this.currentMessages$ = combineLatest([
       this.userId$,
-      this.messageFacade.messages$,
-      this.messageFacade.comments$,
+      this.messageFacade.allMessages$,
     ]).pipe(
-      map(([userId, messages, comments]) => [
-        ...messages.filter((m) => m.author == userId),
-        ...comments.filter((c) => c.author == userId),
-      ])
+      map(([userId, messages]) => messages.filter((m) => m.author == userId))
     );
 
     this.numMessages$ = this.currentMessages$.pipe(
@@ -70,26 +66,22 @@ export class ProfileComponent implements OnInit {
     );
 
     this.filteredMessages$ = combineLatest([
-      this.messageFacade.messages$,
-      this.messageFacade.comments$,
+      this.messageFacade.allMessages$,
       this.mode$,
       this.userId$,
     ]).pipe(
-      map(([messages, comments, mode, userId]) => {
+      map(([messages, mode, userId]) => {
         switch (mode) {
           case this.modes[0]: //twats
             return messages.filter(
-              (m) => m.author == userId && !m.retwatAuthor
+              (m) => m.author == userId && !m.retwatAuthor && !m.parent
             );
           case this.modes[1]: //comments
-            return comments.filter((c) => c.author == userId);
+            return messages.filter((c) => c.author == userId && c.parent);
           case this.modes[2]: //retwats
             return messages.filter((m) => m.retwattedBy.includes(userId));
           case this.modes[3]: // likes
-            return [
-              ...messages.filter((m) => m.likedBy.includes(userId)),
-              ...comments.filter((c) => c.likedBy.includes(userId)),
-            ];
+            return messages.filter((m) => m.likedBy.includes(userId));
         }
         return messages;
       })

@@ -1,6 +1,10 @@
 <div class="pane flex justify-center items-end" *ngIf="user$ | async as user">
   <div class="flex flex-wrap justify-center items-center pad-x-5 pad-bot-10">
-    <img class="h-10 max-w-10 rounded-3xl" src="{{ user.pic }}" />
+    <img
+      (click)="goToProfile(user)"
+      class="cursor-pointer h-10 max-w-10 rounded-3xl"
+      src="{{ user.pic }}"
+    />
     <span class="margin-left-5 text-white font-ui font-bold">{{
       user.username
     }}</span>

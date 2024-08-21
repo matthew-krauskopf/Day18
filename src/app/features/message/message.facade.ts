@@ -19,6 +19,7 @@ import {
 } from './message.actions';
 import { Message } from './message.entity';
 import {
+  selectAllMessages,
   selectComments,
   selectMessage,
   selectMessages,
@@ -30,6 +31,7 @@ import { MessageService } from './message.service';
 })
 export class MessageFacade {
   // Derived
+  allMessages$;
   message$;
   messages$;
   comments$;
@@ -38,6 +40,7 @@ export class MessageFacade {
   localStorage: StoreService = inject(StoreService);
 
   constructor(private store: Store) {
+    this.allMessages$ = this.store.select(selectAllMessages);
     this.message$ = this.store.select(selectMessage);
     this.messages$ = this.store.select(selectMessages);
     this.comments$ = this.store.select(selectComments);
