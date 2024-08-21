@@ -4,14 +4,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { AuthFacade } from '../../features/auth/auth.facade';
 import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
 import { User } from '../../features/user/user.entity';
-import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
-import { AuthFacade } from '../../features/auth/auth.facade';
 
 @Component({
   selector: 'app-thread',
@@ -104,5 +103,9 @@ export class ThreadComponent implements OnInit, OnDestroy {
   viewRetwats(message: Message) {
     this.messageFacade.openMessage(message);
     this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
+  }
+
+  goToProfile(message: Message) {
+    this.router.navigate(['home', 'profile', message.author]);
   }
 }

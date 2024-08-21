@@ -6,15 +6,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { AuthFacade } from '../../features/auth/auth.facade';
 import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
 import { User } from '../../features/user/user.entity';
-import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
-import { AuthFacade } from '../../features/auth/auth.facade';
 
 @Component({
   selector: 'app-messages',
@@ -34,7 +32,7 @@ import { AuthFacade } from '../../features/auth/auth.facade';
 })
 export class MessagesComponent {
   user$;
-  messages$: Observable<Message[]>;
+  messages$;
   authFacade: AuthFacade = inject(AuthFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
   router: Router = inject(Router);
@@ -85,5 +83,9 @@ export class MessagesComponent {
 
   viewRetwats(message: Message) {
     this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
+  }
+
+  goToProfile(message: Message) {
+    this.router.navigate(['home', 'profile', message.author]);
   }
 }

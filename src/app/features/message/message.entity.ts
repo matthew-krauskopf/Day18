@@ -6,7 +6,7 @@ export interface Message {
   likedBy: number[];
   parent: string | undefined;
   retwatAuthor: number | undefined;
-  retwattedBy: number[] | undefined;
+  retwattedBy: number[];
 
   username: string;
   retwatUsername: string | undefined;

@@ -7,7 +7,11 @@
       <span class="pad-x-10 text-2xl text-white font-bold font-ui">Thread</span>
     </div>
     <div class="flex items-center margin-x-5">
-      <img class="h-10 max-w-10 rounded-3xl" src="{{ message.pic }}" />
+      <img
+        (click)="goToProfile(message)"
+        class="h-10 max-w-10 rounded-3xl"
+        src="{{ message.pic }}"
+      />
       <span class="margin-x-5 text-white font-bold font-ui">{{
         message.username
       }}</span>
@@ -41,7 +45,11 @@
   >
     <div class="flex flex-row pad-x-5 pad-y-7">
       <div class="flex margin-x-5">
-        <img class="h-10 max-w-10 rounded-3xl" src="{{ comment.pic }}" />
+        <img
+          (click)="goToProfile(comment)"
+          class="h-10 max-w-10 rounded-3xl"
+          src="{{ comment.pic }}"
+        />
       </div>
       <div class="flex flex-col">
         <span class="text-white font-bold font-ui">

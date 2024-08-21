@@ -17,7 +17,11 @@
     }
     <div class="flex flex-row">
       <div class="flex justify-center margin-x-6 margin-y-5">
-        <img class="h-10 max-w-10 rounded-3xl" src="{{ message.pic }}" />
+        <img
+          (click)="goToProfile(message)"
+          class="h-10 max-w-10 rounded-3xl"
+          src="{{ message.pic }}"
+        />
       </div>
       <div class="flex flex-col w-full margin-top-5 pad-left-1">
         <div class="flex justify-between">

@@ -135,7 +135,7 @@ function createRetwat(user: User, message: Message): Message {
     parent: message.parent,
     comments: [],
     likedBy: [],
-    retwattedBy: undefined,
+    retwattedBy: [],
     deletable: false,
     editable: false,
     username: '',
