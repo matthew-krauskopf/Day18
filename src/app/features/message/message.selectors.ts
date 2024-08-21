@@ -47,7 +47,7 @@ export const selectComments = createSelector(
         ? messageState.messages.filter(
             (m) => m.parent == messageState.messageId && !m.retwatAuthor
           )
-        : messageState.messages
+        : messageState.messages.filter((m) => m.parent != undefined)
     );
   }
 );

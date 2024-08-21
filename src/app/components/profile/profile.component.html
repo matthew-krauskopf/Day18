@@ -1,14 +1,33 @@
 @if(currentUser$ | async; as currentUser) {
-<div class="pad-x-5">
-  <div class="flex items-center">
-    <button
-      (click)="goBack()"
-      class="flex items-center margin-y-3"
-      mat-mini-fab
-    >
-      <mat-icon class="text-white">arrow_back</mat-icon>
-    </button>
-    <span class="pad-x-10 text-2xl text-white font-bold font-ui">{{
+<div class="pad-x-10 margin-y-10">
+  <div class="flex flex-col">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <button (click)="goBack()" class="flex items-center" mat-mini-fab>
+          <mat-icon class="text-white">arrow_back</mat-icon>
+        </button>
+        <div class="pad-x-10 flex flex-col">
+          <span class="text-2xl text-white font-bold font-ui">{{
+            currentUser.username
+          }}</span>
+          <span class="font-gray font-ui text-sm">
+            {{ numMessages$ | async }} messages
+          </span>
+        </div>
+      </div>
+      <div>
+        @if(isAuthProfile$ | async) {
+        <button mat-button class="edit">Edit</button>
+        <button mat-button class="margin-left-10 delete">Delete</button>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="margin-left-5 margin-top-20">
+    <img class="h-32 max-w-32 rounded-full" src="{{ currentUser.pic }}" />
+  </div>
+  <div class="margin-top-5">
+    <span class="text-2xl text-white font-bold font-ui">{{
       currentUser.username
     }}</span>
   </div>
