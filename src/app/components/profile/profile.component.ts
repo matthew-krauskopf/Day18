@@ -11,6 +11,7 @@ import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { OptionSelectComponent } from '../option-select/option-select.component';
+import { MessageComponent } from '../message/message.component';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +22,7 @@ import { OptionSelectComponent } from '../option-select/option-select.component'
     CommonModule,
     OptionSelectComponent,
     ActionBarComponent,
+    MessageComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -104,45 +106,6 @@ export class ProfileComponent implements OnInit {
     } else {
       this.router.navigate(['home', 'profile', user.id, $event]);
     }
-  }
-
-  editMessage($event: Event, message: Message) {
-    $event.stopPropagation();
-    this.messageFacade.editMessage(message);
-  }
-
-  deleteMessage($event: Event, message: Message) {
-    $event.stopPropagation();
-    this.messageFacade.confirmDeleteMessage(message);
-  }
-
-  openThread(message: Message) {
-    this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'messages', message.uuid]);
-  }
-
-  toggleLike(user: User, message: Message) {
-    if (user.likedMessages.includes(message.uuid)) {
-      this.messageFacade.removeLike(user, message);
-    } else {
-      this.messageFacade.addLike(user, message);
-    }
-  }
-
-  toggleRetwat(user: User, message: Message) {
-    if (user.retwats.includes(message.uuid)) {
-      return this.messageFacade.removeRetwat(user, message);
-    } else {
-      return this.messageFacade.addRetwat(user, message);
-    }
-  }
-
-  viewLikes(message: Message) {
-    this.router.navigate(['home', 'messages', message.uuid, 'likedBy']);
-  }
-
-  viewRetwats(message: Message) {
-    this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
   }
 
   goToProfile(message: Message) {

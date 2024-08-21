@@ -10,6 +10,7 @@ import { MessageFacade } from '../../features/message/message.facade';
 import { User } from '../../features/user/user.entity';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
+import { MessageComponent } from '../message/message.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
 
 @Component({
@@ -21,6 +22,7 @@ import { PostMessageComponent } from '../post-message/post-message.component';
     MatIconModule,
     ActionBarComponent,
     PostMessageComponent,
+    MessageComponent,
   ],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss',
@@ -97,12 +99,12 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   viewLikes(message: Message) {
     this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'messages', message.uuid, 'likedBy']);
+    this.router.navigate(['home', 'messages', message.uuid, 'likes']);
   }
 
   viewRetwats(message: Message) {
     this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'messages', message.uuid, 'retwattedBy']);
+    this.router.navigate(['home', 'messages', message.uuid, 'retwats']);
   }
 
   goToProfile(message: Message) {

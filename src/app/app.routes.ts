@@ -45,11 +45,11 @@ export const routes: Routes = [
                 component: ThreadComponent,
               },
               {
-                path: 'likedBy',
+                path: 'likes',
                 component: EngagedByComponent,
               },
               {
-                path: 'retwattedBy',
+                path: 'retwats',
                 component: EngagedByComponent,
               },
             ],

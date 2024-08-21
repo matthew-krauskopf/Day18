@@ -3,67 +3,6 @@
     <app-post-message (messageEmitter)="addMessage($event)"></app-post-message>
   </div>
   @for (message of messages$ | async; track message) {
-  <div
-    class="flex flex-col border-bottom cursor-pointer"
-    (click)="openThread(message)"
-  >
-    @if(message.retwatAuthor != null) {
-    <div class="flex items-center pad-top-3 pad-left-20 font-gray">
-      <mat-icon class="flex items-center text-xl">recycling</mat-icon>
-      <span class="margin-left-3 text-sm font-ui"
-        >{{ message.retwatUsername }} Retwatted</span
-      >
-    </div>
-    }
-    <div class="flex flex-row">
-      <div class="flex justify-center margin-x-6 margin-y-5">
-        <img
-          (click)="goToProfile(message)"
-          class="h-10 max-w-10 rounded-3xl"
-          src="{{ message.pic }}"
-        />
-      </div>
-      <div class="flex flex-col w-full margin-top-5 pad-left-1">
-        <div class="flex justify-between">
-          <div class="">
-            <div class="">
-              <span class="font-bold text-white font-ui">{{
-                message.username != null ? message.username : message.author
-              }}</span>
-            </div>
-            <div class="margin-y-3">
-              <span class="text-white font-ui">{{ message.text }}</span>
-            </div>
-          </div>
-          <div class="flex justify-right flex-1 pad-right-5">
-            @if (message.editable) {
-            <button (click)="editMessage($event, message)" mat-mini-fab>
-              <mat-icon class="font-gray">edit</mat-icon>
-            </button>
-            } @if(message.deletable) {
-            <button (click)="deleteMessage($event, message)" mat-mini-fab>
-              <mat-icon class="font-gray">delete</mat-icon>
-            </button>
-            }
-          </div>
-        </div>
-        @if(!message.retwatAuthor) {
-        <div class="pad-right-5">
-          <app-action-bar
-            *ngIf="user$ | async as user"
-            (likeEmitter)="toggleLike(user, message)"
-            (retwatEmitter)="toggleRetwat(user, message)"
-            (viewLikesEmitter)="viewLikes(message)"
-            (viewRetwatsEmitter)="viewRetwats(message)"
-            [isLikedSignal]="user.likedMessages.includes(message.uuid)"
-            [isRetwattedSignal]="user.retwats.includes(message.uuid)"
-            [message]="message"
-          >
-          </app-action-bar>
-        </div>
-        }
-      </div>
-    </div>
-  </div>
+  <app-message [message]="message"></app-message>
   }
 </div>
