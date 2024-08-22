@@ -1,5 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
-import { deleteAuthUser, loginSuccess, logout } from '../auth/auth.actions';
+import {
+  deleteAuthUser,
+  editUsername,
+  loginSuccess,
+  logout,
+} from '../auth/auth.actions';
 import {
   addLike,
   addRetwat,
@@ -83,5 +88,9 @@ export const userReducer = createReducer(
   on(deleteAuthUser, (state, { authUserId }) => ({
     ...state,
     users: markUserDeleted(state.users, authUserId),
+  })),
+  on(editUsername, (state, { user }) => ({
+    ...state,
+    users: [...state.users.filter((u) => u.id != user.id), user],
   }))
 );

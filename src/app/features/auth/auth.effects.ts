@@ -5,11 +5,13 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { ConfirmActionComponent } from '../../components/dialog/confirm-action/confirm-action.component';
+import { EditUsernameComponent } from '../../components/dialog/edit-username/edit-username.component';
 import { StoreType } from '../../model/enum/storeType';
 import { StoreService } from '../../services/store.service';
 import {
   confirmDeleteAuthUser,
   deleteAuthUser,
+  editUsername,
   login,
   loginFailed,
   loginFetched,
@@ -17,6 +19,7 @@ import {
   loginSuccess,
   logout,
   noAction,
+  openEditUsername,
   relogin,
 } from './auth.actions';
 import { AuthService } from './auth.service';
@@ -177,5 +180,32 @@ export class AuthEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  editUsername$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(openEditUsername),
+      exhaustMap((payload) =>
+        this.dialog
+          .open(EditUsernameComponent, {
+            data: {
+              text: payload.user.username,
+            },
+          })
+          .afterClosed()
+          .pipe(
+            map((form) =>
+              form
+                ? editUsername({
+                    user: {
+                      ...payload.user,
+                      username: form.value.text,
+                    },
+                  })
+                : noAction()
+            )
+          )
+      )
+    )
   );
 }

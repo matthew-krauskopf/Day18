@@ -17,7 +17,13 @@
       </div>
       <div>
         @if(isAuthProfile$ | async) {
-        <button mat-button class="edit">Edit</button>
+        <button
+          (click)="authFacade.editUsername(currentUser)"
+          mat-button
+          class="edit"
+        >
+          Edit
+        </button>
         <button
           (click)="authFacade.confirmDeleteAuthUser(currentUser.id)"
           mat-button

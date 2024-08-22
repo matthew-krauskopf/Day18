@@ -34,4 +34,14 @@ export const confirmDeleteAuthUser = createAction(
   props<{ authUserId: number }>()
 );
 
+export const openEditUsername = createAction(
+  '[Profile] Open Edit Username Menu',
+  props<{ user: User }>()
+);
+
+export const editUsername = createAction(
+  '[Profile] Edit Username',
+  props<{ user: User }>()
+);
+
 export const noAction = createAction('[noop] No Action');

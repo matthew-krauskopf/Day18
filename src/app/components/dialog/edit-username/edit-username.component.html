@@ -1,0 +1,32 @@
+<div class="message-dialog dialog-bg">
+  <mat-dialog-content>
+    <form [formGroup]="usernameForm">
+      <mat-form-field class="w-full">
+        <mat-label>Username</mat-label>
+        <textarea
+          formControlName="text"
+          class="w-full text-field"
+          matInput
+        ></textarea>
+        <mat-error *ngIf="usernameForm.controls['text'].errors as error">
+          <span *ngIf="error['required']">Username is required</span>
+          <span *ngIf="error['maxlength']"
+            >Username must not exceed 10 characters</span
+          >
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions class="flex">
+    <button class="flex-1" mat-button (click)="onNoClick()">Cancel</button>
+    <button
+      class="flex-1"
+      mat-flat-button
+      [mat-dialog-close]="usernameForm"
+      cdkFocusInitial
+      [disabled]="!usernameForm.valid"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

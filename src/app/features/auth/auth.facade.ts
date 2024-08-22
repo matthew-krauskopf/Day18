@@ -7,6 +7,7 @@ import {
   login,
   loginFetched,
   logout,
+  openEditUsername,
   relogin,
 } from './auth.actions';
 import { selectAuthUser } from './auth.selectors';
@@ -34,6 +35,10 @@ export class AuthFacade {
 
   logout() {
     this.store.dispatch(logout());
+  }
+
+  editUsername(user: User) {
+    this.store.dispatch(openEditUsername({ user }));
   }
 
   confirmDeleteAuthUser(userId: number) {
