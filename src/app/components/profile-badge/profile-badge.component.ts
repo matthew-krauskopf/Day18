@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
@@ -9,7 +9,7 @@ import { UserFacade } from '../../features/user/user.facade';
 @Component({
   selector: 'app-profile-badge',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgClass],
   templateUrl: './profile-badge.component.html',
   styleUrl: './profile-badge.component.scss',
 })
@@ -30,8 +30,10 @@ export class ProfileBadgeComponent {
   router: Router = inject(Router);
 
   goToProfile(user: User) {
-    this.messageFacade.applyFilter('twats');
-    this.userFacade.loadUser(user.id);
-    this.router.navigate(['home', 'profile', user.id]);
+    if (!user.deleted) {
+      this.messageFacade.applyFilter('twats');
+      this.userFacade.loadUser(user.id);
+      this.router.navigate(['home', 'profile', user.id]);
+    }
   }
 }

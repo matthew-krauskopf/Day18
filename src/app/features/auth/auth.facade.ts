@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserFacade } from '../user/user.facade';
 import {
+  confirmDeleteAuthUser,
   deleteAuthUser,
   login,
   loginFetched,
@@ -36,6 +37,6 @@ export class AuthFacade {
   }
 
   confirmDeleteAuthUser(userId: number) {
-    this.store.dispatch(deleteAuthUser({ authUserId: userId }));
+    this.store.dispatch(confirmDeleteAuthUser({ authUserId: userId }));
   }
 }

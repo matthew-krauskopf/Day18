@@ -30,5 +30,8 @@ export const deleteAuthUser = createAction(
 );
 
 export const confirmDeleteAuthUser = createAction(
-  '[Profile] Confirm Delete Auth User'
+  '[Profile] Confirm Delete Auth User',
+  props<{ authUserId: number }>()
 );
+
+export const noAction = createAction('[noop] No Action');

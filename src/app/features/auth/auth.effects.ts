@@ -1,11 +1,14 @@
 import { inject, Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
+import { ConfirmActionComponent } from '../../components/dialog/confirm-action/confirm-action.component';
 import { StoreType } from '../../model/enum/storeType';
 import { StoreService } from '../../services/store.service';
 import {
+  confirmDeleteAuthUser,
   deleteAuthUser,
   login,
   loginFailed,
@@ -13,6 +16,7 @@ import {
   loginRejected,
   loginSuccess,
   logout,
+  noAction,
   relogin,
 } from './auth.actions';
 import { AuthService } from './auth.service';
@@ -24,6 +28,7 @@ export class AuthEffects {
   localStorage: StoreService = inject(StoreService);
   router: Router = inject(Router);
   snackbar: MatSnackBar = inject(MatSnackBar);
+  dialog: MatDialog = inject(MatDialog);
 
   constructor(private actions$: Actions) {}
 
@@ -138,6 +143,37 @@ export class AuthEffects {
           this.localStorage.removeItem(StoreType.USER);
           this.localStorage.removeItem(StoreType.PASSWORD);
           this.router.navigate(['/login']);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  confirmDeleteAuthUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(confirmDeleteAuthUser),
+      exhaustMap((payload) =>
+        this.dialog
+          .open(ConfirmActionComponent)
+          .afterClosed()
+          .pipe(
+            map((action) =>
+              action == true
+                ? deleteAuthUser({ authUserId: payload.authUserId })
+                : noAction()
+            )
+          )
+      )
+    )
+  );
+
+  displayDeleteComplete$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteAuthUser),
+        map(() => {
+          this.snackbar.open('User successfully deleted', 'Close', {
+            duration: 2000,
+          });
         })
       ),
     { dispatch: false }

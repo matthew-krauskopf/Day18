@@ -1,4 +1,4 @@
-@if(currentUser$ | async; as currentUser) {
+@if(currentUser$ | async; as currentUser) { @if(!currentUser.deleted) {
 <div class="margin-y-3">
   <div class="pad-x-5 flex flex-col">
     <div class="flex justify-between">
@@ -52,4 +52,4 @@
   <app-message [message]="message"></app-message>
   }
 </div>
-}
+} }

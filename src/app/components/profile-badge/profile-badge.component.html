@@ -1,6 +1,7 @@
 @if( user$ | async; as user ) {
 <div
-  class="flex flex-row items-center cursor-pointer"
+  class="flex flex-row items-center"
+  [ngClass]="!user.deleted ? 'cursor-pointer' : ''"
   (click)="goToProfile(user)"
 >
   <div class="flex justify-center h-10 w-10">
