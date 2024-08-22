@@ -1,12 +1,7 @@
 @if(message) {
 <div class="flex flex-col border-bottom">
   @if(message.retwatAuthor != null) {
-  <div class="flex items-center pad-top-3 pad-left-20 font-gray">
-    <mat-icon class="flex items-center text-xl">recycling</mat-icon>
-    <span class="margin-left-3 text-sm font-ui"
-      >{{ message.retwatUsername }} Retwatted</span
-    >
-  </div>
+  <app-retwatted-by [userId]="message.retwatAuthor"></app-retwatted-by>
   }
   <div class="flex flex-col">
     <div class="flex flex-row items-center">

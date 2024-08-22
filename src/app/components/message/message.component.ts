@@ -11,6 +11,7 @@ import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component';
+import { RetwattedByComponent } from '../retwatted-by/retwatted-by.component';
 
 @Component({
   selector: 'app-message',
@@ -22,6 +23,7 @@ import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component'
     CommonModule,
     MatButtonModule,
     ProfileBadgeComponent,
+    RetwattedByComponent,
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss',

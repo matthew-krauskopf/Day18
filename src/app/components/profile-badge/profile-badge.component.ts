@@ -1,11 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
-import { Message } from '../../features/message/message.entity';
-import { Router } from '@angular/router';
-import { MessageFacade } from '../../features/message/message.facade';
-import { UserFacade } from '../../features/user/user.facade';
-import { User } from '../../features/user/user.entity';
-import { combineLatest, map } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Component, inject, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { map } from 'rxjs';
+import { MessageFacade } from '../../features/message/message.facade';
+import { User } from '../../features/user/user.entity';
+import { UserFacade } from '../../features/user/user.facade';
 
 @Component({
   selector: 'app-profile-badge',
