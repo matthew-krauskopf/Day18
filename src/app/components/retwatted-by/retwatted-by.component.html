@@ -1,9 +1,17 @@
 @if(user$ | async; as user) {
 <div class="flex items-center pad-top-3 pad-left-20 font-gray">
   <mat-icon class="flex items-center text-xl">recycling</mat-icon>
-  <span class="margin-left-3 text-sm font-ui">
-    @if(!user.deleted) {
-    {{ user.username }} Retwatted } @else { Deleted User Retwatted }</span
+  @if(!user.deleted) {
+  <span
+    class="margin-left-3 text-sm font-ui cursor-pointer"
+    (click)="goToProfile(user)"
   >
+    {{ user.username }} Retwatted
+  </span>
+  }@else {
+  <span class="margin-left-3 text-sm font-ui italic">
+    Deleted User Retwatted
+  </span>
+  }
 </div>
 }
