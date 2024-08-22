@@ -8,6 +8,7 @@ import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
 import { UserFacade } from '../../features/user/user.facade';
 import { OptionSelectComponent } from '../option-select/option-select.component';
+import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component';
 
 @Component({
   selector: 'app-engaged-by',
@@ -19,6 +20,7 @@ import { OptionSelectComponent } from '../option-select/option-select.component'
     CommonModule,
     NgClass,
     OptionSelectComponent,
+    ProfileBadgeComponent,
   ],
   templateUrl: './engaged-by.component.html',
   styleUrl: './engaged-by.component.scss',
@@ -53,7 +55,7 @@ export class EngagedByComponent implements OnInit {
     ]).pipe(
       map(([users, message, mode]) => {
         return users.filter((u) =>
-          mode == 'retwats'
+          mode == this.modes[0]
             ? message?.retwattedBy?.includes(u.id)
             : message?.likedBy?.includes(u.id)
         );

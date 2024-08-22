@@ -1,8 +1,10 @@
 import { CommonModule, NgStyle } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Message } from '../../features/message/message.entity';
+import { Router } from '@angular/router';
+import { MessageFacade } from '../../features/message/message.facade';
 
 @Component({
   selector: 'app-action-bar',
@@ -12,14 +14,15 @@ import { Message } from '../../features/message/message.entity';
   styleUrl: './action-bar.component.scss',
 })
 export class ActionBarComponent {
+  messageFacade: MessageFacade = inject(MessageFacade);
+  router: Router = inject(Router);
+
   @Input() message?: Message;
   @Input() isLikedSignal?: boolean;
   @Input() isRetwattedSignal?: boolean;
 
   @Output() retwatEmitter: EventEmitter<void> = new EventEmitter();
   @Output() likeEmitter: EventEmitter<void> = new EventEmitter();
-  @Output() viewLikesEmitter: EventEmitter<void> = new EventEmitter();
-  @Output() viewRetwatsEmitter: EventEmitter<void> = new EventEmitter();
 
   addComment($event: Event) {
     $event.stopPropagation();
@@ -35,11 +38,13 @@ export class ActionBarComponent {
     this.likeEmitter.emit();
   }
 
-  openLikedBy() {
-    this.viewLikesEmitter.emit();
+  openLikedBy(message: Message) {
+    this.messageFacade.openMessage(message);
+    this.router.navigate(['home', 'messages', message.uuid, 'likes']);
   }
 
-  openRetwattedBy() {
-    this.viewRetwatsEmitter.emit();
+  openRetwattedBy(message: Message) {
+    this.messageFacade.openMessage(message);
+    this.router.navigate(['home', 'messages', message.uuid, 'retwats']);
   }
 }

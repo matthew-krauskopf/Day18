@@ -47,8 +47,4 @@ export class MessagesComponent {
   addMessage($event: PostedMessage) {
     this.messageFacade.addMessage($event.text, $event.user);
   }
-
-  goToProfile(message: Message) {
-    this.router.navigate(['home', 'profile', message.author]);
-  }
 }

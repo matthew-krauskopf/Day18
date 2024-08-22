@@ -1,11 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { selectAuthUser } from '../auth/auth.selectors';
+import { AuthState } from '../auth/auth.state';
+import { User } from '../user/user.entity';
 import { UserState } from '../user/user.state';
 import { Message } from './message.entity';
 import { MessageState } from './message.state';
 import { linkMessageData, linkMessagesData } from './message.utils';
-import { AuthState } from '../auth/auth.state';
-import { selectAuthUser } from '../auth/auth.selectors';
-import { User } from '../user/user.entity';
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
 export const selectMessageState =
@@ -88,7 +88,7 @@ export const selectFilteredMessages = createSelector(
         ));
       case 'comments': //comments
         return (filteredMessages = messages.filter(
-          (c) => c.author == userState.userId && c.parent
+          (c) => c.author == userState.userId && c.parent && !c.retwatAuthor
         ));
       case 'retwats': //retwats
         return (filteredMessages = messages.filter((m) =>

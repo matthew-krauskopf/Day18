@@ -1,8 +1,9 @@
+@if(message) {
 <div class="pad-bot-2 flex justify-between items-center">
   <div class="flex items-center">
     <mat-icon class="font-gray">comment</mat-icon>
     <span class="margin-left-3 font-ui font-gray text-xs">{{
-      message && message.comments ? message.comments.length : 0
+      message.comments ? message.comments.length : 0
     }}</span>
   </div>
   <div class="flex items-center">
@@ -14,12 +15,10 @@
       <mat-icon>recycling</mat-icon>
     </button>
     <span
-      (click)="openRetwattedBy()"
+      (click)="openRetwattedBy(message)"
       [ngStyle]="{ color: isRetwattedSignal ? 'rgb(58, 245, 83)' : 'grey' }"
       class="show-on-hover cursor-pointer pad-x-3 font-ui text-xs"
-      >{{
-        message && message.retwattedBy ? message.retwattedBy.length : 0
-      }}</span
+      >{{ message.retwattedBy ? message.retwattedBy.length : 0 }}</span
     >
   </div>
   <div class="flex items-center">
@@ -31,10 +30,11 @@
       <mat-icon>thumb_up</mat-icon>
     </button>
     <span
-      (click)="openLikedBy()"
+      (click)="openLikedBy(message)"
       [ngStyle]="{ color: isLikedSignal ? 'rgb(0, 162, 255)' : 'grey' }"
       class="show-on-hover cursor-pointer pad-x-3 font-ui text-xs"
-      >{{ message && message.likedBy ? message.likedBy.length : 0 }}</span
+      >{{ message.likedBy ? message.likedBy.length : 0 }}</span
     >
   </div>
 </div>
+}

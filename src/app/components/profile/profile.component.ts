@@ -3,15 +3,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, map, ReplaySubject } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { AuthFacade } from '../../features/auth/auth.facade';
-import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
 import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
-import { OptionSelectComponent } from '../option-select/option-select.component';
 import { MessageComponent } from '../message/message.component';
+import { OptionSelectComponent } from '../option-select/option-select.component';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +33,6 @@ export class ProfileComponent implements OnInit {
   messageFacade: MessageFacade = inject(MessageFacade);
   authFacade: AuthFacade = inject(AuthFacade);
 
-  currentMessages$;
   filteredMessages$;
   numMessages$;
   isAuthProfile$;
@@ -43,28 +41,25 @@ export class ProfileComponent implements OnInit {
 
   filters = ['twats', 'comments', 'retwats', 'likes'];
 
-  ngOnInit() {}
-
-  constructor() {
+  ngOnInit() {
     this.userFacade.loadUser(Number(this.route.snapshot.params['id']) ?? -1);
     this.messageFacade.applyFilter(this.router.url.split('/')[4] ?? 'twats');
+  }
+
+  constructor() {
     this.currentUser$ = this.userFacade.user$;
     this.mode$ = this.messageFacade.filter$;
+    this.filteredMessages$ = this.messageFacade.filteredMessages$;
 
-    this.currentMessages$ = combineLatest([
+    this.numMessages$ = combineLatest([
       this.userFacade.user$,
       this.messageFacade.allMessages$,
     ]).pipe(
-      map(([user, messages]) =>
-        messages.filter((m) => m.author == (user ? user.id : -1))
+      map(
+        ([user, messages]) =>
+          messages.filter((m) => m.author == (user ? user.id : -1)).length
       )
     );
-
-    this.numMessages$ = this.currentMessages$.pipe(
-      map((messages) => messages.length)
-    );
-
-    this.filteredMessages$ = this.messageFacade.filteredMessages$;
 
     this.isAuthProfile$ = combineLatest([
       this.authFacade.user$,
@@ -83,11 +78,5 @@ export class ProfileComponent implements OnInit {
     } else {
       this.router.navigate(['home', 'profile', user.id, $event]);
     }
-  }
-
-  goToProfile(message: Message) {
-    this.userFacade.loadUser(message.author);
-    this.messageFacade.applyFilter(this.filters[0]);
-    this.router.navigate(['home', 'profile', message.author]);
   }
 }

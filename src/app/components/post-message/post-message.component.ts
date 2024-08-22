@@ -16,11 +16,11 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { User } from '../../features/user/user.entity';
-import { UserFacade } from '../../features/user/user.facade';
-import { PostedMessage } from '../../model/posted-message';
-import { AuthFacade } from '../../features/auth/auth.facade';
 import { Router } from '@angular/router';
+import { AuthFacade } from '../../features/auth/auth.facade';
+import { User } from '../../features/user/user.entity';
+import { PostedMessage } from '../../model/posted-message';
+import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component';
 
 @Component({
   selector: 'app-post-message',
@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
+    ProfileBadgeComponent,
   ],
   templateUrl: './post-message.component.html',
   styleUrl: './post-message.component.scss',
@@ -62,9 +63,5 @@ export class PostMessageComponent implements OnInit {
       text: this.newMessageForm.value.message ?? '',
     });
     this.newMessageForm.patchValue({ message: '' });
-  }
-
-  goToProfile(user: User) {
-    this.router.navigate(['home', 'profile', user.id]);
   }
 }

@@ -10,6 +10,7 @@ import { User } from '../../features/user/user.entity';
 import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
+import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component';
 
 @Component({
   selector: 'app-message',
@@ -20,6 +21,7 @@ import { ActionBarComponent } from '../action-bar/action-bar.component';
     NgIf,
     CommonModule,
     MatButtonModule,
+    ProfileBadgeComponent,
   ],
   templateUrl: './message.component.html',
   styleUrl: './message.component.scss',
@@ -29,7 +31,6 @@ export class MessageComponent {
 
   authFacade: AuthFacade = inject(AuthFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
-  userFacade: UserFacade = inject(UserFacade);
   router: Router = inject(Router);
 
   user$;
@@ -71,19 +72,5 @@ export class MessageComponent {
     } else {
       return this.messageFacade.addRetwat(user, message);
     }
-  }
-
-  viewLikes(message: Message) {
-    this.router.navigate(['home', 'messages', message.uuid, 'likes']);
-  }
-
-  viewRetwats(message: Message) {
-    this.router.navigate(['home', 'messages', message.uuid, 'retwats']);
-  }
-
-  goToProfile(message: Message) {
-    this.messageFacade.applyFilter('twats');
-    this.userFacade.loadUser(message.author);
-    this.router.navigate(['home', 'profile', message.author]);
   }
 }

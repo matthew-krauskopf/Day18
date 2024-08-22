@@ -12,6 +12,7 @@ import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 import { MessageComponent } from '../message/message.component';
 import { PostMessageComponent } from '../post-message/post-message.component';
+import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component';
 
 @Component({
   selector: 'app-thread',
@@ -23,6 +24,7 @@ import { PostMessageComponent } from '../post-message/post-message.component';
     ActionBarComponent,
     PostMessageComponent,
     MessageComponent,
+    ProfileBadgeComponent,
   ],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss',
@@ -53,12 +55,6 @@ export class ThreadComponent implements OnInit, OnDestroy {
     }
   }
 
-  openThread(message: Message) {
-    this.messageFacade.unloadMessage();
-    this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'messages', message.uuid]);
-  }
-
   ngOnInit(): void {
     this.messageFacade.loadMessage(this.route.snapshot.params['id']);
   }
@@ -69,16 +65,6 @@ export class ThreadComponent implements OnInit, OnDestroy {
 
   addComment($event: PostedMessage, parent: Message) {
     this.messageFacade.addComment(parent, $event.text, $event.user);
-  }
-
-  editComment($event: Event, comment: Message) {
-    $event.stopPropagation();
-    this.messageFacade.editMessage(comment);
-  }
-
-  deleteComment($event: Event, comment: Message) {
-    $event.stopPropagation();
-    this.messageFacade.confirmDeleteMessage(comment);
   }
 
   toggleLike(user: User, message: Message) {
@@ -95,19 +81,5 @@ export class ThreadComponent implements OnInit, OnDestroy {
     } else {
       this.messageFacade.addRetwat(user, message);
     }
-  }
-
-  viewLikes(message: Message) {
-    this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'messages', message.uuid, 'likes']);
-  }
-
-  viewRetwats(message: Message) {
-    this.messageFacade.openMessage(message);
-    this.router.navigate(['home', 'messages', message.uuid, 'retwats']);
-  }
-
-  goToProfile(message: Message) {
-    this.router.navigate(['home', 'profile', message.author]);
   }
 }

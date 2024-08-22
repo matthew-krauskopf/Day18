@@ -1,0 +1,9 @@
+@if( userId ) {
+<div class="flex justify-center">
+  <img
+    (click)="goToProfile(userId)"
+    class="h-10 max-w-10 rounded-3xl cursor-pointer"
+    src="{{ pic }}"
+  />
+</div>
+}

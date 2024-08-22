@@ -9,13 +9,11 @@
   </div>
   }
   <div class="flex flex-row">
-    <div class="flex justify-center margin-x-6 margin-y-5">
-      <img
-        (click)="goToProfile(message)"
-        class="h-10 max-w-10 rounded-3xl cursor-pointer"
-        src="{{ message.pic }}"
-      />
-    </div>
+    <app-profile-badge
+      class="margin-x-6 margin-y-5"
+      [pic]="message.pic"
+      [userId]="message.author"
+    ></app-profile-badge>
     <div
       class="cursor-pointer flex flex-col w-full margin-top-5 pad-left-1"
       (click)="openThread(message)"
@@ -49,8 +47,6 @@
           *ngIf="user$ | async as user"
           (likeEmitter)="toggleLike(user, message)"
           (retwatEmitter)="toggleRetwat(user, message)"
-          (viewLikesEmitter)="viewLikes(message)"
-          (viewRetwatsEmitter)="viewRetwats(message)"
           [isLikedSignal]="user.likedMessages.includes(message.uuid)"
           [isRetwattedSignal]="user.retwats.includes(message.uuid)"
           [message]="message"
