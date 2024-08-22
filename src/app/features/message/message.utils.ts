@@ -205,3 +205,7 @@ export function removeRetwatFn(
     return messages;
   }
 }
+
+function replaceWithDeletedUser(userId: number, authUserId: number) {
+  return userId && userId == authUserId ? -9 : userId;
+}

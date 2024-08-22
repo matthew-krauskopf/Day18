@@ -34,3 +34,17 @@ export function removeRetwatFromUser(user: User, uuid: string): User {
     retwats: user.retwats.filter((rt) => rt != uuid),
   };
 }
+
+export function markUserDeleted(users: User[], authUserId: number) {
+  const authUser = users.find((u) => u.id == authUserId);
+
+  if (!authUser) return users;
+
+  return [
+    ...users.filter((u) => u.id != authUserId),
+    {
+      ...authUser,
+      deleted: true,
+    },
+  ];
+}

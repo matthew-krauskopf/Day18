@@ -26,6 +26,7 @@ import {
   removeRetwatFn,
   replaceMessage,
 } from './message.utils';
+import { deleteAuthUser } from '../auth/auth.actions';
 
 export interface MessageState {
   messageId: string | null;

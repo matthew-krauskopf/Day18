@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,7 +26,7 @@ import { OptionSelectComponent } from '../option-select/option-select.component'
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   userFacade: UserFacade = inject(UserFacade);
@@ -44,6 +44,10 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.userFacade.loadUser(Number(this.route.snapshot.params['id']) ?? -1);
     this.messageFacade.applyFilter(this.router.url.split('/')[4] ?? 'twats');
+  }
+
+  ngOnDestroy(): void {
+    this.userFacade.unloadUser();
   }
 
   constructor() {

@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loginSuccess, logout } from '../auth/auth.actions';
+import { deleteAuthUser, loginSuccess, logout } from '../auth/auth.actions';
 import {
   addLike,
   addRetwat,
@@ -17,6 +17,7 @@ import {
   addLikeToUserFn,
   addRetwatToUser,
   attachPhoto,
+  markUserDeleted,
   removeLikeFromUserFn,
   removeRetwatFromUser,
 } from './user.utils';
@@ -78,5 +79,9 @@ export const userReducer = createReducer(
   on(unloadUser, (state) => ({
     ...state,
     userId: null,
+  })),
+  on(deleteAuthUser, (state, { authUserId }) => ({
+    ...state,
+    users: markUserDeleted(state.users, authUserId),
   }))
 );

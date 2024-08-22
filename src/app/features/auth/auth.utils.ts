@@ -1,7 +1,7 @@
 import { User } from '../user/user.entity';
 
 export function performLogin(user: User, password: string) {
-  return user.password == password;
+  return !user.deleted && user.password == password;
 }
 
 export function attachPhoto(user: User): User {

@@ -1,8 +1,5 @@
 <div class="pane flex justify-center items-end" *ngIf="user$ | async as user">
   <div class="flex flex-wrap justify-center items-center pad-x-5 pad-bot-10">
-    <app-profile-badge [pic]="user.pic" [userId]="user.id"></app-profile-badge>
-    <span class="margin-left-5 text-white font-ui font-bold">{{
-      user.username
-    }}</span>
+    <app-profile-badge [userId]="user.id"></app-profile-badge>
   </div>
 </div>

@@ -8,4 +8,5 @@ export interface User {
   permission: Permission;
   likedMessages: string[];
   retwats: string[];
+  deleted?: boolean;
 }

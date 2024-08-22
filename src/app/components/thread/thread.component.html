@@ -7,13 +7,7 @@
       <span class="pad-x-10 text-2xl text-white font-bold font-ui">Thread</span>
     </div>
     <div class="flex items-center margin-x-5">
-      <app-profile-badge
-        [pic]="message.pic"
-        [userId]="message.author"
-      ></app-profile-badge>
-      <span class="margin-x-5 text-white font-bold font-ui">{{
-        message.username
-      }}</span>
+      <app-profile-badge [userId]="message.author"></app-profile-badge>
     </div>
     <div class="margin-x-5 margin-y-12">
       <span class="text-white font-ui">{{ message.text }}</span>

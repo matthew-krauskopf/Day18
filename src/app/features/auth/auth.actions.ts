@@ -10,7 +10,7 @@ export const relogin = createAction('[Startup] Relogin');
 
 export const loginFetched = createAction(
   '[Login] Login Fetched',
-  props<{ user: User; password: string }>()
+  props<{ user: User | undefined; password: string }>()
 );
 
 export const loginSuccess = createAction(
@@ -23,3 +23,12 @@ export const loginRejected = createAction('[Login] Login Rejected');
 export const loginFailed = createAction('[Login] Login Failed');
 
 export const logout = createAction('[Login] Logout');
+
+export const deleteAuthUser = createAction(
+  '[Profile] Delete Auth User',
+  props<{ authUserId: number }>()
+);
+
+export const confirmDeleteAuthUser = createAction(
+  '[Profile] Confirm Delete Auth User'
+);

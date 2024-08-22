@@ -33,10 +33,10 @@ export class MessageComponent {
   messageFacade: MessageFacade = inject(MessageFacade);
   router: Router = inject(Router);
 
-  user$;
+  authUser$;
 
   constructor() {
-    this.user$ = this.authFacade.user$;
+    this.authUser$ = this.authFacade.user$;
   }
 
   openThread(message: Message) {

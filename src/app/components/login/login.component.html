@@ -1,6 +1,7 @@
+@if (users$ | async; as users) {
 <div class="grey-bg flex items-center justify-center h-full">
   <mat-card class="card-width">
-    <form [formGroup]="loginForm" (ngSubmit)="performLogin()">
+    <form [formGroup]="loginForm" (ngSubmit)="performLogin(users)">
       <mat-card-header class="flex justify-center items-center">
         <span class="font-bold text-2xl">Login</span>
       </mat-card-header>
@@ -47,3 +48,4 @@
     </form>
   </mat-card>
 </div>
+}

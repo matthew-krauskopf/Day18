@@ -6,6 +6,7 @@ import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { StoreType } from '../../model/enum/storeType';
 import { StoreService } from '../../services/store.service';
 import {
+  deleteAuthUser,
   login,
   loginFailed,
   loginFetched,
@@ -68,8 +69,12 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(loginFetched),
       map((payload) => {
-        if (performLogin(payload.user, payload.password)) {
-          return loginSuccess({ user: payload.user });
+        if (payload.user) {
+          if (performLogin(payload.user, payload.password)) {
+            return loginSuccess({ user: payload.user });
+          } else {
+            return loginRejected();
+          }
         } else {
           return loginRejected();
         }
@@ -128,7 +133,7 @@ export class AuthEffects {
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(logout),
+        ofType(logout, deleteAuthUser),
         tap(() => {
           this.localStorage.removeItem(StoreType.USER);
           this.localStorage.removeItem(StoreType.PASSWORD);

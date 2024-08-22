@@ -1,8 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserFacade } from '../user/user.facade';
-import { login, logout, relogin } from './auth.actions';
+import {
+  deleteAuthUser,
+  login,
+  loginFetched,
+  logout,
+  relogin,
+} from './auth.actions';
 import { selectAuthUser } from './auth.selectors';
+import { User } from '../user/user.entity';
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +27,15 @@ export class AuthFacade {
     this.store.dispatch(relogin());
   }
 
-  performLogin(username: string, password: string) {
-    this.store.dispatch(login({ username, password }));
+  performLogin(username: string, password: string, user: User | undefined) {
+    this.store.dispatch(loginFetched({ user, password }));
   }
 
   logout() {
     this.store.dispatch(logout());
+  }
+
+  confirmDeleteAuthUser(userId: number) {
+    this.store.dispatch(deleteAuthUser({ authUserId: userId }));
   }
 }
