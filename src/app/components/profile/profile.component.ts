@@ -28,8 +28,6 @@ import { MessageComponent } from '../message/message.component';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
-  currentUser$;
-
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
   userFacade: UserFacade = inject(UserFacade);
@@ -40,58 +38,37 @@ export class ProfileComponent implements OnInit {
   filteredMessages$;
   numMessages$;
   isAuthProfile$;
+  currentUser$;
+  mode$;
 
-  modes = ['twats', 'comments', 'retwats', 'likes'];
-
-  userId$: ReplaySubject<number> = new ReplaySubject(1);
-  mode$: ReplaySubject<string> = new ReplaySubject(1);
+  filters = ['twats', 'comments', 'retwats', 'likes'];
 
   ngOnInit() {}
 
   constructor() {
-    this.userId$.next(Number(this.route.snapshot.params['id']) ?? -1);
-    this.mode$.next(this.router.url.split('/')[4] ?? 'twats');
-    this.currentUser$ = combineLatest([
-      this.userFacade.users$,
-      this.userId$,
-    ]).pipe(map(([users, userId]) => users.find((u) => u.id == userId)));
+    this.userFacade.loadUser(Number(this.route.snapshot.params['id']) ?? -1);
+    this.messageFacade.applyFilter(this.router.url.split('/')[4] ?? 'twats');
+    this.currentUser$ = this.userFacade.user$;
+    this.mode$ = this.messageFacade.filter$;
 
     this.currentMessages$ = combineLatest([
-      this.userId$,
+      this.userFacade.user$,
       this.messageFacade.allMessages$,
     ]).pipe(
-      map(([userId, messages]) => messages.filter((m) => m.author == userId))
+      map(([user, messages]) =>
+        messages.filter((m) => m.author == (user ? user.id : -1))
+      )
     );
 
     this.numMessages$ = this.currentMessages$.pipe(
       map((messages) => messages.length)
     );
 
-    this.filteredMessages$ = combineLatest([
-      this.messageFacade.allMessages$,
-      this.mode$,
-      this.userId$,
-    ]).pipe(
-      map(([messages, mode, userId]) => {
-        switch (mode) {
-          case this.modes[0]: //twats
-            return messages.filter(
-              (m) => m.author == userId && !m.retwatAuthor && !m.parent
-            );
-          case this.modes[1]: //comments
-            return messages.filter((c) => c.author == userId && c.parent);
-          case this.modes[2]: //retwats
-            return messages.filter((m) => m.retwattedBy.includes(userId));
-          case this.modes[3]: // likes
-            return messages.filter((m) => m.likedBy.includes(userId));
-        }
-        return messages;
-      })
-    );
+    this.filteredMessages$ = this.messageFacade.filteredMessages$;
 
     this.isAuthProfile$ = combineLatest([
-      this.authFacade.userId$,
-      this.userId$,
+      this.authFacade.user$,
+      this.userFacade.user$,
     ]).pipe(map(([id, userId]) => id == userId));
   }
 
@@ -99,8 +76,8 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['home', 'messages']);
   }
 
-  changeMode($event: string, user: User) {
-    this.mode$.next($event);
+  changeFilter($event: string, user: User) {
+    this.messageFacade.applyFilter($event);
     if ($event == 'twats') {
       this.router.navigate(['home', 'profile', user.id]);
     } else {
@@ -109,8 +86,8 @@ export class ProfileComponent implements OnInit {
   }
 
   goToProfile(message: Message) {
-    this.userId$.next(message.author);
-    this.mode$.next(this.modes[0]);
+    this.userFacade.loadUser(message.author);
+    this.messageFacade.applyFilter(this.filters[0]);
     this.router.navigate(['home', 'profile', message.author]);
   }
 }

@@ -6,7 +6,12 @@ import {
   removeLike,
   removeRetwat,
 } from '../message/message.actions';
-import { loadUsersSuccess, unloadUsers } from './user.actions';
+import {
+  loadUser,
+  loadUsersSuccess,
+  unloadUser,
+  unloadUsers,
+} from './user.actions';
 import { User } from './user.entity';
 import {
   addLikeToUserFn,
@@ -17,14 +22,14 @@ import {
 } from './user.utils';
 
 export interface UserState {
-  user: User | null;
+  userId: number | null;
   users: User[];
 }
 
 export const userKey = 'user';
 
 export const userState: UserState = {
-  user: null,
+  userId: null,
   users: [],
 };
 
@@ -62,16 +67,16 @@ export const userReducer = createReducer(
       removeRetwatFromUser(user, message.uuid),
     ],
   })),
-  on(loginSuccess, (state, { user }) => ({
-    ...state,
-    user: attachPhoto(user),
-  })),
-  on(logout, (state) => ({
-    ...state,
-    user: null,
-  })),
   on(unloadUsers, (state) => ({
     ...state,
     users: [],
+  })),
+  on(loadUser, (state, { userId }) => ({
+    ...state,
+    userId: userId,
+  })),
+  on(unloadUser, (state) => ({
+    ...state,
+    userId: null,
   }))
 );

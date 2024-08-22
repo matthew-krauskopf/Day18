@@ -7,6 +7,7 @@ import { AuthFacade } from '../../features/auth/auth.facade';
 import { Message } from '../../features/message/message.entity';
 import { MessageFacade } from '../../features/message/message.facade';
 import { User } from '../../features/user/user.entity';
+import { UserFacade } from '../../features/user/user.facade';
 import { PostedMessage } from '../../model/posted-message';
 import { ActionBarComponent } from '../action-bar/action-bar.component';
 
@@ -28,6 +29,7 @@ export class MessageComponent {
 
   authFacade: AuthFacade = inject(AuthFacade);
   messageFacade: MessageFacade = inject(MessageFacade);
+  userFacade: UserFacade = inject(UserFacade);
   router: Router = inject(Router);
 
   user$;
@@ -80,6 +82,8 @@ export class MessageComponent {
   }
 
   goToProfile(message: Message) {
+    this.messageFacade.applyFilter('twats');
+    this.userFacade.loadUser(message.author);
     this.router.navigate(['home', 'profile', message.author]);
   }
 }

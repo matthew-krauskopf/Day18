@@ -4,10 +4,11 @@ import {
   addLike,
   addMessage,
   addRetwat,
+  applyFilter,
   deleteMessage,
-  editMessage,
   loadMessagesSuccess,
   loadMessageSuccess,
+  removeFilter,
   removeLike,
   removeRetwat,
   saveEdittedMessage,
@@ -29,6 +30,7 @@ import {
 export interface MessageState {
   messageId: string | null;
   messages: Message[];
+  filter: string | null;
 }
 
 export const messageKey = 'message';
@@ -36,6 +38,7 @@ export const messageKey = 'message';
 export const currentMessage: MessageState = {
   messageId: null,
   messages: [],
+  filter: null,
 };
 
 export const messageReducer = createReducer(
@@ -81,5 +84,13 @@ export const messageReducer = createReducer(
   on(removeRetwat, (state, { user, message }) => ({
     ...state,
     messages: removeRetwatFn(state.messages, message, user),
+  })),
+  on(applyFilter, (state, { filter }) => ({
+    ...state,
+    filter: filter,
+  })),
+  on(removeFilter, (state) => ({
+    ...state,
+    filter: null,
   }))
 );

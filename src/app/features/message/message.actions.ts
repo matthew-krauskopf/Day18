@@ -90,4 +90,11 @@ export const addCommentToMessages = createAction(
   props<{ user: User; message: Message; text: string }>()
 );
 
+export const applyFilter = createAction(
+  '[Profile] Apply Filter',
+  props<{ filter: string }>()
+);
+
+export const removeFilter = createAction('[Profile] Remove Filter');
+
 export const noAction = createAction('[noop] No Action');

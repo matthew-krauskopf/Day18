@@ -7,11 +7,13 @@ import {
   addLike,
   addMessage,
   addRetwat,
+  applyFilter,
   confirmDeleteMessage,
   editMessage,
   loadHttpMessage,
   loadMessages,
   loadMessageSuccess,
+  removeFilter,
   removeLike,
   removeRetwat,
   unloadMessage,
@@ -21,7 +23,9 @@ import { Message } from './message.entity';
 import {
   selectAllMessages,
   selectComments,
+  selectFilteredMessages,
   selectMessage,
+  selectMessageFilter,
   selectMessages,
 } from './message.selectors';
 import { MessageService } from './message.service';
@@ -30,11 +34,12 @@ import { MessageService } from './message.service';
   providedIn: 'root',
 })
 export class MessageFacade {
-  // Derived
   allMessages$;
   message$;
   messages$;
   comments$;
+  filteredMessages$;
+  filter$;
 
   messageService: MessageService = inject(MessageService);
   localStorage: StoreService = inject(StoreService);
@@ -44,6 +49,8 @@ export class MessageFacade {
     this.message$ = this.store.select(selectMessage);
     this.messages$ = this.store.select(selectMessages);
     this.comments$ = this.store.select(selectComments);
+    this.filteredMessages$ = this.store.select(selectFilteredMessages);
+    this.filter$ = this.store.select(selectMessageFilter);
   }
 
   addMessage(messageText: string, user: User) {
@@ -96,5 +103,13 @@ export class MessageFacade {
 
   removeRetwat(user: User, message: Message) {
     this.store.dispatch(removeRetwat({ user, message }));
+  }
+
+  applyFilter(filter: string) {
+    this.store.dispatch(applyFilter({ filter }));
+  }
+
+  removeFilter() {
+    this.store.dispatch(removeFilter());
   }
 }

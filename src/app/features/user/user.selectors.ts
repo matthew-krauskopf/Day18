@@ -14,6 +14,6 @@ export const selectUsers = createSelector(
 export const selectUser = createSelector(
   selectUserState,
   (userState: UserState) => {
-    return userState.user != null ? attachPhoto(userState.user) : null;
+    return userState.users.find((u) => u.id == userState.userId ?? -1);
   }
 );

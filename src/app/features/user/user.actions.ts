@@ -1,10 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from './user.entity';
 
-export const loadUser = createAction('[Login Page] Load User');
-export const reloadUser = createAction('[Startup] Reload User');
-export const loadUserSuccess = createAction('[Login Page] Load User Success');
-export const loadUserFail = createAction('[Login Page] Load User Fail');
+export const loadUser = createAction(
+  '[Profile] Load User',
+  props<{ userId: number }>()
+);
+export const unloadUser = createAction('[Profile] Unload User');
 
 export const loadUsers = createAction('[Home] Load Users');
 export const loadUsersSuccess = createAction(

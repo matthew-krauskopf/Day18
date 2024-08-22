@@ -32,12 +32,12 @@
     }}</span>
   </div>
   <div class="border-bottom margin-top-10 w-full h-12 flex justify-evenly">
-    @for (m of modes; track m) {
+    @for (f of filters; track f) {
     <app-option-select
       class="flex-1"
-      [label]="m"
+      [label]="f"
       [mode]="(mode$ | async) ?? ''"
-      (labelEmitter)="changeMode($event, currentUser)"
+      (labelEmitter)="changeFilter($event, currentUser)"
     >
     </app-option-select>
     }
