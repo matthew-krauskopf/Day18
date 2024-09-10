@@ -17,16 +17,12 @@ import {
 } from './message.actions';
 import { Message } from './message.entity';
 import {
-  addLikeToMessageFn,
   addNewComment,
   addRetwatFn,
   createNewMessage,
-  popMessage,
-  removeLikeFromMessageFn,
   removeRetwatFn,
   replaceMessage,
 } from './message.utils';
-import { deleteAuthUser } from '../auth/auth.actions';
 import { loadUser } from '../user/user.actions';
 
 export interface MessageState {
@@ -65,7 +61,7 @@ export const messageReducer = createReducer(
   })),
   on(deleteMessage, (state, { message }) => ({
     ...state,
-    messages: popMessage(state.messages, message),
+    messages: state.messages.filter((m) => !(m.uuid == message.uuid)),
   })),
   on(addComment, (state, { user, message, messageText }) => ({
     ...state,
@@ -73,11 +69,17 @@ export const messageReducer = createReducer(
   })),
   on(addLike, (state, { user, message }) => ({
     ...state,
-    messages: addLikeToMessageFn(state.messages, message, user),
+    messages: replaceMessage(state.messages, {
+      ...message,
+      likedBy: [...message.likedBy, user.id],
+    }),
   })),
   on(removeLike, (state, { user, message }) => ({
     ...state,
-    messages: removeLikeFromMessageFn(state.messages, message, user),
+    messages: replaceMessage(state.messages, {
+      ...message,
+      likedBy: message.likedBy.filter((m) => m != user.id),
+    }),
   })),
   on(addRetwat, (state, { user, message }) => ({
     ...state,

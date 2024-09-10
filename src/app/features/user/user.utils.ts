@@ -7,34 +7,6 @@ export function attachPhoto(user: User): User {
   };
 }
 
-export function addLikeToUserFn(user: User, uuid: string): User {
-  return {
-    ...user,
-    likedMessages: [...user.likedMessages, uuid],
-  };
-}
-
-export function removeLikeFromUserFn(user: User, uuid: string): User {
-  return {
-    ...user,
-    likedMessages: user.likedMessages.filter((m) => m != uuid),
-  };
-}
-
-export function addRetwatToUser(user: User, uuid: string): User {
-  return {
-    ...user,
-    retwats: [...user.retwats, uuid],
-  };
-}
-
-export function removeRetwatFromUser(user: User, uuid: string): User {
-  return {
-    ...user,
-    retwats: user.retwats.filter((rt) => rt != uuid),
-  };
-}
-
 export function markUserDeleted(users: User[], authUserId: number) {
   const authUser = users.find((u) => u.id == authUserId);
 

@@ -3,9 +3,10 @@ import { selectAuthUser } from '../auth/auth.selectors';
 import { AuthState } from '../auth/auth.state';
 import { User } from '../user/user.entity';
 import { UserState } from '../user/user.state';
+import { attachPhoto } from '../user/user.utils';
 import { Message } from './message.entity';
 import { MessageState } from './message.state';
-import { linkMessageData, linkMessagesData } from './message.utils';
+import { enableButtons, linkMessagesData, linkUserInfo } from './message.utils';
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
 export const selectMessageState =
@@ -17,15 +18,16 @@ export const selectMessage = createSelector(
   selectMessageState,
   selectUserState,
   (user: User | null, messageState: MessageState, userState: UserState) => {
-    return linkMessageData(
-      user,
-      userState.users,
+    let message =
       messageState.messages && messageState.messageId
         ? messageState.messages.find(
             (m) => m.uuid == messageState.messageId && !m.retwatAuthor
           ) ?? null
-        : null
-    );
+        : null;
+
+    return message
+      ? enableButtons(user, linkUserInfo(message, userState.users))
+      : message;
   }
 );
 
@@ -33,7 +35,8 @@ export const selectAuthor = createSelector(
   selectUserState,
   selectMessage,
   (userState, message) => {
-    return userState.users.find((u) => u.id == message?.author) ?? null;
+    let user = userState.users.find((u) => u.id == message?.author);
+    return user ? attachPhoto(user) : null;
   }
 );
 
@@ -88,25 +91,24 @@ export const selectFilteredMessages = createSelector(
   selectMessageFilter,
   selectUserState,
   (messages: Message[], filter: string | null, userState: UserState) => {
-    let filteredMessages;
     switch (filter) {
       case 'twats':
-        return (filteredMessages = messages.filter(
+        return messages.filter(
           (m) => m.author == userState.userId && !m.retwatAuthor && !m.parent
-        ));
+        );
       case 'comments': //comments
-        return (filteredMessages = messages.filter(
+        return messages.filter(
           (c) => c.author == userState.userId && c.parent && !c.retwatAuthor
-        ));
+        );
       case 'retwats': //retwats
-        return (filteredMessages = messages.filter((m) =>
+        return messages.filter((m) =>
           m.retwattedBy.includes(userState.userId ?? -1)
-        ));
+        );
 
       case 'likes': // likes
-        return (filteredMessages = messages.filter((m) =>
+        return messages.filter((m) =>
           m.likedBy.includes(userState.userId ?? -1)
-        ));
+        );
       default:
         return messages;
     }

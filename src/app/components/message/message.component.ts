@@ -38,8 +38,8 @@ export class MessageComponent implements OnInit {
   router: Router = inject(Router);
 
   authUser$;
-  author$: Observable<User | null> = of(null);
-  retwatAuthor$: Observable<User | null> = of(null);
+  author$: Observable<User | undefined> = of(undefined);
+  retwatAuthor$: Observable<User | undefined> = of(undefined);
 
   constructor() {
     this.authUser$ = this.authFacade.user$;

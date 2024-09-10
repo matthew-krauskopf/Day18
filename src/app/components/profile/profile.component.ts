@@ -67,7 +67,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.isAuthProfile$ = combineLatest([
       this.authFacade.user$,
       this.userFacade.user$,
-    ]).pipe(map(([id, userId]) => id == userId));
+    ]).pipe(
+      map(([authUser, profileUser]) => {
+        return authUser && profileUser && authUser.id == profileUser.id;
+      })
+    );
   }
 
   goBack() {

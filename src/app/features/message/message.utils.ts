@@ -1,32 +1,14 @@
 import { User } from '../user/user.entity';
 import { Message } from './message.entity';
 
-export function linkMessageData(
-  user: User | null,
-  users: User[],
-  message: Message | null
-): Message | null {
-  if (message != null) {
-    return {
-      ...enableButtons(user, linkUserInfo(message, users)),
-    };
-  }
-  return message;
-}
-
 export function linkMessagesData(
   user: User | null,
   users: User[],
   messages: Message[]
 ) {
-  const fullMessages: Message[] = [];
-  messages.forEach((m) => {
-    const author: User = users.filter((u) => u.id == m.author)[0];
-    if (author) {
-      fullMessages.push(enableButtons(user, linkUserInfo(m, users)));
-    }
-  });
-  return fullMessages.sort((a, b) => b.tmstp - a.tmstp);
+  return messages
+    .map((m) => enableButtons(user, linkUserInfo(m, users)))
+    .sort((a, b) => b.tmstp - a.tmstp);
 }
 
 export function enableButtons(user: User | null, message: Message): Message {
@@ -58,21 +40,6 @@ export function linkUserInfo(message: Message, users: User[]): Message {
   };
 }
 
-export function popMessage(messages: Message[], message: Message) {
-  return messages.filter((m) => !(m.uuid == message.uuid));
-}
-
-export function popTwat(messages: Message[], message: Message, user: User) {
-  return messages.filter(
-    (m) =>
-      !(
-        m.uuid == message.uuid &&
-        m.tmstp != message.tmstp &&
-        user.id == m.retwatAuthor
-      )
-  );
-}
-
 export function replaceMessage(messages: Message[], message: Message) {
   return [
     ...messages.filter(
@@ -89,16 +56,13 @@ export function addNewComment(
   text: string
 ): Message[] {
   const comment = createNewMessage(author, text, message.uuid);
-  const updatedMessage: Message = {
-    ...message,
-    comments: [...message.comments, comment.uuid],
-  };
-
-  return [...replaceMessage(messages, updatedMessage), comment];
-}
-
-export function getCurrentMessage(messages: Message[], uuid: string) {
-  return messages.find((m) => m.uuid == uuid);
+  return [
+    ...replaceMessage(messages, {
+      ...message,
+      comments: [...message.comments, comment.uuid],
+    }),
+    comment,
+  ];
 }
 
 export function createNewMessage(
@@ -124,50 +88,6 @@ export function createNewMessage(
   };
 }
 
-function createRetwat(user: User, message: Message): Message {
-  return {
-    uuid: message.uuid,
-    author: message.author,
-    retwatAuthor: user.id,
-    tmstp: Date.now(),
-    text: message.text,
-
-    parent: message.parent,
-    comments: [],
-    likedBy: [],
-    retwattedBy: [],
-    deletable: false,
-    editable: false,
-    username: '',
-    retwatUsername: undefined,
-    pic: '',
-  };
-}
-
-export function addLikeToMessageFn(
-  messages: Message[],
-  message: Message,
-  user: User
-) {
-  const newMessage: Message = {
-    ...message,
-    likedBy: [...message.likedBy, user.id],
-  };
-  return replaceMessage(messages, newMessage);
-}
-
-export function removeLikeFromMessageFn(
-  messages: Message[],
-  message: Message,
-  user: User
-) {
-  const newMessage: Message = {
-    ...message,
-    likedBy: message.likedBy.filter((m) => m != user.id),
-  };
-  return replaceMessage(messages, newMessage);
-}
-
 export function addRetwatFn(messages: Message[], message: Message, user: User) {
   if (message.retwattedBy) {
     // Mark retwatted
@@ -179,7 +99,23 @@ export function addRetwatFn(messages: Message[], message: Message, user: User) {
     });
 
     // Add retwat as message
-    newMessages.push(createRetwat(user, message));
+    newMessages.push({
+      uuid: message.uuid,
+      author: message.author,
+      retwatAuthor: user.id,
+      tmstp: Date.now(),
+      text: message.text,
+
+      parent: message.parent,
+      comments: [],
+      likedBy: [],
+      retwattedBy: [],
+      deletable: false,
+      editable: false,
+      username: '',
+      retwatUsername: undefined,
+      pic: '',
+    });
     return newMessages;
   } else {
     return messages;
@@ -200,12 +136,15 @@ export function removeRetwatFn(
     });
 
     // Remove retwat
-    return popTwat(newMessages, message, user);
+    return newMessages.filter(
+      (m) =>
+        !(
+          m.uuid == message.uuid &&
+          m.tmstp != message.tmstp &&
+          user.id == m.retwatAuthor
+        )
+    );
   } else {
     return messages;
   }
-}
-
-function replaceWithDeletedUser(userId: number, authUserId: number) {
-  return userId && userId == authUserId ? -9 : userId;
 }

@@ -16,7 +16,6 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
 import { AuthFacade } from '../../features/auth/auth.facade';
 import { User } from '../../features/user/user.entity';
 import { PostedMessage } from '../../model/posted-message';
@@ -39,7 +38,6 @@ import { ProfileBadgeComponent } from '../profile-badge/profile-badge.component'
 })
 export class PostMessageComponent implements OnInit {
   authFacade: AuthFacade = inject(AuthFacade);
-  router: Router = inject(Router);
 
   @Input() mode?: string;
   @Output() messageEmitter: EventEmitter<PostedMessage> = new EventEmitter();

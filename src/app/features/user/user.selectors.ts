@@ -14,11 +14,13 @@ export const selectUsers = createSelector(
 export const selectUser = createSelector(
   selectUserState,
   (userState: UserState) => {
-    return userState.users.find((u) => u.id == userState.userId);
+    let user = userState.users.find((u) => u.id == userState.userId);
+    return user ? attachPhoto(user) : user;
   }
 );
 
 export const selectAuthor = (authorId: number | undefined) =>
   createSelector(selectUserState, (userState) => {
-    return userState.users.find((u) => u.id == authorId) ?? null;
+    let user = userState.users.find((u) => u.id == authorId);
+    return user ? attachPhoto(user) : user;
   });

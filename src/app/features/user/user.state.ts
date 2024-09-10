@@ -18,14 +18,7 @@ import {
   unloadUsers,
 } from './user.actions';
 import { User } from './user.entity';
-import {
-  addLikeToUserFn,
-  addRetwatToUser,
-  attachPhoto,
-  markUserDeleted,
-  removeLikeFromUserFn,
-  removeRetwatFromUser,
-} from './user.utils';
+import { markUserDeleted } from './user.utils';
 
 export interface UserState {
   userId: number | null;
@@ -43,34 +36,46 @@ export const userReducer = createReducer(
   userState,
   on(loadUsersSuccess, (state, { users }) => ({
     ...state,
-    users: users.map(attachPhoto),
+    users: users,
   })),
   on(addLike, (state, { user, message }) => ({
     ...state,
     users: [
       ...state.users.filter((u) => u.id != user.id),
-      addLikeToUserFn(user, message.uuid),
+      {
+        ...user,
+        likedMessages: [...user.likedMessages, message.uuid],
+      },
     ],
   })),
   on(removeLike, (state, { user, message }) => ({
     ...state,
     users: [
       ...state.users.filter((u) => u.id != user.id),
-      removeLikeFromUserFn(user, message.uuid),
+      {
+        ...user,
+        likedMessages: user.likedMessages.filter((m) => m != message.uuid),
+      },
     ],
   })),
   on(addRetwat, (state, { user, message }) => ({
     ...state,
     users: [
       ...state.users.filter((u) => u.id != user.id),
-      addRetwatToUser(user, message.uuid),
+      {
+        ...user,
+        retwats: [...user.retwats, message.uuid],
+      },
     ],
   })),
   on(removeRetwat, (state, { user, message }) => ({
     ...state,
     users: [
       ...state.users.filter((u) => u.id != user.id),
-      removeRetwatFromUser(user, message.uuid),
+      {
+        ...user,
+        retwats: user.retwats.filter((rt) => rt != message.uuid),
+      },
     ],
   })),
   on(unloadUsers, (state) => ({
