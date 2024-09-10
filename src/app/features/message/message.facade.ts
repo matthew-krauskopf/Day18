@@ -22,6 +22,7 @@ import {
 import { Message } from './message.entity';
 import {
   selectAllMessages,
+  selectAuthor,
   selectComments,
   selectFilteredMessages,
   selectMessage,
@@ -40,6 +41,7 @@ export class MessageFacade {
   comments$;
   filteredMessages$;
   filter$;
+  author$;
 
   messageService: MessageService = inject(MessageService);
   localStorage: StoreService = inject(StoreService);
@@ -51,6 +53,7 @@ export class MessageFacade {
     this.comments$ = this.store.select(selectComments);
     this.filteredMessages$ = this.store.select(selectFilteredMessages);
     this.filter$ = this.store.select(selectMessageFilter);
+    this.author$ = this.store.select(selectAuthor);
   }
 
   addMessage(messageText: string, user: User) {

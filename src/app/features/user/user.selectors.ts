@@ -17,3 +17,8 @@ export const selectUser = createSelector(
     return userState.users.find((u) => u.id == userState.userId);
   }
 );
+
+export const selectAuthor = (authorId: number | undefined) =>
+  createSelector(selectUserState, (userState) => {
+    return userState.users.find((u) => u.id == authorId) ?? null;
+  });

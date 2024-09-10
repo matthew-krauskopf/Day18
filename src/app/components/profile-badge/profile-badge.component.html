@@ -1,4 +1,4 @@
-@if( user$ | async; as user ) {
+@if( user ) {
 <div
   class="flex flex-row items-center"
   [ngClass]="!user.deleted ? 'cursor-pointer' : ''"

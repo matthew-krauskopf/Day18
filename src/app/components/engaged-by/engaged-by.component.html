@@ -21,7 +21,7 @@
   </div>
   @for(user of engagedBy$ | async; track user) {
   <div class="flex items-center margin-x-5 margin-y-10">
-    <app-profile-badge [userId]="user.id"></app-profile-badge>
+    <app-profile-badge [user]="user"></app-profile-badge>
   </div>
   }
 </div>

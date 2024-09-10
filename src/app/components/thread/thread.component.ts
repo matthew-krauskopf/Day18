@@ -36,11 +36,13 @@ export class ThreadComponent implements OnInit, OnDestroy {
   router: Router = inject(Router);
 
   user$;
+  author$;
   message$: Observable<Message | null>;
   comments$;
 
   constructor() {
     this.user$ = this.authFacade.user$;
+    this.author$ = this.messageFacade.author$;
     this.message$ = this.messageFacade.message$;
     this.comments$ = this.messageFacade.comments$;
   }

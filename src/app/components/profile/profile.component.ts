@@ -43,7 +43,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userFacade.loadUser(Number(this.route.snapshot.params['id']) ?? -1);
-    this.messageFacade.applyFilter(this.router.url.split('/')[4] ?? 'twats');
   }
 
   ngOnDestroy(): void {

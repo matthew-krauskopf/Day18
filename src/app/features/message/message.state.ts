@@ -27,6 +27,7 @@ import {
   replaceMessage,
 } from './message.utils';
 import { deleteAuthUser } from '../auth/auth.actions';
+import { loadUser } from '../user/user.actions';
 
 export interface MessageState {
   messageId: string | null;
@@ -93,5 +94,9 @@ export const messageReducer = createReducer(
   on(removeFilter, (state) => ({
     ...state,
     filter: null,
+  })),
+  on(loadUser, (state) => ({
+    ...state,
+    filter: 'twats',
   }))
 );

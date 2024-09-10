@@ -1,10 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { ConfirmActionComponent } from '../../components/dialog/confirm-action/confirm-action.component';
 import { EditMessageComponent } from '../../components/dialog/edit-message/edit-message.component';
+import { loadUser } from '../user/user.actions';
 import {
+  applyFilter,
   confirmDeleteMessage,
   deleteMessage,
   editMessage,

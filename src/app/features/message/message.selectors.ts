@@ -29,6 +29,14 @@ export const selectMessage = createSelector(
   }
 );
 
+export const selectAuthor = createSelector(
+  selectUserState,
+  selectMessage,
+  (userState, message) => {
+    return userState.users.find((u) => u.id == message?.author) ?? null;
+  }
+);
+
 export const selectMessages = createSelector(
   selectAuthUser,
   selectMessageState,

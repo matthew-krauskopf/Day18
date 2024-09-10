@@ -7,7 +7,9 @@
       <span class="pad-x-10 text-2xl text-white font-bold font-ui">Thread</span>
     </div>
     <div class="flex items-center margin-x-5">
-      <app-profile-badge [userId]="message.author"></app-profile-badge>
+      <app-profile-badge
+        [user]="(author$ | async) ?? undefined"
+      ></app-profile-badge>
     </div>
     <div class="margin-x-5 margin-y-12">
       <span class="text-white font-ui">{{ message.text }}</span>

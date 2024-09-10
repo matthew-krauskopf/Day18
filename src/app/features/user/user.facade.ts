@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 
 import { Store } from '@ngrx/store';
 import { loadUser, loadUsers, unloadUser, unloadUsers } from './user.actions';
-import { selectUser, selectUsers } from './user.selectors';
+import { selectAuthor, selectUser, selectUsers } from './user.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,10 @@ export class UserFacade {
   constructor(private store: Store) {
     this.users$ = this.store.select(selectUsers);
     this.user$ = this.store.select(selectUser);
+  }
+
+  getAuthor(authorId: number | undefined) {
+    return this.store.select(selectAuthor(authorId));
   }
 
   loadUsers() {
